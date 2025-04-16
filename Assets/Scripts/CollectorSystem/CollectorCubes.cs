@@ -13,6 +13,7 @@ public class CollectorCubes : MonoBehaviour
         {
             _wallet.PutCoins(cube.Cost);
             PutCoins?.Invoke(cube.Cost);
+            cube.TakeDamage(cube.Hilth);
             Destroy(cube.gameObject);
         }
     }

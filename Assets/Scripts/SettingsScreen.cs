@@ -4,21 +4,8 @@ using UnityEngine.UI;
 
 public class SettingsScreen : Window
 {
-    [SerializeField] private Button _exit;
-
     public event Action OnReturnButtonClicked;
     public event Action OnExitButtonClicked;
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        _exit.onClick.AddListener(OnExitButtonClick);
-    }
-
-    protected override void OnDisable()
-    {
-        _exit.onClick.RemoveListener(OnExitButtonClick);        
-    }
 
     public override void Close()
     {
@@ -40,9 +27,8 @@ public class SettingsScreen : Window
         Close();
     }
 
-    protected void OnExitButtonClick()
+    public void OnExitButtonClick()
     {
-        Close();
         OnExitButtonClicked?.Invoke();
     }
 }

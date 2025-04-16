@@ -46,6 +46,6 @@ public class Cube : MonoBehaviour
             return;
 
         _detouched = true;
-        GetComponentInParent<Bomb>().DetouchCubeRecalculate(this);
+        GetComponentInParent<Chip>().DetouchCubeRecalculate(this);
     }
 }

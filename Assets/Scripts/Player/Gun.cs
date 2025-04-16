@@ -1,4 +1,5 @@
 using UnityEngine;
+using YG;
 
 public class Gun : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Gun : MonoBehaviour
 
     [SerializeField] private float _maxRotationZ;
     [SerializeField] private float _maxRotationW;
+
+    private const float _distance = 30f;
 
     private Camera _camera;
     private Transform _transform;
@@ -38,32 +41,35 @@ public class Gun : MonoBehaviour
     public void Guidance(Vector2 mousePosition)
     {
         Vector3 mousePosition3D = mousePosition;
-        mousePosition3D.z = 30f;
+        mousePosition3D.z = _distance;
         Vector3 worldMousePosition = _camera.ScreenToWorldPoint(mousePosition3D);
         worldMousePosition.z = _transform.position.z;
 
         Vector3 difference = worldMousePosition - _transform.position;
         difference.Normalize();
 
-        float angle = Mathf.Atan2(difference.x, difference.y) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, -angle);
+        float needAngle = Mathf.Atan2(difference.x, difference.y) * Mathf.Rad2Deg;
+        _transform.rotation = Quaternion.Euler(0, 0, -needAngle);
 
         CheckGuidanceBoundaries();
     }
 
     public void Shoot()
     {
-        Bullet bullet = _pool.Get();
-        bullet.transform.position = _spawnPoint.position;
-        bullet.SetDirection(_transform.up);
+        if (YandexGame.isGamePlaying)
+        {
+            Bullet bullet = _pool.Get();
+            bullet.transform.position = _spawnPoint.position;
+            bullet.SetDirection(_transform.up);
+        }
     }
 
     private void CheckGuidanceBoundaries()
     {
         if (_transform.rotation.z > _maxRotationZ && _transform.rotation.w < _maxRotationW)
-            _transform.rotation = new Quaternion (0, 0, _maxRotationZ, _maxRotationW);
+            _transform.rotation = new Quaternion(0, 0, _maxRotationZ, _maxRotationW);
         else if (_transform.rotation.z < -_maxRotationZ && _transform.rotation.w < _maxRotationW)
-            _transform.rotation = new Quaternion (0, 0, -_maxRotationZ, _maxRotationW);
+            _transform.rotation = new Quaternion(0, 0, -_maxRotationZ, _maxRotationW);
     }
     private Bullet Preload()
     {

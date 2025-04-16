@@ -1,16 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 using YG;
 
 public class Game : MonoBehaviour
 {
     [SerializeField] Player _player;
     [SerializeField] private BombsGenerator _generator;
-    [SerializeField] private HudScreen _hudScreen;
     [SerializeField] private CollectorCubes _collector;
+    [SerializeField] private BarrierMover _barrierMover;
     [SerializeField] private ViewBar _viewBar;
 
     [Header("Windows")]
+    [SerializeField] private HudScreen _hudScreen;
     [SerializeField] private SettingsScreen _settingsScreen;
     [SerializeField] private UpgrateScreen _upgrateScreen;
 
@@ -27,7 +27,9 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        YandexGame.GameplayStart();
         _viewBar.SetNeedExperience(_startNeedExperience, _level);
+        _barrierMover.Move();
         _bomb = _generator.Spawn(_level, false);
     }
 
@@ -61,28 +63,26 @@ public class Game : MonoBehaviour
 
     private void OpenUpgradeScreen()
     {
-        Debug.Log("GoOpen");
+        YandexGame.GameplayStop();
         _upgrateScreen.Open();
-        Time.timeScale = 0;
     }
 
     private void CloseUpgradeScreen()
     {
-        Debug.Log("Go");
+        YandexGame.GameplayStart();
         _upgrateScreen.Close();
-        Time.timeScale = 1.0f;
     }
 
     private void OpenSettings()
     {
+        YandexGame.GameplayStop();
         _settingsScreen.Open();
-        Time.timeScale = 0;
     }
 
     private void CloseSettings()
     {
+        YandexGame.GameplayStart();
         _settingsScreen.Close();
-        Time.timeScale = 1f;
     }
 
     private void Quit()
@@ -94,6 +94,7 @@ public class Game : MonoBehaviour
     {
         _level += 1;
         _viewBar.SetNeedExperience(_startNeedExperience, _level);
+        YandexGame.FullscreenShow();
     }
 
     private void GetExperience(double coins)
