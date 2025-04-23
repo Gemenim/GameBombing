@@ -25,7 +25,7 @@ public class Chip : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Bullet>(out Bullet bullet))
         {
             Cube cube = collision.GetContact(0).thisCollider.GetComponent<Cube>();
-            cube.TakeDamage(bullet.GetDamage());
+            cube.TakeDamage(bullet.Damage);
         }
     }
 

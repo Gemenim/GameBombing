@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     [SerializeField] private HudScreen _hudScreen;
     [SerializeField] private SettingsScreen _settingsScreen;
     [SerializeField] private UpgrateScreen _upgrateScreen;
+    [SerializeField] private LiderbordScreen _liderbordScreen;
 
     private const float _levelCoefficientExperience = 0.5f;
     private const float _levelCoefficientNeedExperience = 1.5f;
@@ -37,9 +38,10 @@ public class Game : MonoBehaviour
     {
         _hudScreen.OnUpgradeButtonClicked += OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked += OpenSettings;
-        _settingsScreen.OnExitButtonClicked += Quit;
+        _hudScreen.OnLiderbordButtonClicked += OpenLiderbordScreen;
         _upgrateScreen.OnReturnButtonClicked += CloseUpgradeScreen;
-        _settingsScreen.OnReturnButtonClicked += CloseSettings;
+        _settingsScreen.OnReturnButtonClicked += CloseSettingsScreen;
+        _liderbordScreen.OnReturnButtonClicked += CloseLiderbordScreen;
         _viewBar.OnButtonClicked += LevelUp;
         _collector.PutCoins += GetExperience;
     }
@@ -48,9 +50,10 @@ public class Game : MonoBehaviour
     {
         _hudScreen.OnUpgradeButtonClicked -= OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked -= OpenSettings;
-        _settingsScreen.OnExitButtonClicked -= Quit;
-        _settingsScreen.OnReturnButtonClicked -= CloseSettings;
+        _hudScreen.OnLiderbordButtonClicked -= OpenLiderbordScreen;
+        _settingsScreen.OnReturnButtonClicked -= CloseSettingsScreen;
         _upgrateScreen.OnReturnButtonClicked -= CloseUpgradeScreen;
+        _liderbordScreen.OnReturnButtonClicked -= CloseLiderbordScreen;
         _viewBar.OnButtonClicked -= LevelUp;
         _collector.PutCoins -= GetExperience;
     }
@@ -59,6 +62,18 @@ public class Game : MonoBehaviour
     {
         if (_bomb == null)
             Spawn();
+    }
+
+    private void OpenLiderbordScreen()
+    {
+        YandexGame.GameplayStop();
+        _liderbordScreen.Open();
+    }
+
+    private void CloseLiderbordScreen()
+    {
+        YandexGame.GameplayStart();
+        _liderbordScreen.Close();
     }
 
     private void OpenUpgradeScreen()
@@ -79,21 +94,17 @@ public class Game : MonoBehaviour
         _settingsScreen.Open();
     }
 
-    private void CloseSettings()
+    private void CloseSettingsScreen()
     {
         YandexGame.GameplayStart();
         _settingsScreen.Close();
-    }
-
-    private void Quit()
-    {
-        Application.Quit();
     }
 
     private void LevelUp()
     {
         _level += 1;
         _viewBar.SetNeedExperience(_startNeedExperience, _level);
+        _barrierMover.Move();
         YandexGame.FullscreenShow();
     }
 

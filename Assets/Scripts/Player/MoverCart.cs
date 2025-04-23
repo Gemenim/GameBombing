@@ -1,4 +1,5 @@
 using UnityEngine;
+using YG;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MoverCart : MonoBehaviour
@@ -24,8 +25,11 @@ public class MoverCart : MonoBehaviour
 
     private void Update()
     {
-        Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
-        _rigidbody.AddForce(force, ForceMode.Force);
+        if (YandexGame.isGamePlaying)
+        {
+            Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
+            _rigidbody.AddForce(force, ForceMode.Force);
+        }
     }
 
     public void MoveCar()

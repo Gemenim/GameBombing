@@ -2,10 +2,11 @@ using System;
 using UnityEngine;
 
 public class Wallet : MonoBehaviour
-{
+{   
     private double _coins = 0;
 
     public event Action<double> ChangeCount;
+    public event Action Fail;
 
     public void PutCoins(double coins)
     {
@@ -21,6 +22,8 @@ public class Wallet : MonoBehaviour
             ChangeCount?.Invoke(_coins);
             return true;
         }
+
+        Fail?.Invoke();
 
         return false;
     }

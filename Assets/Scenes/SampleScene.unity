@@ -753,6 +753,7 @@ GameObject:
   - component: {fileID: 163140395}
   - component: {fileID: 163140394}
   - component: {fileID: 163140393}
+  - component: {fileID: 163140396}
   m_Layer: 5
   m_Name: UpExplozionRadius
   m_TagString: Untagged
@@ -864,6 +865,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163140391}
   m_CullTransparentMesh: 1
+--- !u!114 &163140396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163140391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aeed90031edff64d8fdf286550cd857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _countCoins: {fileID: 509361489}
+  _level: {fileID: 360655128}
+  _startCoins: 1000
 --- !u!1 &186495944
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,6 +2395,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _windowGroup: {fileID: 610254868}
   _actionButton: {fileID: 1174503466}
+  _upAttack: {fileID: 0}
+  _upRadiusExplosion: {fileID: 0}
+  _upDamageExplosion: {fileID: 0}
+  _countCoinsDamage: 0
+  _countCoinsRadiusExplosion: 0
+  _countCoinsDamageExplosion: 0
 --- !u!225 &610254868
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3237,6 +3259,9 @@ MonoBehaviour:
   _cart: {fileID: 774671777}
   _gun: {fileID: 7874008470846606625}
   _wallet: {fileID: 774671779}
+  _damgeButton: {fileID: 1955174196}
+  _radiusExplosionButton: {fileID: 163140396}
+  _damageExplosionButton: {fileID: 1566747598}
 --- !u!114 &774671779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3488,6 +3513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 928688250}
   _wallet: {fileID: 774671779}
+  _duration: 1.1
 --- !u!114 &793552849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3531,19 +3557,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 793552850}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &793552850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3712,7 +3726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.83800006, y: 0.8344815}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 669.87335, y: 390.096}
+  m_AnchoredPosition: {x: 669.8699, y: 390.096}
   m_SizeDelta: {x: 77.839905, y: 84.20816}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &901488545
@@ -4312,6 +4326,7 @@ MonoBehaviour:
   _hudScreen: {fileID: 2045029822}
   _settingsScreen: {fileID: 461798822}
   _upgrateScreen: {fileID: 610254867}
+  _liderbordScreen: {fileID: 1416371182}
 --- !u!1 &975476814
 GameObject:
   m_ObjectHideFlags: 0
@@ -5688,7 +5703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1270961696
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5722,7 +5737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6073,7 +6088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1416371179}
   - component: {fileID: 1416371181}
-  - component: {fileID: 1416371180}
+  - component: {fileID: 1416371182}
   m_Layer: 5
   m_Name: LiderbordScreen
   m_TagString: Untagged
@@ -6101,20 +6116,6 @@ RectTransform:
   m_AnchoredPosition: {x: 14.7, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1416371180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416371178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7ad70c1e8f2dc84a98a3ae10184b219, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _windowGroup: {fileID: 1416371181}
-  _actionButton: {fileID: 35500926}
 --- !u!225 &1416371181
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6127,6 +6128,20 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1416371182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416371178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0747cde5abb71f348b38d54b237f8806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _windowGroup: {fileID: 1416371181}
+  _actionButton: {fileID: 35500926}
 --- !u!1 &1459688502
 GameObject:
   m_ObjectHideFlags: 0
@@ -6186,6 +6201,7 @@ GameObject:
   - component: {fileID: 1566747597}
   - component: {fileID: 1566747596}
   - component: {fileID: 1566747595}
+  - component: {fileID: 1566747598}
   m_Layer: 5
   m_Name: UpExplozionDamage
   m_TagString: Untagged
@@ -6297,6 +6313,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566747593}
   m_CullTransparentMesh: 1
+--- !u!114 &1566747598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566747593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aeed90031edff64d8fdf286550cd857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _countCoins: {fileID: 1056940124}
+  _level: {fileID: 85055279}
+  _startCoins: 200
 --- !u!1 &1571936336
 GameObject:
   m_ObjectHideFlags: 0
@@ -6689,7 +6720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1667672452
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6723,7 +6754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6864,7 +6895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1820605002
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6898,7 +6929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7075,6 +7106,7 @@ GameObject:
   - component: {fileID: 1955174195}
   - component: {fileID: 1955174194}
   - component: {fileID: 1955174193}
+  - component: {fileID: 1955174196}
   m_Layer: 5
   m_Name: UpAttack
   m_TagString: Untagged
@@ -7186,6 +7218,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955174191}
   m_CullTransparentMesh: 1
+--- !u!114 &1955174196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955174191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aeed90031edff64d8fdf286550cd857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _countCoins: {fileID: 1995485468}
+  _level: {fileID: 447418701}
+  _startCoins: 10
 --- !u!1 &1955255156
 GameObject:
   m_ObjectHideFlags: 0
@@ -8371,6 +8418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _upgrade: {fileID: 793552849}
   _settings: {fileID: 1113603709}
+  _liderbord: {fileID: 901488545}
 --- !u!225 &2045029823
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9075,12 +9123,13 @@ MonoBehaviour:
   _spawnPoint: {fileID: 1687637435}
   _prefab: {fileID: -6753893414388871803, guid: 7de69a135da20d74199a71d5cc56d1a2, type: 3}
   _velocity: 20
-  _sensitivityHorizontal: 1
-  _sensitivityVertical: 1
+  _damage: 10
   _rateOfFire: 1
   _startSpeedBullet: 1
-  _maxRotationZ: 0
-  _maxRotationW: 0
+  _maxRotationZ: 0.66
+  _maxRotationW: 0.74
+  _maxLevelRadiusExplosion: 40
+  _maxLevelDamageExplosion: 100
 --- !u!33 &8960591628005087341
 MeshFilter:
   m_ObjectHideFlags: 0
