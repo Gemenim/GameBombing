@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using YG;
 
@@ -20,6 +21,7 @@ public class Game : MonoBehaviour
     private const float _standartNeedExperience = 20f;
 
     private Bomb _bomb;
+    private bool _onTsarBomb = false;
     private int _level = 1;
 
     public int Level => _level;
@@ -42,7 +44,7 @@ public class Game : MonoBehaviour
         _upgrateScreen.OnReturnButtonClicked += CloseUpgradeScreen;
         _settingsScreen.OnReturnButtonClicked += CloseSettingsScreen;
         _liderbordScreen.OnReturnButtonClicked += CloseLiderbordScreen;
-        _viewBar.OnButtonClicked += LevelUp;
+        _viewBar.OnButtonClicked += SpawnTsarBomb;
         _collector.PutCoins += GetExperience;
     }
 
@@ -54,14 +56,19 @@ public class Game : MonoBehaviour
         _settingsScreen.OnReturnButtonClicked -= CloseSettingsScreen;
         _upgrateScreen.OnReturnButtonClicked -= CloseUpgradeScreen;
         _liderbordScreen.OnReturnButtonClicked -= CloseLiderbordScreen;
-        _viewBar.OnButtonClicked -= LevelUp;
+        _viewBar.OnButtonClicked -= SpawnTsarBomb;
         _collector.PutCoins -= GetExperience;
+
+        _bomb.Destroyed -= LevelUp;
     }
 
     private void Update()
     {
         if (_bomb == null)
+        {
+            _onTsarBomb = false;
             Spawn();
+        }
     }
 
     private void OpenLiderbordScreen()
@@ -100,12 +107,26 @@ public class Game : MonoBehaviour
         _settingsScreen.Close();
     }
 
-    private void LevelUp()
+    [ContextMenu("Tsar")]
+    private void SpawnTsarBomb()
     {
-        _level += 1;
-        _viewBar.SetNeedExperience(_startNeedExperience, _level);
-        _barrierMover.Move();
-        YandexGame.FullscreenShow();
+        Destroy(_bomb.gameObject);
+        _onTsarBomb = true;
+        Spawn();
+        _bomb.Destroyed += LevelUp;
+    }
+
+    private void LevelUp(bool isTsarBomb)
+    {
+        if (isTsarBomb)
+        {
+            Debug.Log("Up");
+            _onTsarBomb = false;
+            _level += 1;
+            _viewBar.SetNeedExperience(_startNeedExperience, _level);
+            _barrierMover.Move();
+            YandexGame.FullscreenShow();
+        }
     }
 
     private void GetExperience(double coins)
@@ -116,6 +137,6 @@ public class Game : MonoBehaviour
 
     private void Spawn()
     {
-        _bomb = _generator.Spawn(_level, false);
+        _bomb = _generator.Spawn(_level, _onTsarBomb);
     }
 }

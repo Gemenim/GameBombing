@@ -21,7 +21,7 @@ public class BombsGenerator : MonoBehaviour
         Bomb bomb = _bombsPrefabs[index];
         Bomb newBomb = Instantiate(bomb, GetRandomPosition(), Quaternion.identity);
 
-        newBomb.SetLevel(level);
+        newBomb.InitializeBomb(level, isTsarBomb);
         return newBomb;
     }
 

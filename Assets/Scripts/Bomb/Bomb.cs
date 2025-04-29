@@ -4,30 +4,50 @@ using UnityEngine;
 public class Bomb : Chip
 {
     [SerializeField] private CoreCube _core;
+    [SerializeField] private float _countdownTime;
+
+    [Header("Settings 'TsarBomba'")]
+    [SerializeField] private int _coefficientLevel;
 
     private Cube[] _allCubes;
+    private bool _isTsar;
 
-    public event Action Destroyed;
+    public event Action<bool> Destroyed;
 
     private void Start()
     {
         SetStats();
-        SetAllCubes();
+        RememberAllCubes();
     }
 
     private void OnEnable()
     {
         _core.Destroyed += Destroy;
+        _core.BlownUp += Explode;
     }
 
     private void OnDisable()
     {
         _core.Destroyed -= Destroy;
+        _core.BlownUp -= Explode;
     }
 
-    public void SetLevel(int level) => _core.SetLevel(level);
+    public void InitializeBomb(int level, bool isTsarBomb)
+    {
+        _isTsar = isTsarBomb;
 
-    private void SetAllCubes()
+        if (_isTsar)
+        {
+            _core.SetLevel(level * _coefficientLevel);
+            _core.StartCountingDown(_countdownTime);
+        }
+        else
+        {
+            _core.SetLevel(level);
+        }
+    }
+
+    private void RememberAllCubes()
     {
         _allCubes = new Cube[_cubes.Length];
 
@@ -39,6 +59,8 @@ public class Bomb : Chip
 
     private void Destroy()
     {
+        Destroyed?.Invoke(_isTsar);
+
         foreach (Cube cube in _allCubes)
         {
             if (cube != null)
@@ -46,8 +68,11 @@ public class Bomb : Chip
         }
 
         RecalculateCubes();
+    }
 
-        Destroyed?.Invoke();
+    private void Explode()
+    {
+        Destroy(this.gameObject);
     }
 
     private void SetStats()

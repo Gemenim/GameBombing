@@ -35,7 +35,8 @@ public class Cube : MonoBehaviour
         if (_hilth <= 0)
         {
             _hilth = 0;
-           Detouch();
+            gameObject.layer = 10;
+            Detouch();
         }
     }
 

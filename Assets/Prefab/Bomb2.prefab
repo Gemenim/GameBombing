@@ -179,6 +179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _core: {fileID: 3500494778461508853}
+  _countdownTime: 30
+  _coefficientLevel: 3
 --- !u!1 &7086587522733495390
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7338d66e08d342f48b4e804e21446b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetColor: {r: 1, g: 0, b: 0, a: 0.78431374}
 --- !u!1001 &23164527528490698
 PrefabInstance:
   m_ObjectHideFlags: 0
