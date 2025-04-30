@@ -2987,6 +2987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca9abd68d73079438956c180443f748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _coins: 300
 --- !u!54 &774671780
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8929,10 +8930,12 @@ MonoBehaviour:
   _prefab: {fileID: -6753893414388871803, guid: 7de69a135da20d74199a71d5cc56d1a2, type: 3}
   _velocity: 20
   _damage: 10
+  _startCostShot: 5
   _rateOfFire: 1
   _startSpeedBullet: 1
   _maxRotationZ: 0.66
   _maxRotationW: 0.74
+  _maxLevelDamage: 300
   _maxLevelRadiusExplosion: 40
   _maxLevelDamageExplosion: 100
 --- !u!33 &8960591628005087341

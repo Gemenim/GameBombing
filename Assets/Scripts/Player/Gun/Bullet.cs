@@ -75,4 +75,14 @@ public class Bullet : MonoBehaviour
 
         return cubes;
     }
+
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        Debug.Log(_radiusExplosion);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(_transform.position, _radiusExplosion);
+    }
 }

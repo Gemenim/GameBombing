@@ -20,15 +20,6 @@ public class Chip : MonoBehaviour
         RecalculateCubes();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.TryGetComponent<Bullet>(out Bullet bullet))
-        {
-            Cube cube = collision.GetContact(0).thisCollider.GetComponent<Cube>();
-            cube.TakeDamage(bullet.Damage);
-        }
-    }
-
     public void DetouchCubeRecalculate(Cube cube)
     {
         Vector2Int grid = GridPosition(cube.transform.localPosition);

@@ -2,11 +2,16 @@ using System;
 using UnityEngine;
 
 public class Wallet : MonoBehaviour
-{   
-    private double _coins = 0;
+{
+    [SerializeField] private double _coins = 0;
 
     public event Action<double> ChangeCount;
     public event Action Fail;
+
+    private void Start()
+    {
+        ChangeCount?.Invoke(_coins);
+    }
 
     public void PutCoins(double coins)
     {

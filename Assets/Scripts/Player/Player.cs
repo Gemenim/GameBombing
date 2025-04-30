@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         _damgeButton.OnButtonClicked += UpDamage;
         _radiusExplosionButton.OnButtonClicked += UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked += UpDamageExplsoion;
+        _gun.LevelLimitReachedDamage += OnDisableButtonDamage;
         _gun.LevelLimitReachedRadiusExplosion += OnDisableButtonRadiusExplosion;
         _gun.LevelLimitReachedDamageExplosion += OnDisableButtonDamageExplosion;
     }
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
         _damgeButton.OnButtonClicked -= UpDamage;
         _radiusExplosionButton.OnButtonClicked -= UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked -= UpDamageExplsoion;
+        _gun.LevelLimitReachedDamage -= OnDisableButtonDamage;
         _gun.LevelLimitReachedRadiusExplosion -= OnDisableButtonRadiusExplosion;
         _gun.LevelLimitReachedDamageExplosion -= OnDisableButtonDamageExplosion;
     }
@@ -63,12 +65,16 @@ public class Player : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject() == false)
             {
-                _gun.Shoot();
-                _cart.MoveCar();
+                if (_wallet.GetCoins(_gun.CalculateCost()))
+                {
+                    _gun.Shoot();
+                    _cart.MoveCar();
+                }
             }
         }
     }
 
+    private void OnDisableButtonDamage() => _damgeButton.enabled = false;
     private void OnDisableButtonRadiusExplosion() => _radiusExplosionButton.enabled = false;
     private void OnDisableButtonDamageExplosion() => _damageExplosionButton.enabled = false;
 
