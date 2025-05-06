@@ -32,6 +32,11 @@ public class Bomb : Chip
         _core.BlownUp -= Explode;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.gameObject.name);
+    }
+
     public void InitializeBomb(int level, bool isTsarBomb)
     {
         _isTsar = isTsarBomb;
