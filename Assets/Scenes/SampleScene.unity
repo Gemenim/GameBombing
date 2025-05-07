@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 48194339}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -24.23, y: 13.45, z: 0}
+  m_LocalPosition: {x: -22.68, y: 13.45, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4059,6 +4059,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4107,7 +4108,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 50
-  field of view: 103.5
+  field of view: 37
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -4134,7 +4135,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 22.4, z: -38}
+  m_LocalPosition: {x: 0, y: -10.41, z: -38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4173,11 +4174,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11674b4f967c9f94b86baaaeb29e0301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: {fileID: 0}
-  _computerDistance: 36.9
-  _mobileDistance: 103.5
+  _computerDistance: 37
+  _mobileDistance: 103
   _positionComputer: {x: 0, y: -10.41, z: -38}
-  _positionMobile: {x: 0, y: 22.4, z: -38}
+  _positionMobile: {x: 0, y: 5.7, z: -38}
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd8240d3bf3ecf44beec3a1cd57f658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: {fileID: 1245048055}
+  _scaleComputer: {x: 1, y: 1, z: 1}
+  _scaleMobile: {x: 0.984406, y: 1.423798, z: 0.7695994}
+  _posiotionMobile: {x: 0, y: -5.01, z: 0}
 --- !u!1 &975476814
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using YG;
 [RequireComponent(typeof(Camera))]
 public class CameraDistanceController : MonoBehaviour
 {
-    [SerializeField] private Transform _level;
+    [Header("Camera Distance")]
     [SerializeField] private float _computerDistance;
     [SerializeField] private float _mobileDistance;
 

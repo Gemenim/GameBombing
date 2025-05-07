@@ -122,6 +122,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Bomb\Bomb.cs" />
     <Compile Include="Assets\PlayerInput.cs" />
+    <Compile Include="Assets\Scripts\GameScaler.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Leaderboards\LeaderboardYG.cs" />
     <Compile Include="Assets\Scripts\UI\SettingsScreen.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />

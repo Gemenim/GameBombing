@@ -74,33 +74,6 @@ public class Chip : MonoBehaviour
         return _cubesInfo[gridPosition.x, gridPosition.y];
     }
 
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying)
-            return;
-
-        Gizmos.matrix = _transform.localToWorldMatrix;
-
-        for (int x = 0; x < _cubesInfo.GetLength(0); x++)
-        {
-            for (int y = 0; y < _cubesInfo.GetLength(1); y++)
-            {
-                Vector3 position = _cubesInfoStartPosition + new Vector3(x, y, 0);
-
-                if (_cubesInfo[x, y] == 0)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawSphere(position, 0.1f);
-                }
-                else
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(position, 0.2f);
-                }
-            }
-        }
-    }
-
     protected void RecalculateCubes()
     {
         List<int> freeCubesIds = new List<int>();
@@ -164,6 +137,8 @@ public class Chip : MonoBehaviour
                 _cubes[id - 1].transform.parent = chip.transform;
 
             chip.AddComponent<Chip>();
+            Rigidbody rigidbody = chip.GetComponent<Rigidbody>();
+            rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
         }
 
         CollectCubes();
@@ -177,6 +152,33 @@ public class Chip : MonoBehaviour
 
         cube.transform.parent = null;
         Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        Gizmos.matrix = _transform.localToWorldMatrix;
+
+        for (int x = 0; x < _cubesInfo.GetLength(0); x++)
+        {
+            for (int y = 0; y < _cubesInfo.GetLength(1); y++)
+            {
+                Vector3 position = _cubesInfoStartPosition + new Vector3(x, y, 0);
+
+                if (_cubesInfo[x, y] == 0)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawSphere(position, 0.1f);
+                }
+                else
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(position, 0.2f);
+                }
+            }
+        }
     }
 }
 
