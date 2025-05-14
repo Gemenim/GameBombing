@@ -15,6 +15,13 @@ public class Player : MonoBehaviour
     [SerializeField] private ViewButtonUpgrade _damageExplosionButton;
 
     private PlayerInput _input;
+    private int _countDasroyBombs = 0;
+
+    public double Coins => _wallet.Coin;
+    public int CountDasroyBombs => _countDasroyBombs;
+    public int LevelUpgradeDamage => _gun.LevelDamage;
+    public int LevelUpgradeRadiusExplosion => _gun.LevelRadiusExplosion;
+    public int LevelUpgradeDamageExplosion => _gun.LevelDamageExplosion;
 
     private Vector2 _positionMouse;
 
@@ -57,6 +64,20 @@ public class Player : MonoBehaviour
                 _gun.Guidance(_positionMouse);
             }
         }
+    }
+
+    public void AddDastroyBombs()
+    {
+        _countDasroyBombs++;
+    }
+
+    public void LoadSave(double coins, int countDasroyBombs, int levelDamage, int levelDamageExplosion, int levelRadiusExplosion)
+    {
+        _wallet.LoadSave(coins);
+        _gun.LoadSave(levelDamage, levelDamageExplosion, levelRadiusExplosion);
+        _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
+        _radiusExplosionButton.ChangeText(_gun.LevelRadiusExplosion);
+        _damgeButton.ChangeText(_gun.LevelDamage);
     }
 
     private void OnShoot(InputAction.CallbackContext context)

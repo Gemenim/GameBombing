@@ -1,17 +1,7 @@
 using System;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class UpgrateScreen : Window
 {
-    [SerializeField] private Button _upAttack;
-    [SerializeField] private Button _upRadiusExplosion;
-    [SerializeField] private Button _upDamageExplosion;
-
-    [SerializeField] private double _countCoinsDamage;
-    [SerializeField] private double _countCoinsRadiusExplosion;
-    [SerializeField] private double _countCoinsDamageExplosion;
-
     public event Action OnReturnButtonClicked;
 
     protected override void OnEnable()

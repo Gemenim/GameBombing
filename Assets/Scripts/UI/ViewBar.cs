@@ -19,6 +19,8 @@ public class ViewBar : MonoBehaviour
     private double _needExperience = 100;
     private double _experience;
 
+    public double Experience => _experience;
+
     public event Action OnButtonClicked;
 
     private void Awake()

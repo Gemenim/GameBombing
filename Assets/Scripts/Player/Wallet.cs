@@ -5,11 +5,14 @@ public class Wallet : MonoBehaviour
 {
     [SerializeField] private double _coins = 0;
 
+    public double Coin => _coins;
+
     public event Action<double> ChangeCount;
     public event Action Fail;
 
-    private void Start()
+    public void LoadSave(double coins)
     {
+        _coins = coins;
         ChangeCount?.Invoke(_coins);
     }
 

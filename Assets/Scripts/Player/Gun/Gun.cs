@@ -34,6 +34,10 @@ public class Gun : MonoBehaviour
     private int _levelRadiusExplosion = 1;
     private int _levelDamageExplosion = 1;
 
+    public int LevelDamage => _levelDamage;
+    public int LevelRadiusExplosion => _levelRadiusExplosion;
+    public int LevelDamageExplosion => _levelDamageExplosion;
+
     public event Action LevelLimitReachedDamage;
     public event Action LevelLimitReachedRadiusExplosion;
     public event Action LevelLimitReachedDamageExplosion;
@@ -52,6 +56,16 @@ public class Gun : MonoBehaviour
         _camera = Camera.main;
         _transform = transform;
         _pool = new Pool<Bullet>(Preload, GetAction, ReturnAction);
+    }
+
+    public void LoadSave(int levelDamage, int levelDamageExplosion, int levelRadiusExplosion)
+    {
+        _levelDamage = levelDamage;
+        _levelDamageExplosion = levelDamageExplosion;
+        _levelRadiusExplosion = levelRadiusExplosion;
+        LevelLimitReachedDamage?.Invoke();
+        LevelLimitReachedRadiusExplosion?.Invoke();
+        LevelLimitReachedDamageExplosion?.Invoke();
     }
 
     public void Guidance(Vector2 mousePosition)

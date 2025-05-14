@@ -43,7 +43,7 @@ MonoBehaviour:
   leaderboardEnable: 1
   saveScoreAnonymousPlayers: 1
   leaderboardSimulation:
-  - technoName: advanced
+  - technoName: Level
     entries: 'Test LeaderBoard
 
       Name: advanced
@@ -92,7 +92,7 @@ MonoBehaviour:
     thisPlayer:
       rank: 2
       score: 10
-  - technoName: simple
+  - technoName: Coins
     entries: "Test LeaderBoard\nName: simple\n1. \u0441\u043A\u0440\u044B\u0442:
       10\n2. Max: 15\n3. Maria: 23"
     isDefault: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
     thisPlayer:
       rank: 0
       score: 0
-  - technoName: time
+  - technoName: DestoyBombs
     entries: 'Test LeaderBoard
 
       Name: time

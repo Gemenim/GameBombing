@@ -12,9 +12,13 @@ namespace YG
 
         // Тестовые сохранения для демо сцены
         // Можно удалить этот код, но тогда удалите и демо (папка Example)
-        public int money = 1;                       // Можно задать полям значения по умолчанию
-        public string newPlayerName = "Hello!";
-        public bool[] openLevels = new bool[3];
+        public int LevelGame = 1;
+        public double Coins = 300;
+        public double Experience = 0;
+        public int LevelUpgadeDamage = 1;
+        public int LevelUpgadeDamageExplosion = 1;
+        public int LevelUpgadeRadiusExplosion = 1;
+        public int CountDastroyBomb = 0;
 
         // Ваши сохранения
 
@@ -24,11 +28,5 @@ namespace YG
 
 
         // Вы можете выполнить какие то действия при загрузке сохранений
-        public SavesYG()
-        {
-            // Допустим, задать значения по умолчанию для отдельных элементов массива
-
-            openLevels[1] = true;
-        }
     }
 }

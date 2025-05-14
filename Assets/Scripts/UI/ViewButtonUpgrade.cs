@@ -18,7 +18,6 @@ public class ViewButtonUpgrade : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
-        ChangeText(1);
     }
 
     private void OnEnable()
@@ -35,7 +34,7 @@ public class ViewButtonUpgrade : MonoBehaviour
     {
         _coins = _startCoins + (_startCoins * level * 2);
         _level.text = level.ToString();
-        _countCoins.text = _coins.ToString();
+        _countCoins.text = NumberFormatter.Format(_coins);
     }
 
     private void OnClick()

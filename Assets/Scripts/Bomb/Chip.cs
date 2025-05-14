@@ -30,7 +30,7 @@ public class Chip : MonoBehaviour
         Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
 
         RecalculateCubes();
-    }    
+    }
 
     private void CollectCubes()
     {
@@ -82,6 +82,7 @@ public class Chip : MonoBehaviour
         {
             if (_cubes[i] != null)
                 freeCubesIds.Add(_cubes[i].Id);
+
         }
 
         if (freeCubesIds.Count == 0)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
@@ -7,8 +6,6 @@ using YG;
 public class AddCoinButton : MonoBehaviour
 {
     private Button _button;
-
-    public event Action OnClick;
 
     private void Awake()
     {

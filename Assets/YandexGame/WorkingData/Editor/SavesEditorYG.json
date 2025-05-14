@@ -1,13 +1,13 @@
 {
-    "idSave": 8,
-    "isFirstSession": false,
-    "language": "ru",
-    "promptDone": false,
-    "money": 1,
-    "newPlayerName": "Hello!",
-    "openLevels": [
-        false,
-        true,
-        false
-    ]
+  "idSave": 14,
+  "isFirstSession": false,
+  "language": "ru",
+  "promptDone": false,
+  "LevelGame": 7,
+  "Coins": 257935.0,
+  "Experience": 0.0,
+  "LevelUpgadeDamage": 19,
+  "LevelUpgadeDamageExplosion": 2,
+  "LevelUpgadeRadiusExplosion": 38,
+  "CountDastroyBomb": 28
 }
