@@ -4,16 +4,6 @@ public class UpgrateScreen : Window
 {
     public event Action OnReturnButtonClicked;
 
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
-
     public override void Close()
     {
         WindowGroup.alpha = 0;

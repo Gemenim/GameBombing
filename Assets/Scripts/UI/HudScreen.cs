@@ -7,35 +7,28 @@ public class HudScreen : MonoBehaviour
     [SerializeField] private Button _save;
     [SerializeField] private Button _upgrade;
     [SerializeField] private Button _settings;
-    [SerializeField] private Button _liderbord;
 
     public event Action OnSaveButtonClicked;
     public event Action OnUpgradeButtonClicked;
     public event Action OnSetingsButtonClicked;
-    public event Action OnLiderbordButtonClicked;
 
     private void OnEnable()
     {
+        _save.onClick.AddListener(OnSaveButtonClick);
         _upgrade.onClick.AddListener(OnUpgradeButtonClick);
         _settings.onClick.AddListener(OnSettingsButtonClick);
-        _liderbord.onClick.AddListener(OnLiderbordButtonClick);
     }
 
     private void OnDisable()
     {
+        _save.onClick.RemoveListener(OnSaveButtonClick);
         _upgrade.onClick.RemoveListener(OnUpgradeButtonClick);
         _settings.onClick.RemoveListener(OnSettingsButtonClick);
-        _liderbord.onClick.RemoveListener(OnLiderbordButtonClick);
     }
 
-    private void OnSeveButtonClick()
+    private void OnSaveButtonClick()
     {
         OnSaveButtonClicked?.Invoke();
-    }
-
-    private void OnLiderbordButtonClick()
-    {
-        OnLiderbordButtonClicked?.Invoke();
     }
 
     private void OnSettingsButtonClick()

@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void AddDastroyBombs()
+    public void AddDastroyBomb()
     {
         _countDasroyBombs++;
     }

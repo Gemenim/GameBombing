@@ -27,8 +27,9 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     private void OnDisable()
     {
-        _button.onClick.AddListener(OnClick);        
-    }
+        Debug.Log(Time.deltaTime);
+        _button.onClick.RemoveListener(OnClick);        
+    }    
 
     public void ChangeText(int level)
     {

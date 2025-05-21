@@ -11,13 +11,16 @@ public class Cube : MonoBehaviour
     protected bool _detouched;
     protected float _hilth;
     protected double _cost;
+    protected bool _isTsar;
 
     public float Hilth => _hilth;
     public int Id { get; set; }
     public double Cost => _cost;
+    public bool IsTsar => _isTsar;
 
-    public virtual void SetLevel(int level)
+    public virtual void SetSetings(int level, bool isTsar)
     {
+        _isTsar = isTsar;
         int randomLevel = level + Random.Range(-2, 2);
         _level = randomLevel > 0 ? randomLevel : 1;
     }

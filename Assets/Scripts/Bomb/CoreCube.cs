@@ -12,9 +12,9 @@ public class CoreCube : Cube
 
     private MeshRenderer _renderer;
     private Color _startColor;
+    private Cube[] _allCubes;
 
     public int Level => _level;
-    public event Action Destroyed;
     public event Action BlownUp;
 
     private void Awake()
@@ -25,13 +25,17 @@ public class CoreCube : Cube
 
     private void OnDestroy()
     {
-        Destroyed?.Invoke();
+        Debug.Log(_allCubes);
+        foreach (Cube cube in _allCubes)
+        {
+            if (cube != null)
+                cube.TakeDamage(cube.Hilth);
+        }
     }
 
-    public override void SetLevel(int level)
+    public void SetCubes(Cube[] cubes)
     {
-        int randomLevel = level + UnityEngine.Random.Range(-2, 2);
-        _level = randomLevel > 0 ? randomLevel : 1;
+        _allCubes = cubes;
     }
 
     public override void CalculateStats()

@@ -10,7 +10,6 @@ public class Bomb : Chip
     [SerializeField] private int _coefficientLevel;
 
     private Cube[] _allCubes;
-    private bool _isTsar;
 
     public event Action<bool> Destroyed;
 
@@ -22,28 +21,28 @@ public class Bomb : Chip
 
     private void OnEnable()
     {
-        _core.Destroyed += Destroy;
+        //_core.Destroyed += Destroy;
         _core.BlownUp += Explode;
     }
 
     private void OnDisable()
     {
-        _core.Destroyed -= Destroy;
+        //_core.Destroyed -= Destroy;
         _core.BlownUp -= Explode;
     }
 
     public void InitializeBomb(int level, bool isTsarBomb)
     {
-        _isTsar = isTsarBomb;
-
-        if (_isTsar)
+        if (isTsarBomb)
         {
-            _core.SetLevel(level * _coefficientLevel);
+            _core.SetSetings(level * _coefficientLevel, isTsarBomb);
+            _core.SetCubes(_cubes);
             _core.StartCountingDown(_countdownTime);
         }
         else
         {
-            _core.SetLevel(level);
+            _core.SetSetings(level, isTsarBomb);
+            _core.SetCubes(_cubes);
         }
     }
 
@@ -59,8 +58,6 @@ public class Bomb : Chip
 
     private void Destroy()
     {
-        Destroyed?.Invoke(_isTsar);
-
         foreach (Cube cube in _allCubes)
         {
             if (cube != null)
@@ -72,6 +69,7 @@ public class Bomb : Chip
 
     private void Explode()
     {
+        Destroyed?.Invoke(false);
         Destroy(this.gameObject);
     }
 
@@ -81,7 +79,7 @@ public class Bomb : Chip
         {
             if (cube.name != _core.name)
             {
-                cube.SetLevel(_core.Level);
+                cube.SetSetings(_core.Level, _core.IsTsar);
             }
 
             cube.CalculateStats();

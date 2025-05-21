@@ -63,9 +63,15 @@ public class Gun : MonoBehaviour
         _levelDamage = levelDamage;
         _levelDamageExplosion = levelDamageExplosion;
         _levelRadiusExplosion = levelRadiusExplosion;
-        LevelLimitReachedDamage?.Invoke();
-        LevelLimitReachedRadiusExplosion?.Invoke();
-        LevelLimitReachedDamageExplosion?.Invoke();
+
+        if (_levelDamage == _maxLevelDamage)
+            LevelLimitReachedDamage?.Invoke();
+
+        if (_levelRadiusExplosion == _maxLevelRadiusExplosion)
+            LevelLimitReachedRadiusExplosion?.Invoke();
+
+        if (_levelDamageExplosion == _maxLevelDamageExplosion)
+            LevelLimitReachedDamageExplosion?.Invoke();
     }
 
     public void Guidance(Vector2 mousePosition)
@@ -89,7 +95,7 @@ public class Gun : MonoBehaviour
         if (YandexGame.isGamePlaying)
         {
             Bullet bullet = _pool.Get();
-            bullet.SetStats(GetDamage(), GetRadiusExplosion(), GetDamageExplosion());
+            bullet.SetStats(CalculateDamage(), CalculateRadiusExplosion(), CalculateDamageExplosion());
             bullet.transform.position = _spawnPoint.position;
             bullet.SetDirection(_transform.up);
         }
@@ -124,6 +130,7 @@ public class Gun : MonoBehaviour
 
         return _levelDamageExplosion;
     }
+
     public double CalculateCost()
     {
         double cost = _startCostShot + (_levelCoefficient * _startCostShot * (_levelDamage + _levelDamageExplosion + _levelRadiusExplosion));
@@ -131,9 +138,9 @@ public class Gun : MonoBehaviour
         return cost;
     }
 
-    private float GetDamage() => _damage + (_damage * _levelDamage);
-    private float GetRadiusExplosion() => _radiusExplosion + (0.1f * _levelRadiusExplosion);
-    private float GetDamageExplosion() => _damage * _levelDamageExplosion * 0.1f;
+    private float CalculateDamage() => _damage + (_damage * _levelDamage);
+    private float CalculateRadiusExplosion() => _radiusExplosion + (0.05f * _levelRadiusExplosion);
+    private float CalculateDamageExplosion() => _damage * _levelDamageExplosion * 0.1f;
 
     private void CheckGuidanceBoundaries()
     {

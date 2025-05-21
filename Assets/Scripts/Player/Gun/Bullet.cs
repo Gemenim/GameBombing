@@ -81,7 +81,6 @@ public class Bullet : MonoBehaviour
         if (!Application.isPlaying)
             return;
 
-        Debug.Log(_radiusExplosion);
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(_transform.position, _radiusExplosion);
     }

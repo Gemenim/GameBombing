@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using YG;
 
@@ -13,14 +14,12 @@ public class Game : MonoBehaviour
     [SerializeField] private HudScreen _hudScreen;
     [SerializeField] private SettingsScreen _settingsScreen;
     [SerializeField] private UpgrateScreen _upgrateScreen;
-    [SerializeField] private LiderbordScreen _liderbordScreen;
 
     private const float _levelCoefficientExperience = 0.5f;
     private const float _levelCoefficientNeedExperience = 1.5f;
     private const float _standartNeedExperience = 20f;
 
     private Bomb _bomb;
-    private bool _onTsarBomb = false;
     private int _level = 1;
 
     public int Level => _level;
@@ -33,6 +32,7 @@ public class Game : MonoBehaviour
             LoadSave();
 
         YandexGame.GameplayStart();
+        Spawn(false);
         _barrierMover.Move();
     }
 
@@ -41,18 +41,15 @@ public class Game : MonoBehaviour
         _hudScreen.OnSaveButtonClicked += SaveData;
         _hudScreen.OnUpgradeButtonClicked += OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked += OpenSettings;
-        _hudScreen.OnLiderbordButtonClicked += OpenLiderbordScreen;
 
         _upgrateScreen.OnReturnButtonClicked += CloseUpgradeScreen;
 
         _settingsScreen.OnReturnButtonClicked += CloseSettingsScreen;
         _settingsScreen.OnResetSaveButtonClicked += ResetSeve;
 
-        _liderbordScreen.OnReturnButtonClicked += CloseLiderbordScreen;
-
         _viewBar.OnButtonClicked += SpawnTsarBomb;
         _collector.PutCoins += GetExperience;
-        _collector.ColectCore += _player.AddDastroyBombs;
+        _collector.ColectCore += SpawnNextBomb;
     }
 
     private void OnDisable()
@@ -60,41 +57,17 @@ public class Game : MonoBehaviour
         _hudScreen.OnSaveButtonClicked -= SaveData;
         _hudScreen.OnUpgradeButtonClicked -= OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked -= OpenSettings;
-        _hudScreen.OnLiderbordButtonClicked -= OpenLiderbordScreen;
 
         _settingsScreen.OnReturnButtonClicked -= CloseSettingsScreen;
         _settingsScreen.OnResetSaveButtonClicked -= ResetSeve;
 
         _upgrateScreen.OnReturnButtonClicked -= CloseUpgradeScreen;
 
-        _liderbordScreen.OnReturnButtonClicked -= CloseLiderbordScreen;
-
         _viewBar.OnButtonClicked -= SpawnTsarBomb;
         _collector.PutCoins -= GetExperience;
-        _collector.ColectCore -= _player.AddDastroyBombs;
+        _collector.ColectCore -= SpawnNextBomb;
 
-        _bomb.Destroyed -= LevelUp;
-    }
-
-    private void Update()
-    {
-        if (_bomb == null)
-        {
-            _onTsarBomb = false;
-            Spawn();
-        }
-    }
-
-    private void OpenLiderbordScreen()
-    {
-        YandexGame.GameplayStop();
-        _liderbordScreen.Open();
-    }
-
-    private void CloseLiderbordScreen()
-    {
-        YandexGame.GameplayStart();
-        _liderbordScreen.Close();
+        _bomb.Destroyed -= Spawn;
     }
 
     private void OpenUpgradeScreen()
@@ -125,23 +98,40 @@ public class Game : MonoBehaviour
     private void SpawnTsarBomb()
     {
         Destroy(_bomb.gameObject);
-        _onTsarBomb = true;
-        Spawn();
-        _bomb.Destroyed += LevelUp;
+        Spawn(true);
     }
 
-    private void LevelUp(bool isTsarBomb)
+    private void SpawnNextBomb(bool isTsarBomb)
     {
-        if (isTsarBomb)
+        if(isTsarBomb)
         {
-            Debug.Log("Up");
-            _onTsarBomb = false;
-            _level += 1;
-            _viewBar.SetNeedExperience(_startNeedExperience, _level);
-            _barrierMover.Move();
-            SaveData();
-            YandexGame.FullscreenShow();
+            _player.AddDastroyBomb();
+            LevelUp();
+            Spawn(!isTsarBomb);
         }
+        else
+        {
+            _player.AddDastroyBomb();
+            Spawn(!isTsarBomb);
+        }
+    }
+
+    private void UpdateTop()
+    {
+        YandexGame.NewLeaderboardScores("Level", Level);
+        YandexGame.NewLeaderboardScores("Coins", (long)_player.Coins);
+        YandexGame.NewLeaderboardScores("DestroyedBombs", Level);
+    }
+
+    private void LevelUp()
+    {
+        Debug.Log("Up");
+        _level += 1;
+        _viewBar.SetNeedExperience(_startNeedExperience, _level);
+        _barrierMover.Move();
+        SaveData();
+        UpdateTop();
+        YandexGame.FullscreenShow();
     }
 
     private void GetExperience(double coins)
@@ -150,9 +140,10 @@ public class Game : MonoBehaviour
         _viewBar.SetValue(experience);
     }
 
-    private void Spawn()
+    private void Spawn(bool isTsarBomb)
     {
-        _bomb = _generator.Spawn(_level, _onTsarBomb);
+        _bomb = _generator.Spawn(_level, isTsarBomb);
+        _bomb.Destroyed += Spawn;
     }
 
     private void SaveData()
@@ -164,6 +155,7 @@ public class Game : MonoBehaviour
         YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
         YandexGame.savesData.Coins = _player.Coins;
         YandexGame.savesData.Experience = _viewBar.Experience;
+        UpdateTop();
 
         YandexGame.SaveProgress();
     }
@@ -173,7 +165,7 @@ public class Game : MonoBehaviour
         Destroy(_bomb.gameObject);
         YandexGame.ResetSaveProgress();
         LoadSave();
-        Spawn();
+        Spawn(false);
     }
 
     private void LoadSave()
