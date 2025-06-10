@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(TrailRenderer))]
 public class Bullet : MonoBehaviour
 {
     private Transform _transform;
     private Rigidbody _rb;
+    private AudioSource _audioSource;
     private float _damage = 4;
     private Pool<Bullet> _pool;
     private float _velocity;
     private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
+    private int _levelRicochet = 1;
+    private int _countRicochet = 0;
 
     public float Damage => _damage;
 
@@ -19,6 +24,7 @@ public class Bullet : MonoBehaviour
     {
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -29,6 +35,8 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         List<Cube> cubes = GetCubes();
+        _audioSource.PlayOneShot(_audioSource.clip);
+        _countRicochet++;
 
         if (cubes.Count > 0)
         {
@@ -40,16 +48,29 @@ public class Bullet : MonoBehaviour
             Vector3 direction = Vector3.Reflect(_lastVelocity.normalized, collision.contacts[0].normal);
             _rb.velocity = direction * _velocity;
         }
+
+        if (_countRicochet == _levelRicochet + 1)
+        {
+            ReturnInPool();
+            return;
+        }
     }
 
     public void SetDirection(Vector3 direction) => _rb.velocity = direction * _velocity;
     public void SetVelocity(float velocity) => _velocity = velocity;
     public void SetPool(Pool<Bullet> pool) => _pool = pool;
-    public void ReturnInPool() => _pool.Return(this);
 
-    public void SetStats(float damage, float radiusExplosion, float explosionDamageCoefficient)
+    public void ReturnInPool()
+    {
+        _countRicochet = 0;
+        _pool.Return(this);
+    }
+
+
+    public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient)
     {
         _damage = damage;
+        _levelRicochet = levelRicochet;
         _radiusExplosion = radiusExplosion;
         _explosionDamageCoefficient = explosionDamageCoefficient;
     }
@@ -74,14 +95,5 @@ public class Bullet : MonoBehaviour
                 cubes.Add(cube);
 
         return cubes;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying)
-            return;
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(_transform.position, _radiusExplosion);
     }
 }

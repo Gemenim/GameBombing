@@ -145,16 +145,6 @@ public class Chip : MonoBehaviour
         CollectCubes();
     }
 
-    protected void DetouchCube(Cube cube)
-    {
-        Vector2Int grid = GridPosition(cube.transform.localPosition);
-        _cubesInfo[grid.x, grid.y] = 0;
-        _cubes[cube.Id - 1] = null;
-
-        cube.transform.parent = null;
-        Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
-    }
-
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying)

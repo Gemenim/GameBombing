@@ -27,7 +27,6 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log(Time.deltaTime);
         _button.onClick.RemoveListener(OnClick);        
     }    
 

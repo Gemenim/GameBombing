@@ -3,31 +3,29 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] private double _coins = 0;
-
-    public double Coin => _coins;
+    public double Coins { get; private set; }
 
     public event Action<double> ChangeCount;
     public event Action Fail;
 
     public void LoadSave(double coins)
     {
-        _coins = coins;
-        ChangeCount?.Invoke(_coins);
+        Coins = coins;
+        ChangeCount?.Invoke(Coins);
     }
 
     public void PutCoins(double coins)
     {
-        _coins += coins;
-        ChangeCount?.Invoke(_coins);
+        Coins += coins;
+        ChangeCount?.Invoke(Coins);
     }
 
     public bool GetCoins(double requiredCoins)
     {
-        if (_coins > requiredCoins)
+        if (Coins > requiredCoins)
         {
-            _coins -= requiredCoins;
-            ChangeCount?.Invoke(_coins);
+            Coins -= requiredCoins;
+            ChangeCount?.Invoke(Coins);
             return true;
         }
 

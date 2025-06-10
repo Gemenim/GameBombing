@@ -1,22 +1,32 @@
+using System.Collections;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] protected const int _defoltCost = 5;
+    [SerializeField] protected const int _defoltCost = 2;
     [SerializeField] protected const float _defoltHilth = 10;
 
     protected const float _levelCoefficient = 0.5f;
 
+    protected Transform _transform;
+    protected float _dalayToDestruction = 2.5f;
     protected int _level;
     protected bool _detouched;
     protected float _hilth;
     protected double _cost;
     protected bool _isTsar;
 
+
     public float Hilth => _hilth;
     public int Id { get; set; }
     public double Cost => _cost;
     public bool IsTsar => _isTsar;
+
+    protected virtual void Awake()
+    {
+        _transform = transform;
+    }
 
     public virtual void SetSetings(int level, bool isTsar)
     {
@@ -43,6 +53,11 @@ public class Cube : MonoBehaviour
         }
     }
 
+    public virtual void StartDastroy()
+    {
+        StartCoroutine(Destruction());
+    }
+
     [ContextMenu("Detouched")]
     protected void Detouch()
     {
@@ -50,6 +65,28 @@ public class Cube : MonoBehaviour
             return;
 
         _detouched = true;
-        GetComponentInParent<Chip>().DetouchCubeRecalculate(this);
+        Chip chip = GetComponentInParent<Chip>();
+
+        if (chip != null)
+            chip.DetouchCubeRecalculate(this);
+    }
+
+    protected IEnumerator Destruction()
+    {
+        Debug.Log("start");
+        float _dalay = 0;
+        Vector3 startScale = _transform.localScale;
+        Vector3 endScale = new Vector3(0, 0, 0);
+
+        while (true)
+        {
+            _dalay += Time.deltaTime;
+            _transform.localScale = Vector3.Lerp(startScale, endScale, _dalay / _dalayToDestruction);
+
+            if (_dalay >= _dalayToDestruction)
+                Destroy(this.gameObject);
+
+            yield return null;
+        }
     }
 }

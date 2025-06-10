@@ -11,15 +11,17 @@ public class Player : MonoBehaviour
 
     [Header("ButtonUpgrade")]
     [SerializeField] private ViewButtonUpgrade _damgeButton;
+    [SerializeField] private ViewButtonUpgrade _ricochetButton;
     [SerializeField] private ViewButtonUpgrade _radiusExplosionButton;
     [SerializeField] private ViewButtonUpgrade _damageExplosionButton;
 
     private PlayerInput _input;
     private int _countDasroyBombs = 0;
 
-    public double Coins => _wallet.Coin;
+    public double Coins => _wallet.Coins;
     public int CountDasroyBombs => _countDasroyBombs;
     public int LevelUpgradeDamage => _gun.LevelDamage;
+    public int LevelUpgradeRicochet => _gun.LevelRicochet;
     public int LevelUpgradeRadiusExplosion => _gun.LevelRadiusExplosion;
     public int LevelUpgradeDamageExplosion => _gun.LevelDamageExplosion;
 
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
     {
         _input.Enable();
         _damgeButton.OnButtonClicked += UpDamage;
+        _ricochetButton.OnButtonClicked += UpRecochet;
         _radiusExplosionButton.OnButtonClicked += UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked += UpDamageExplsoion;
         _gun.LevelLimitReachedDamage += OnDisableButtonDamage;
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour
     {
         _input.Disable();
         _damgeButton.OnButtonClicked -= UpDamage;
+        _ricochetButton.OnButtonClicked -= UpRecochet;
         _radiusExplosionButton.OnButtonClicked -= UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked -= UpDamageExplsoion;
         _gun.LevelLimitReachedDamage -= OnDisableButtonDamage;
@@ -71,12 +75,13 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(double coins, int countDasroyBombs, int levelDamage, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(double coins, int countDasroyBombs, int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
     {
         _wallet.LoadSave(coins);
-        _gun.LoadSave(levelDamage, levelDamageExplosion, levelRadiusExplosion);
+        _gun.LoadSave(levelDamage, levelRicochet, levelDamageExplosion, levelRadiusExplosion);
         _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
         _radiusExplosionButton.ChangeText(_gun.LevelRadiusExplosion);
+        _ricochetButton.ChangeText(_gun.LevelRicochet);
         _damgeButton.ChangeText(_gun.LevelDamage);
     }
 
@@ -109,6 +114,12 @@ public class Player : MonoBehaviour
     {
         if (_wallet.GetCoins(cost))
             _radiusExplosionButton.ChangeText(_gun.UpLevelRadiusExplosion());
+    }
+
+    private void UpRecochet(double cost)
+    {
+        if (_wallet.GetCoins(cost))
+            _ricochetButton.ChangeText(_gun.UpLevelRicochet());
     }
 
     private void UpDamage(double cost)

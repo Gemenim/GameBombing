@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
@@ -13,24 +14,16 @@ public class CoreCube : Cube
     private MeshRenderer _renderer;
     private Color _startColor;
     private Cube[] _allCubes;
+    private Coroutine _coroutineCountdown;
 
     public int Level => _level;
     public event Action BlownUp;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _renderer = GetComponent<MeshRenderer>();
         _startColor = _renderer.material.color;
-    }
-
-    private void OnDestroy()
-    {
-        Debug.Log(_allCubes);
-        foreach (Cube cube in _allCubes)
-        {
-            if (cube != null)
-                cube.TakeDamage(cube.Hilth);
-        }
     }
 
     public void SetCubes(Cube[] cubes)
@@ -44,9 +37,27 @@ public class CoreCube : Cube
         _cost = _defoltCost * _level + _defoltCost * _level * c_levelCoefficientCore;
     }
 
-    public void StartCountingDown(float countdownTime) => StartCoroutine(CountingDown(countdownTime));
+    public override void StartDastroy()
+    {
+        base.StartDastroy();
+        BreakItUpBomb();
 
-    private IEnumerator CountingDown(float countdownTime)
+        if (_coroutineCountdown != null)
+            StopCoroutine(_coroutineCountdown);
+    }
+
+    public void StartCountdown(float countdownTime) => _coroutineCountdown = StartCoroutine(Countdown(countdownTime));
+
+    private void BreakItUpBomb()
+    {
+        foreach (Cube cube in _allCubes)
+        {
+            if (cube != null)
+                cube.TakeDamage(cube.Hilth);
+        }
+    }
+
+    private IEnumerator Countdown(float countdownTime)
     {
         float time = 0;
 

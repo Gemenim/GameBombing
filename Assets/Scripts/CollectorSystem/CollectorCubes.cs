@@ -15,10 +15,12 @@ public class CollectorCubes : MonoBehaviour
             if (cube.TryGetComponent<CoreCube>(out CoreCube core))
                 ColectCore?.Invoke(core.IsTsar);
 
+            if (cube.IsTsar == false)
+                PutCoins?.Invoke(cube.Cost);
+
             _wallet.PutCoins(cube.Cost);
-            PutCoins?.Invoke(cube.Cost);
             cube.TakeDamage(cube.Hilth);
-            Destroy(cube.gameObject);
+            cube.StartDastroy();
         }
     }
 }

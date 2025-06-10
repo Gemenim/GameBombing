@@ -21,13 +21,11 @@ public class Bomb : Chip
 
     private void OnEnable()
     {
-        //_core.Destroyed += Destroy;
         _core.BlownUp += Explode;
     }
 
     private void OnDisable()
     {
-        //_core.Destroyed -= Destroy;
         _core.BlownUp -= Explode;
     }
 
@@ -37,7 +35,7 @@ public class Bomb : Chip
         {
             _core.SetSetings(level * _coefficientLevel, isTsarBomb);
             _core.SetCubes(_cubes);
-            _core.StartCountingDown(_countdownTime);
+            _core.StartCountdown(_countdownTime);
         }
         else
         {
@@ -54,17 +52,6 @@ public class Bomb : Chip
         {
             _allCubes[i] = _cubes[i];
         }
-    }
-
-    private void Destroy()
-    {
-        foreach (Cube cube in _allCubes)
-        {
-            if (cube != null)
-                cube.TakeDamage(cube.Hilth);
-        }
-
-        RecalculateCubes();
     }
 
     private void Explode()

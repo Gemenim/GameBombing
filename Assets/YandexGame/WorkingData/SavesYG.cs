@@ -16,6 +16,7 @@ namespace YG
         public double Coins = 300;
         public double Experience = 0;
         public int LevelUpgadeDamage = 1;
+        public int LevelUpgadeRicochet = 1;
         public int LevelUpgadeDamageExplosion = 1;
         public int LevelUpgadeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;

@@ -2,11 +2,13 @@ using System;
 using UnityEngine;
 using YG;
 
+[RequireComponent(typeof(AudioSource))]
 public class Gun : MonoBehaviour
 {
     [SerializeField] private Pool<Bullet> _pool;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Bullet _prefab;
+    [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private float _velocity;
     [SerializeField] private float _damage;
     [SerializeField] private double _startCostShot = 1;
@@ -19,6 +21,7 @@ public class Gun : MonoBehaviour
 
     [Header("LimitLevels")]
     [SerializeField] private int _maxLevelDamage;
+    [SerializeField] private int _maxLevelRicochet;
     [SerializeField] private int _maxLevelRadiusExplosion;
     [SerializeField] private int _maxLevelDamageExplosion;
 
@@ -27,18 +30,17 @@ public class Gun : MonoBehaviour
 
     private Camera _camera;
     private Transform _transform;
+    private AudioSource _audioSource;
 
     private float _radiusExplosion = 0.5f;
 
-    private int _levelDamage = 1;
-    private int _levelRadiusExplosion = 1;
-    private int _levelDamageExplosion = 1;
-
-    public int LevelDamage => _levelDamage;
-    public int LevelRadiusExplosion => _levelRadiusExplosion;
-    public int LevelDamageExplosion => _levelDamageExplosion;
+    public int LevelDamage { get; private set; } = 1;
+    public int LevelRicochet { get; private set; } = 1;
+    public int LevelRadiusExplosion { get; private set; } = 1;
+    public int LevelDamageExplosion { get; private set; } = 1;
 
     public event Action LevelLimitReachedDamage;
+    public event Action LevelLimitReachedRicochet;
     public event Action LevelLimitReachedRadiusExplosion;
     public event Action LevelLimitReachedDamageExplosion;
 
@@ -55,22 +57,27 @@ public class Gun : MonoBehaviour
     {
         _camera = Camera.main;
         _transform = transform;
+        _audioSource = GetComponent<AudioSource>();
         _pool = new Pool<Bullet>(Preload, GetAction, ReturnAction);
     }
 
-    public void LoadSave(int levelDamage, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
     {
-        _levelDamage = levelDamage;
-        _levelDamageExplosion = levelDamageExplosion;
-        _levelRadiusExplosion = levelRadiusExplosion;
+        LevelDamage = levelDamage;
+        LevelRicochet = levelRicochet;
+        LevelDamageExplosion = levelDamageExplosion;
+        LevelRadiusExplosion = levelRadiusExplosion;
 
-        if (_levelDamage == _maxLevelDamage)
+        if (LevelDamage == _maxLevelDamage)
             LevelLimitReachedDamage?.Invoke();
 
-        if (_levelRadiusExplosion == _maxLevelRadiusExplosion)
+        if (LevelRicochet == _maxLevelRicochet)
+            LevelLimitReachedRicochet?.Invoke();
+
+        if (LevelRadiusExplosion == _maxLevelRadiusExplosion)
             LevelLimitReachedRadiusExplosion?.Invoke();
 
-        if (_levelDamageExplosion == _maxLevelDamageExplosion)
+        if (LevelDamageExplosion == _maxLevelDamageExplosion)
             LevelLimitReachedDamageExplosion?.Invoke();
     }
 
@@ -95,52 +102,64 @@ public class Gun : MonoBehaviour
         if (YandexGame.isGamePlaying)
         {
             Bullet bullet = _pool.Get();
-            bullet.SetStats(CalculateDamage(), CalculateRadiusExplosion(), CalculateDamageExplosion());
+            bullet.SetStats(CalculateDamage(), LevelRicochet, CalculateRadiusExplosion(), CalculateDamageExplosion());
             bullet.transform.position = _spawnPoint.position;
             bullet.SetDirection(_transform.up);
+            _particleSystem.Play();
+            _audioSource.PlayOneShot(_audioSource.clip);
         }
     }
 
     public int UpLevelDamage()
     {
-        _levelDamage += 1;
+        LevelDamage++;
 
-        if (_levelDamage == _maxLevelDamage)
+        if (LevelDamage == _maxLevelDamage)
             LevelLimitReachedDamage?.Invoke();
 
-        return _levelDamage;
+        return LevelDamage;
+    }
+
+    public int UpLevelRicochet()
+    {
+        LevelRicochet++;
+
+        if (LevelRicochet == _maxLevelRicochet)
+            LevelLimitReachedRicochet?.Invoke();
+
+        return LevelRicochet;
     }
 
     public int UpLevelRadiusExplosion()
     {
-        _levelRadiusExplosion += 1;
+        LevelRadiusExplosion++;
 
-        if (_levelRadiusExplosion == _maxLevelRadiusExplosion)
+        if (LevelRadiusExplosion == _maxLevelRadiusExplosion)
             LevelLimitReachedRadiusExplosion?.Invoke();
 
-        return _levelRadiusExplosion;
+        return LevelRadiusExplosion;
     }
 
     public int UpLevelDamageExplosion()
     {
-        _levelDamageExplosion += 1;
+        LevelDamageExplosion++;
 
-        if (_levelDamageExplosion == _maxLevelDamageExplosion)
+        if (LevelDamageExplosion == _maxLevelDamageExplosion)
             LevelLimitReachedDamageExplosion?.Invoke();
 
-        return _levelDamageExplosion;
+        return LevelDamageExplosion;
     }
 
     public double CalculateCost()
     {
-        double cost = _startCostShot + (_levelCoefficient * _startCostShot * (_levelDamage + _levelDamageExplosion + _levelRadiusExplosion));
+        double cost = _startCostShot + (_levelCoefficient * _startCostShot * (LevelDamage + LevelDamageExplosion + LevelRadiusExplosion));
 
         return cost;
     }
 
-    private float CalculateDamage() => _damage + (_damage * _levelDamage);
-    private float CalculateRadiusExplosion() => _radiusExplosion + (0.05f * _levelRadiusExplosion);
-    private float CalculateDamageExplosion() => _damage * _levelDamageExplosion * 0.1f;
+    private float CalculateDamage() => _damage + (_damage * LevelDamage);
+    private float CalculateRadiusExplosion() => _radiusExplosion + (0.05f * LevelRadiusExplosion);
+    private float CalculateDamageExplosion() => _damage * LevelDamageExplosion * 0.1f;
 
     private void CheckGuidanceBoundaries()
     {
