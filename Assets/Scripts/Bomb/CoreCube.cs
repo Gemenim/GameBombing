@@ -9,7 +9,7 @@ public class CoreCube : Cube
     [SerializeField] private Color _targetColor;
 
     private const float c_hilthCore = 10.0f;
-    private const int c_levelCoefficientCore = 2;
+    private const float c_levelCoefficientCore = 1.5f;
 
     private MeshRenderer _renderer;
     private Color _startColor;
@@ -32,9 +32,11 @@ public class CoreCube : Cube
     }
 
     public override void CalculateStats()
-    {
-        _hilth = _defoltHilth * _level * _levelCoefficient + c_hilthCore * _level * c_levelCoefficientCore;
-        _cost = _defoltCost * _level + _defoltCost * _level * c_levelCoefficientCore;
+    {       
+        base.CalculateStats();
+
+        Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) + (c_hilthCore * _level));
+        Cost += (_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) + (_defoltCost * _level));
     }
 
     public override void StartDastroy()
@@ -53,7 +55,9 @@ public class CoreCube : Cube
         foreach (Cube cube in _allCubes)
         {
             if (cube != null)
+            {
                 cube.TakeDamage(cube.Hilth);
+            }
         }
     }
 

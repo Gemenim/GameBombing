@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private Pool<Bullet> _pool;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Bullet _prefab;
+    [SerializeField] private AudioSource _reckoscet;
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private float _velocity;
     [SerializeField] private float _damage;
@@ -16,16 +17,18 @@ public class Gun : MonoBehaviour
     [SerializeField] private float _rateOfFire = 1.0f;
     [SerializeField] private float _startSpeedBullet = 1.0f;
 
+    [Header("Limit Rotation Gun")]
     [SerializeField] private float _maxRotationZ;
     [SerializeField] private float _maxRotationW;
 
-    [Header("LimitLevels")]
+    [Header("Limit Levels")]
     [SerializeField] private int _maxLevelDamage;
     [SerializeField] private int _maxLevelRicochet;
     [SerializeField] private int _maxLevelRadiusExplosion;
     [SerializeField] private int _maxLevelDamageExplosion;
 
     private const float _distanceZ = 30f;
+    private const float _levelCoefficientDamage = 2f;
     private const float _levelCoefficient = 0.5f;
 
     private Camera _camera;
@@ -157,7 +160,7 @@ public class Gun : MonoBehaviour
         return cost;
     }
 
-    private float CalculateDamage() => _damage + (_damage * LevelDamage);
+    private float CalculateDamage() => (_damage * Mathf.Pow(LevelDamage, _levelCoefficientDamage) + (_damage * LevelDamage));
     private float CalculateRadiusExplosion() => _radiusExplosion + (0.05f * LevelRadiusExplosion);
     private float CalculateDamageExplosion() => _damage * LevelDamageExplosion * 0.1f;
 
@@ -171,6 +174,7 @@ public class Gun : MonoBehaviour
     private Bullet Preload()
     {
         Bullet bullet = Instantiate(_prefab);
+        bullet.SetAudioSource(_reckoscet);
         bullet.SetPool(_pool);
         bullet.SetVelocity(_velocity);
 

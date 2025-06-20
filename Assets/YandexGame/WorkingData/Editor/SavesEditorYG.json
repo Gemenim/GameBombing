@@ -1,13 +1,14 @@
 {
-  "idSave": 40,
+  "idSave": 46,
   "isFirstSession": false,
   "language": "ru",
   "promptDone": false,
-  "LevelGame": 4,
-  "Coins": 43597.5,
+  "LevelGame": 1,
+  "Coins": 300.0,
   "Experience": 0.0,
   "LevelUpgadeDamage": 1,
+  "LevelUpgadeRicochet": 1,
   "LevelUpgadeDamageExplosion": 1,
   "LevelUpgadeRadiusExplosion": 1,
-  "CountDastroyBomb": 19
+  "CountDastroyBomb": 0
 }

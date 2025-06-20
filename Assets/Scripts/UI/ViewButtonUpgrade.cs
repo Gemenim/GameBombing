@@ -8,12 +8,18 @@ public class ViewButtonUpgrade : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _countCoins;
     [SerializeField] private TextMeshProUGUI _level;
-    [SerializeField] private double _startCoins = 10;
+    [SerializeField] private double _startCoins = 25;
+    [SerializeField] private float _levelCoefficientExperience = 0.7f;
 
     private Button _button;
-    private double _coins;
+    private double _cost;
 
     public event Action<double> OnButtonClicked;
+
+    private void OnValidate()
+    {
+        ChangeText(1);
+    }
 
     private void Awake()
     {
@@ -32,13 +38,14 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     public void ChangeText(int level)
     {
-        _coins = _startCoins + (_startCoins * level * 2);
+        _cost = _startCoins + (_startCoins * level * 2);
+        _cost = (_startCoins * Mathf.Pow(level, _levelCoefficientExperience) +(_startCoins * level));
         _level.text = level.ToString();
-        _countCoins.text = NumberFormatter.Format(_coins);
+        _countCoins.text = NumberFormatter.Format(_cost);
     }
 
     private void OnClick()
     {
-        OnButtonClicked?.Invoke(_coins);
+        OnButtonClicked?.Invoke(_cost);
     }
 }

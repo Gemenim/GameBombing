@@ -12,6 +12,9 @@ public class CollectorCubes : MonoBehaviour
     {
         if (other.TryGetComponent<Cube>(out Cube cube))
         {
+            if (cube.IsColect)
+                return;
+
             if (cube.TryGetComponent<CoreCube>(out CoreCube core))
                 ColectCore?.Invoke(core.IsTsar);
 
@@ -19,6 +22,7 @@ public class CollectorCubes : MonoBehaviour
                 PutCoins?.Invoke(cube.Cost);
 
             _wallet.PutCoins(cube.Cost);
+            cube.IsColect = true;
             cube.TakeDamage(cube.Hilth);
             cube.StartDastroy();
         }

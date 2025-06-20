@@ -15,16 +15,16 @@ public class Game : MonoBehaviour
     [SerializeField] private SettingsScreen _settingsScreen;
     [SerializeField] private UpgrateScreen _upgrateScreen;
 
-    private const float _levelCoefficientExperience = 0.5f;
-    private const float _levelCoefficientNeedExperience = 1.5f;
-    private const float _standartNeedExperience = 10f;
+    private const float _coefficientExperience = 0.4f;
+    private const float _levelCoefficientNeedExperience = 3f;
+    private const float _standartNeedExperience = 50f;
 
     private Bomb _bomb;
     private int _level = 1;
 
     public int Level => _level;
 
-    private float _startNeedExperience => _standartNeedExperience * _level * _levelCoefficientNeedExperience;
+    private float _startNeedExperience => _standartNeedExperience * Mathf.Pow(_level, _levelCoefficientNeedExperience) + (_standartNeedExperience * _level);
 
     private void Start()
     {
@@ -130,8 +130,9 @@ public class Game : MonoBehaviour
 
     private void GetExperience(double coins)
     {
-        double experience = (coins * _levelCoefficientExperience) / 100;
-        _levelBar.SetValue(experience);
+        double experience = coins * _coefficientExperience;
+        Debug.Log(experience);
+        _levelBar.AddExperience(experience);
     }
 
     private void Spawn(bool isTsarBomb)
@@ -168,7 +169,7 @@ public class Game : MonoBehaviour
     {
         _level = YandexGame.savesData.LevelGame;
         _levelBar.SetNeedExperience(_startNeedExperience, _level);
-        _levelBar.SetValue(YandexGame.savesData.Experience);
+        _levelBar.AddExperience(YandexGame.savesData.Experience);
         _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgadeDamage, YandexGame.savesData.LevelUpgadeRicochet, YandexGame.savesData.LevelUpgadeDamageExplosion, YandexGame.savesData.LevelUpgadeRadiusExplosion);
     }
 }

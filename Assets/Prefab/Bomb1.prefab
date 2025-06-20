@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetColor: {r: 1, g: 0, b: 0, a: 0.78431374}
+  _velocityDeton: 5
 --- !u!114 &8838161583601190442
 MonoBehaviour:
   m_ObjectHideFlags: 0

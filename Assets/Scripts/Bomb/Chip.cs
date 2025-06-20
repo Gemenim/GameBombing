@@ -144,33 +144,6 @@ public class Chip : MonoBehaviour
 
         CollectCubes();
     }
-
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying)
-            return;
-
-        Gizmos.matrix = _transform.localToWorldMatrix;
-
-        for (int x = 0; x < _cubesInfo.GetLength(0); x++)
-        {
-            for (int y = 0; y < _cubesInfo.GetLength(1); y++)
-            {
-                Vector3 position = _cubesInfoStartPosition + new Vector3(x, y, 0);
-
-                if (_cubesInfo[x, y] == 0)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawSphere(position, 0.1f);
-                }
-                else
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(position, 0.2f);
-                }
-            }
-        }
-    }
 }
 
 public class CubeGroup

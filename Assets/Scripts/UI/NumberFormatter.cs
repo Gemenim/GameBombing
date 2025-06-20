@@ -22,6 +22,7 @@ public static class NumberFormatter
         }
         else
         {
+            num = (int)num;
             return num.ToString(); 
         }
     }

@@ -65,7 +65,7 @@ public class ViewLevelBar : MonoBehaviour
         _isActive = false;
     }
 
-    public void SetValue(double value)
+    public void AddExperience(double value)
     {
         _experience += value;
 

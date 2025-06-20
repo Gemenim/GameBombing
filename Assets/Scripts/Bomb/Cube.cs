@@ -1,27 +1,25 @@
 using System.Collections;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] protected const int _defoltCost = 2;
-    [SerializeField] protected const float _defoltHilth = 10;
+    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
+    [SerializeField] protected float _levelCoefficientCost = 2.5f;
 
-    protected const float _levelCoefficient = 0.5f;
+    protected const double _defoltCost = 1;
+    protected const float _defoltHilth = 10;
 
     protected Transform _transform;
     protected float _dalayToDestruction = 2.5f;
     protected int _level;
     protected bool _detouched;
-    protected float _hilth;
-    protected double _cost;
-    protected bool _isTsar;
 
+    public bool IsColect = false;
 
-    public float Hilth => _hilth;
+    public float Hilth { get; protected set; }
     public int Id { get; set; }
-    public double Cost => _cost;
-    public bool IsTsar => _isTsar;
+    public double Cost { get; protected set; }
+    public bool IsTsar { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -30,24 +28,24 @@ public class Cube : MonoBehaviour
 
     public virtual void SetSetings(int level, bool isTsar)
     {
-        _isTsar = isTsar;
+        IsTsar = isTsar;
         int randomLevel = level + Random.Range(-2, 2);
         _level = randomLevel > 0 ? randomLevel : 1;
     }
 
     public virtual void CalculateStats()
     {
-        _hilth = _defoltHilth * _level * _levelCoefficient;
-        _cost = _defoltCost + _defoltCost * _level;
+        Hilth = (_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) + (_defoltHilth * _level));
+        Cost = (_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) +(_defoltCost * _level));
     }
 
     public void TakeDamage(float damage)
     {
-        _hilth -= damage;
+        Hilth -= damage;
 
-        if (_hilth <= 0)
+        if (Hilth <= 0)
         {
-            _hilth = 0;
+            Hilth = 0;
             gameObject.layer = 10;
             Detouch();
         }
@@ -59,7 +57,7 @@ public class Cube : MonoBehaviour
     }
 
     [ContextMenu("Detouched")]
-    protected void Detouch()
+    private void Detouch()
     {
         if (_detouched)
             return;

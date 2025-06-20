@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TrailRenderer))]
 public class Bullet : MonoBehaviour
 {
@@ -24,7 +23,6 @@ public class Bullet : MonoBehaviour
     {
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
-        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -36,11 +34,11 @@ public class Bullet : MonoBehaviour
     {
         List<Cube> cubes = GetCubes();
         _audioSource.PlayOneShot(_audioSource.clip);
-        _countRicochet++;
 
         if (cubes.Count > 0)
         {
             Explosion(cubes);
+            _countRicochet++;
         }
 
         if (collision.contacts.Length > 0)
@@ -59,6 +57,7 @@ public class Bullet : MonoBehaviour
     public void SetDirection(Vector3 direction) => _rb.velocity = direction * _velocity;
     public void SetVelocity(float velocity) => _velocity = velocity;
     public void SetPool(Pool<Bullet> pool) => _pool = pool;
+    public void SetAudioSource(AudioSource audioSource) => _audioSource = audioSource;
 
     public void ReturnInPool()
     {
