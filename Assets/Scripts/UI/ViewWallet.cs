@@ -33,7 +33,7 @@ public class ViewWallet : MonoBehaviour
         _wallet.Fail -= StartAnimateFail;
     }
 
-    private void ChangeText(double count)
+    private void ChangeText(float count)
     {
         _text.text = NumberFormatter.Format(count);
     }

@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour
 {
-    public double Coins { get; private set; }
+    public float Coins { get; private set; }
 
-    public event Action<double> ChangeCount;
+    public event Action<float> ChangeCount;
     public event Action Fail;
 
-    public void LoadSave(double coins)
+    public void LoadSave(float coins)
     {
         Coins = coins;
         ChangeCount?.Invoke(Coins);
     }
 
-    public void PutCoins(double coins)
+    public void PutCoins(float coins)
     {
         Coins += coins;
         ChangeCount?.Invoke(Coins);
     }
 
-    public bool GetCoins(double requiredCoins)
+    public bool GetCoins(float requiredCoins)
     {
         if (Coins > requiredCoins)
         {

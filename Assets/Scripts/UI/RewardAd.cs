@@ -6,9 +6,16 @@ public class RewardAd : MonoBehaviour
     [SerializeField] private int AdID;
     [SerializeField] private Game _game;
     [SerializeField] private Wallet _wallet;
-    [SerializeField] private double _countAddCoins = 100;
+    [SerializeField] private float _countAddCoins = 300f;
 
-    private float _levelCoefficient = 1.5f;
+    private const float c_levelCoefficient = 2f;
+
+    private void OnValidate()
+    {
+        if (_countAddCoins <= 0)
+            _countAddCoins = 500f;
+
+    }
 
     private void OnEnable()
     {
@@ -27,7 +34,9 @@ public class RewardAd : MonoBehaviour
 
     void AddCoins()
     {
-        double count = _countAddCoins * _game.Level * _levelCoefficient;
+        float count = 0;
+        count = _countAddCoins * (Mathf.Pow(_game.Level, c_levelCoefficient)) - (_countAddCoins * _game.Level);
+        count = count <= 0 ? _countAddCoins : count;
         _wallet.PutCoins(count);
     }
 }

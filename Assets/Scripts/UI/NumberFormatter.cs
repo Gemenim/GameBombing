@@ -2,7 +2,7 @@ public static class NumberFormatter
 {
     private static string[] _nomes = new[] { "K", "M", "B", "T" };
 
-    public static string Format(double num)
+    public static string Format(float num)
     {
         if (num >= 1000000000000)
         {

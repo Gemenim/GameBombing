@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class BarrierMover : MonoBehaviour
 {
-    [SerializeField] Transform[] _positions;
-    [SerializeField] float _angleRotation;
+    [SerializeField] private Transform[] _positions;
+    [SerializeField] private float _angleRotation;
+    [SerializeField] private float _timeAnimation;
 
     private Transform[] _barriers;
 
@@ -11,6 +13,12 @@ public class BarrierMover : MonoBehaviour
     private float[] _maxPositionX;
     private float[] _minPositionY;
     private float[] _maxPositionY;
+
+    private void OnValidate()
+    {
+        if (_timeAnimation <= 0)
+            _timeAnimation = 20f;
+    }
 
     private void Awake()
     {
@@ -21,13 +29,9 @@ public class BarrierMover : MonoBehaviour
     public void Move()
     {
         for (int i = 0; i < _positions.Length; i++)
-        {
-            float randomPositionX = Random.Range(_minPositionX[i], _maxPositionX[i]);
-            float randomPositionY = Random.Range(_minPositionY[i], _maxPositionY[i]);
-            float randomAngle = Random.Range(-_angleRotation, _angleRotation);
-
-            _barriers[i].position = new Vector3(randomPositionX, randomPositionY, _barriers[i].position.z);
-            _positions[i].rotation = Quaternion.Euler(0f, 0f, randomAngle);
+        {            
+            StartCoroutine(ToMove(_barriers[i], i));
+            StartCoroutine(ToRotat(_positions[i]));
         }
     }
 
@@ -53,5 +57,38 @@ public class BarrierMover : MonoBehaviour
 
         for (int i = 0; i < _positions.Length; i++)
             _barriers[i] = _positions[i].GetComponentInChildren<Transform>();
+    }
+
+    private IEnumerator ToMove(Transform transform, int id)
+    {
+        float randomPositionX = Random.Range(_minPositionX[id], _maxPositionX[id]);
+        float randomPositionY = Random.Range(_minPositionY[id], _maxPositionY[id]);
+
+        Vector3 newPosition = new Vector3(randomPositionX, randomPositionY, transform.position.z);
+
+        float currentMovementTime = 0f;
+
+        while (Vector3.Distance(transform.position, newPosition) > 0.002f)
+        {
+            currentMovementTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, newPosition, currentMovementTime / _timeAnimation);
+            yield return null;
+        }
+    }
+
+    private IEnumerator ToRotat(Transform transform)
+    {
+        float randomAngle = Random.Range(-_angleRotation, _angleRotation);
+
+        Quaternion newAngle = Quaternion.Euler(0f, 0f, randomAngle);
+
+        float currentMovementTime = 0f;
+
+        while (transform.rotation != newAngle)
+        {
+            currentMovementTime += Time.deltaTime;
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, newAngle, currentMovementTime / _timeAnimation);
+            yield return null;
+        }
     }
 }

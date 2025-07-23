@@ -16,12 +16,12 @@ public class ViewLevelBar : MonoBehaviour
     private Color _targetColor;
     private bool _isOnButton = false;
 
-    private double _needExperience = 100;
-    private double _experience;
+    private float _needExperience = 100;
+    private float _experience;
     private bool _isActive = false;
     private Coroutine _coroutine;
 
-    public double Experience => _experience;
+    public float Experience => _experience;
 
     public event Action OnButtonClicked;
 
@@ -41,7 +41,7 @@ public class ViewLevelBar : MonoBehaviour
         _button.onClick.RemoveListener(OnButtonClick);
     }
 
-    public void SetNeedExperience(double value, int level)
+    public void SetNeedExperience(float value, int level)
     {
         _needExperience = value;
         _button.enabled = false;
@@ -65,9 +65,10 @@ public class ViewLevelBar : MonoBehaviour
         _isActive = false;
     }
 
-    public void AddExperience(double value)
+    public void AddExperience(float value)
     {
         _experience += value;
+        Debug.Log(_experience);
 
         if (_experience >= _needExperience)
         {

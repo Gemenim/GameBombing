@@ -13,6 +13,15 @@ public class Bomb : Chip
 
     public event Action<bool> Destroyed;
 
+    private void OnValidate()
+    {
+        if (_countdownTime <= 0)
+            _countdownTime = 60f;
+
+        if (_coefficientLevel <= 0)
+            _coefficientLevel = 1;
+    }
+
     private void Start()
     {
         SetStats();
@@ -28,6 +37,8 @@ public class Bomb : Chip
     {
         _core.BlownUp -= Explode;
     }
+
+    public void SetTimerView(TimerView timeView) => _core.SetTimerView(timeView);
 
     public void InitializeBomb(int level, bool isTsarBomb)
     {

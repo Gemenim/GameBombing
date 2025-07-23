@@ -1,19 +1,17 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(ColorCube))]
 public class CoreCube : Cube
 {
     [SerializeField] private Color _targetColor;
 
-    private const float c_hilthCore = 10.0f;
-    private const float c_levelCoefficientCore = 1.5f;
+    private const float c_hilthCore = 2.0f;
+    private const float c_levelCoefficientCore = 1.7f;
 
-    private MeshRenderer _renderer;
-    private Color _startColor;
     private Cube[] _allCubes;
+    private TimerView _timer;
     private Coroutine _coroutineCountdown;
 
     public int Level => _level;
@@ -22,8 +20,6 @@ public class CoreCube : Cube
     protected override void Awake()
     {
         base.Awake();
-        _renderer = GetComponent<MeshRenderer>();
-        _startColor = _renderer.material.color;
     }
 
     public void SetCubes(Cube[] cubes)
@@ -35,9 +31,11 @@ public class CoreCube : Cube
     {       
         base.CalculateStats();
 
-        Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) + (c_hilthCore * _level));
-        Cost += (_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) + (_defoltCost * _level));
+        Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) - (c_hilthCore * _level));
+        Cost += (c_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) - (c_defoltCost * _level));
     }
+
+    public void SetTimerView(TimerView timerView) => _timer = timerView;
 
     public override void StartDastroy()
     {
@@ -63,15 +61,14 @@ public class CoreCube : Cube
 
     private IEnumerator Countdown(float countdownTime)
     {
-        float time = 0;
+        Debug.Log(_timer);
 
-        while (time < countdownTime)
+        while (countdownTime > 0)
         {
-            time += Time.deltaTime;
-            Debug.Log(time);
-            _renderer.material.color = Color.Lerp(_startColor, _targetColor, Mathf.PingPong(Time.deltaTime, 1));
+            countdownTime -= Time.deltaTime;
+            _timer.TextChange(countdownTime);
 
-            if (time >= countdownTime)
+            if (countdownTime <= 0)
                 BlownUp?.Invoke();
 
             yield return null;

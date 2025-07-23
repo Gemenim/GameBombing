@@ -13,12 +13,13 @@ namespace YG
         // Тестовые сохранения для демо сцены
         // Можно удалить этот код, но тогда удалите и демо (папка Example)
         public int LevelGame = 1;
-        public double Coins = 300;
-        public double Experience = 0;
-        public int LevelUpgadeDamage = 1;
-        public int LevelUpgadeRicochet = 1;
-        public int LevelUpgadeDamageExplosion = 1;
-        public int LevelUpgadeRadiusExplosion = 1;
+        public float Coins = 300;
+        public float Experience = 0;
+        public int LevelUpgrade = 1;
+        public int LevelUpgradeDamage = 1;
+        public int LevelUpgradeRicochet = 1;
+        public int LevelUpgradeDamageExplosion = 1;
+        public int LevelUpgradeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;
 
         // Ваши сохранения

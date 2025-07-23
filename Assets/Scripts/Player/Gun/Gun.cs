@@ -8,18 +8,13 @@ public class Gun : MonoBehaviour
     [SerializeField] private Pool<Bullet> _pool;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Bullet _prefab;
-    [SerializeField] private AudioSource _reckoscet;
+    [SerializeField] private AudioSource _reckoscetSorce;
     [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private UpdateLevelUpgrad _updateLevelUpgrad;
     [SerializeField] private float _velocity;
-    [SerializeField] private float _damage;
-    [SerializeField] private double _startCostShot = 1;
+    [SerializeField] private float _defoltDamage = 1;
+    [SerializeField] private float _startCostShot = 1;
 
-    [SerializeField] private float _rateOfFire = 1.0f;
-    [SerializeField] private float _startSpeedBullet = 1.0f;
-
-    [Header("Limit Rotation Gun")]
-    [SerializeField] private float _maxRotationZ;
-    [SerializeField] private float _maxRotationW;
 
     [Header("Limit Levels")]
     [SerializeField] private int _maxLevelDamage;
@@ -27,16 +22,26 @@ public class Gun : MonoBehaviour
     [SerializeField] private int _maxLevelRadiusExplosion;
     [SerializeField] private int _maxLevelDamageExplosion;
 
-    private const float _distanceZ = 30f;
-    private const float _levelCoefficientDamage = 2f;
-    private const float _levelCoefficient = 0.5f;
+    private const float c_distanceZ = 30f;
+    private const float c_levelCoefficientDamage = 2f;
+    private const float c_levelCostCoefficient = 2.05f;
+    private const float c_defoltRadiusExplosion = 0.5f;
+    private const float c_coefficientRadiusExplosion = 0.05f;
+    private const float c_coefficientDamageExplosion = 0.2f;
+
+    private const float c_maxRotationZ = 0.66f;
+    private const float c_maxRotationW = 0.74f;
 
     private Camera _camera;
     private Transform _transform;
     private AudioSource _audioSource;
 
-    private float _radiusExplosion = 0.5f;
+    private float _damage;
+    private float _radiusExplosion;
+    private float _damageExplosion;
 
+    public float CostShot { get; private set; }
+    public int LevelUpgrade { get; private set; } = 1;
     public int LevelDamage { get; private set; } = 1;
     public int LevelRicochet { get; private set; } = 1;
     public int LevelRadiusExplosion { get; private set; } = 1;
@@ -49,11 +54,26 @@ public class Gun : MonoBehaviour
 
     private void OnValidate()
     {
-        if (_rateOfFire <= 0)
-            _rateOfFire = 1.0f;
+        if (_velocity <= 0)
+            _velocity = 20f;
 
-        if (_startSpeedBullet <= 0)
-            _startSpeedBullet = 1.0f;
+        if (_defoltDamage <= 0)
+            _defoltDamage = 1f;
+
+        if (_startCostShot <= 0)
+            _startCostShot = 0.5f;
+
+        if (_maxLevelDamage <= 0)
+            _maxLevelDamage = 100;
+
+        if (_maxLevelDamageExplosion <= 0)
+            _maxLevelDamageExplosion = 40;
+
+        if (_maxLevelRadiusExplosion <= 0)
+            _maxLevelRadiusExplosion = 40;
+
+        if (_maxLevelRicochet <= 0)
+            _maxLevelRicochet = 50;
     }
 
     private void Awake()
@@ -64,12 +84,19 @@ public class Gun : MonoBehaviour
         _pool = new Pool<Bullet>(Preload, GetAction, ReturnAction);
     }
 
-    public void LoadSave(int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(int levelUpgrade, int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
     {
+        LevelUpgrade = levelUpgrade;
         LevelDamage = levelDamage;
         LevelRicochet = levelRicochet;
         LevelDamageExplosion = levelDamageExplosion;
         LevelRadiusExplosion = levelRadiusExplosion;
+        
+        _damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+        _damage = _damage > 0 ? _damage : _defoltDamage;
+        _radiusExplosion = c_defoltRadiusExplosion + (c_coefficientRadiusExplosion * LevelRadiusExplosion);
+        _damageExplosion = _defoltDamage * LevelDamageExplosion * c_coefficientDamageExplosion;
+        CalculateCost();
 
         if (LevelDamage == _maxLevelDamage)
             LevelLimitReachedDamage?.Invoke();
@@ -82,12 +109,14 @@ public class Gun : MonoBehaviour
 
         if (LevelDamageExplosion == _maxLevelDamageExplosion)
             LevelLimitReachedDamageExplosion?.Invoke();
+
+        _updateLevelUpgrad.ChangeText(LevelUpgrade, CostShot);
     }
 
     public void Guidance(Vector2 mousePosition)
     {
         Vector3 mousePosition3D = mousePosition;
-        mousePosition3D.z = _distanceZ;
+        mousePosition3D.z = c_distanceZ;
         Vector3 worldMousePosition = _camera.ScreenToWorldPoint(mousePosition3D);
         worldMousePosition.z = _transform.position.z;
 
@@ -105,7 +134,7 @@ public class Gun : MonoBehaviour
         if (YandexGame.isGamePlaying)
         {
             Bullet bullet = _pool.Get();
-            bullet.SetStats(CalculateDamage(), LevelRicochet, CalculateRadiusExplosion(), CalculateDamageExplosion());
+            bullet.SetStats(_damage, LevelRicochet, _radiusExplosion, _damageExplosion);
             bullet.transform.position = _spawnPoint.position;
             bullet.SetDirection(_transform.up);
             _particleSystem.Play();
@@ -116,6 +145,12 @@ public class Gun : MonoBehaviour
     public int UpLevelDamage()
     {
         LevelDamage++;
+        _damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+
+        if (_damage <= 0)
+            _damage = _defoltDamage;
+
+        UpLevelUpgrade();        
 
         if (LevelDamage == _maxLevelDamage)
             LevelLimitReachedDamage?.Invoke();
@@ -126,6 +161,7 @@ public class Gun : MonoBehaviour
     public int UpLevelRicochet()
     {
         LevelRicochet++;
+        UpLevelUpgrade();
 
         if (LevelRicochet == _maxLevelRicochet)
             LevelLimitReachedRicochet?.Invoke();
@@ -136,6 +172,8 @@ public class Gun : MonoBehaviour
     public int UpLevelRadiusExplosion()
     {
         LevelRadiusExplosion++;
+        _radiusExplosion = c_defoltRadiusExplosion + (c_coefficientRadiusExplosion * LevelRadiusExplosion);
+        UpLevelUpgrade();
 
         if (LevelRadiusExplosion == _maxLevelRadiusExplosion)
             LevelLimitReachedRadiusExplosion?.Invoke();
@@ -146,6 +184,8 @@ public class Gun : MonoBehaviour
     public int UpLevelDamageExplosion()
     {
         LevelDamageExplosion++;
+        _damageExplosion = _defoltDamage * LevelDamageExplosion * c_coefficientDamageExplosion;
+        UpLevelUpgrade();
 
         if (LevelDamageExplosion == _maxLevelDamageExplosion)
             LevelLimitReachedDamageExplosion?.Invoke();
@@ -153,28 +193,30 @@ public class Gun : MonoBehaviour
         return LevelDamageExplosion;
     }
 
-    public double CalculateCost()
+    private void CalculateCost()
     {
-        double cost = _startCostShot + (_levelCoefficient * _startCostShot * (LevelDamage + LevelDamageExplosion + LevelRadiusExplosion));
-
-        return cost;
+        CostShot = _startCostShot * (Mathf.Pow(LevelUpgrade, c_levelCostCoefficient)) - (_startCostShot * LevelUpgrade);
     }
 
-    private float CalculateDamage() => (_damage * Mathf.Pow(LevelDamage, _levelCoefficientDamage) + (_damage * LevelDamage));
-    private float CalculateRadiusExplosion() => _radiusExplosion + (0.05f * LevelRadiusExplosion);
-    private float CalculateDamageExplosion() => _damage * LevelDamageExplosion * 0.1f;
+    private void UpLevelUpgrade()
+    {
+        LevelUpgrade++;
+        CalculateCost();
+        _updateLevelUpgrad.ChangeText(LevelUpgrade, CostShot);
+    }
 
     private void CheckGuidanceBoundaries()
     {
-        if (_transform.rotation.z > _maxRotationZ && _transform.rotation.w < _maxRotationW)
-            _transform.rotation = new Quaternion(0, 0, _maxRotationZ, _maxRotationW);
-        else if (_transform.rotation.z < -_maxRotationZ && _transform.rotation.w < _maxRotationW)
-            _transform.rotation = new Quaternion(0, 0, -_maxRotationZ, _maxRotationW);
+        if (_transform.rotation.z > c_maxRotationZ && _transform.rotation.w < c_maxRotationW)
+            _transform.rotation = new Quaternion(0, 0, c_maxRotationZ, c_maxRotationW);
+        else if (_transform.rotation.z < -c_maxRotationZ && _transform.rotation.w < c_maxRotationW)
+            _transform.rotation = new Quaternion(0, 0, -c_maxRotationZ, c_maxRotationW);
     }
+
     private Bullet Preload()
     {
         Bullet bullet = Instantiate(_prefab);
-        bullet.SetAudioSource(_reckoscet);
+        bullet.SetAudioSource(_reckoscetSorce);
         bullet.SetPool(_pool);
         bullet.SetVelocity(_velocity);
 

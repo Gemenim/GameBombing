@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using YG;
 
@@ -9,22 +8,24 @@ public class Game : MonoBehaviour
     [SerializeField] private CollectorCubes _collector;
     [SerializeField] private BarrierMover _barrierMover;
     [SerializeField] private ViewLevelBar _levelBar;
+    [SerializeField] private TimerView _timerView;
 
     [Header("Windows")]
     [SerializeField] private HudScreen _hudScreen;
     [SerializeField] private SettingsScreen _settingsScreen;
     [SerializeField] private UpgrateScreen _upgrateScreen;
+    [SerializeField] private LeaderbordScreen _leaderbordScreen;
 
-    private const float _coefficientExperience = 0.4f;
-    private const float _levelCoefficientNeedExperience = 3f;
-    private const float _standartNeedExperience = 50f;
+    [SerializeField] private MuteSourceButton _muteSourceButton;
+
+    private const float c_coefficientExperience = 0.4f;
+    private const float c_levelCoefficientNeedExperience = 2.2f;
+    private const float c_defoltNeedExperience = 1000f;
 
     private Bomb _bomb;
     private int _level = 1;
 
     public int Level => _level;
-
-    private float _startNeedExperience => _standartNeedExperience * Mathf.Pow(_level, _levelCoefficientNeedExperience) + (_standartNeedExperience * _level);
 
     private void Start()
     {
@@ -41,15 +42,20 @@ public class Game : MonoBehaviour
         _hudScreen.OnSaveButtonClicked += SaveData;
         _hudScreen.OnUpgradeButtonClicked += OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked += OpenSettings;
+        _hudScreen.OnLeaderbordButtonClicked += OpenLeaderbord;
 
         _upgrateScreen.OnReturnButtonClicked += CloseUpgradeScreen;
 
         _settingsScreen.OnReturnButtonClicked += CloseSettingsScreen;
         _settingsScreen.OnResetSaveButtonClicked += ResetSeve;
 
+        _leaderbordScreen.OnReturButtonClicked += CloseLeaderbord;
+
         _levelBar.OnButtonClicked += SpawnTsarBomb;
         _collector.PutCoins += GetExperience;
         _collector.ColectCore += SpawnNextBomb;
+
+        YandexGame.onVisibilityWindowGame += _muteSourceButton.MuteWindow;
     }
 
     private void OnDisable()
@@ -57,17 +63,22 @@ public class Game : MonoBehaviour
         _hudScreen.OnSaveButtonClicked -= SaveData;
         _hudScreen.OnUpgradeButtonClicked -= OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked -= OpenSettings;
+        _hudScreen.OnLeaderbordButtonClicked -= OpenLeaderbord;
 
         _settingsScreen.OnReturnButtonClicked -= CloseSettingsScreen;
         _settingsScreen.OnResetSaveButtonClicked -= ResetSeve;
 
         _upgrateScreen.OnReturnButtonClicked -= CloseUpgradeScreen;
 
+        _leaderbordScreen.OnReturButtonClicked -= CloseLeaderbord;
+
         _levelBar.OnButtonClicked -= SpawnTsarBomb;
         _collector.PutCoins -= GetExperience;
         _collector.ColectCore -= SpawnNextBomb;
 
         _bomb.Destroyed -= Spawn;
+
+        YandexGame.onVisibilityWindowGame -= _muteSourceButton.MuteWindow;
     }
 
     private void OpenUpgradeScreen()
@@ -92,6 +103,18 @@ public class Game : MonoBehaviour
     {
         YandexGame.GameplayStart();
         _settingsScreen.Close();
+    }
+
+    private void OpenLeaderbord()
+    {
+        YandexGame.GameplayStop();
+        _leaderbordScreen.Open();
+    }
+
+    private void CloseLeaderbord()
+    {
+        YandexGame.GameplayStart();
+        _leaderbordScreen.Close();
     }
 
     [ContextMenu("Tsar")]
@@ -119,36 +142,54 @@ public class Game : MonoBehaviour
 
     private void LevelUp()
     {
-        Debug.Log("Up");
+        _hudScreen.OffTimer();
         _level += 1;
-        _levelBar.SetNeedExperience(_startNeedExperience, _level);
+        _levelBar.SetNeedExperience(GetNeedExperience(), _level);
         _barrierMover.Move();
         SaveData();
         UpdateTop();
         YandexGame.FullscreenShow();
     }
 
-    private void GetExperience(double coins)
+    private void GetExperience(float coins)
     {
-        double experience = coins * _coefficientExperience;
-        Debug.Log(experience);
+        float experience = coins * c_coefficientExperience;
         _levelBar.AddExperience(experience);
     }
 
     private void Spawn(bool isTsarBomb)
     {
         _levelBar.OnDisableButton();
-        _bomb = _generator.Spawn(_level, isTsarBomb);
+
+        if (isTsarBomb)
+        {
+            _bomb = _generator.Spawn(_level, isTsarBomb, _timerView);
+            _hudScreen.OnTimer();
+        }
+        else
+        {
+            _bomb = _generator.Spawn(_level, isTsarBomb);
+            _hudScreen.OffTimer();
+        }
+
         _bomb.Destroyed += SpawnNextBomb;
+
+    }
+
+    private float GetNeedExperience()
+    {
+        float needExperience = c_defoltNeedExperience * Mathf.Pow(_level, c_levelCoefficientNeedExperience) - (c_defoltNeedExperience * _level);
+        return needExperience > 0 ? needExperience : c_defoltNeedExperience;
     }
 
     private void SaveData()
     {
         YandexGame.savesData.LevelGame = _level;
-        YandexGame.savesData.LevelUpgadeDamage = _player.LevelUpgradeDamage;
-        YandexGame.savesData.LevelUpgadeRicochet = _player.LevelUpgradeRicochet;
-        YandexGame.savesData.LevelUpgadeDamageExplosion = _player.LevelUpgradeDamageExplosion;
-        YandexGame.savesData.LevelUpgadeRadiusExplosion = _player.LevelUpgradeRadiusExplosion;
+        YandexGame.savesData.LevelUpgrade = _player.LevelUpgrade;
+        YandexGame.savesData.LevelUpgradeDamage = _player.LevelUpgradeDamage;
+        YandexGame.savesData.LevelUpgradeRicochet = _player.LevelUpgradeRicochet;
+        YandexGame.savesData.LevelUpgradeDamageExplosion = _player.LevelUpgradeDamageExplosion;
+        YandexGame.savesData.LevelUpgradeRadiusExplosion = _player.LevelUpgradeRadiusExplosion;
         YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
         YandexGame.savesData.Coins = _player.Coins;
         YandexGame.savesData.Experience = _levelBar.Experience;
@@ -159,17 +200,22 @@ public class Game : MonoBehaviour
 
     private void ResetSeve()
     {
-        Destroy(_bomb.gameObject);
+        if (_bomb != null)
+            Destroy(_bomb.gameObject);
+
         YandexGame.ResetSaveProgress();
         LoadSave();
+        SaveData();
         Spawn(false);
     }
 
     private void LoadSave()
     {
         _level = YandexGame.savesData.LevelGame;
-        _levelBar.SetNeedExperience(_startNeedExperience, _level);
+        _levelBar.SetNeedExperience(GetNeedExperience(), _level);
         _levelBar.AddExperience(YandexGame.savesData.Experience);
-        _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgadeDamage, YandexGame.savesData.LevelUpgadeRicochet, YandexGame.savesData.LevelUpgadeDamageExplosion, YandexGame.savesData.LevelUpgadeRadiusExplosion);
+        _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgrade,
+            YandexGame.savesData.LevelUpgradeDamage, YandexGame.savesData.LevelUpgradeRicochet,
+            YandexGame.savesData.LevelUpgradeDamageExplosion, YandexGame.savesData.LevelUpgradeRadiusExplosion);
     }
 }

@@ -25,6 +25,18 @@ public class BombsGenerator : MonoBehaviour
         return newBomb;
     }
 
+    public Bomb Spawn(int level, bool isTsarBomb, TimerView timer)
+    {
+        int index = Random.Range(0, _bombsPrefabs.Length);
+        Bomb bomb = _bombsPrefabs[index];
+        Bomb newBomb = Instantiate(bomb, GetRandomPosition(), Quaternion.identity);
+
+        newBomb.SetTimerView(timer);
+        newBomb.InitializeBomb(level, isTsarBomb);
+
+        return newBomb;
+    }
+
     private Vector3 GetRandomPosition()
     {
         float randomX = Random.Range(_minSpawnPositionX, _maxSpawnPositionX);

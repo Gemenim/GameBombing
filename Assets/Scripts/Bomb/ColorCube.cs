@@ -1,26 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ColorCube : MonoBehaviour
 {
     [SerializeField] private Color _color;
 
+    public Color Color => _color;
+
     private void Awake()
     {
-        ApplyColor();
+        ApplyColor(_color);
     }
 
     private void OnValidate()
     {
-        ApplyColor();        
+        ApplyColor(_color);
     }
 
-    private void ApplyColor()
+    public void ApplyColor(Color color)
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetColor("_Color", _color);
+        propertyBlock.SetColor("_Color", color);
         renderer.SetPropertyBlock(propertyBlock);
     }
 }

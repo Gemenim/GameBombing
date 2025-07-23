@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
-    [SerializeField] protected float _levelCoefficientCost = 2.5f;
+    [SerializeField] protected float _levelCoefficientHilth = 2.03f;
+    [SerializeField] protected float _levelCoefficientCost = 1.75f;
 
-    protected const double _defoltCost = 1;
-    protected const float _defoltHilth = 10;
+    protected const float c_defoltCost = 10f;
+    protected const float c_defoltHilth = 3f;
 
     protected Transform _transform;
     protected float _dalayToDestruction = 2.5f;
@@ -18,7 +18,7 @@ public class Cube : MonoBehaviour
 
     public float Hilth { get; protected set; }
     public int Id { get; set; }
-    public double Cost { get; protected set; }
+    public float Cost { get; protected set; }
     public bool IsTsar { get; protected set; }
 
     protected virtual void Awake()
@@ -35,8 +35,14 @@ public class Cube : MonoBehaviour
 
     public virtual void CalculateStats()
     {
-        Hilth = (_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) + (_defoltHilth * _level));
-        Cost = (_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) +(_defoltCost * _level));
+        Hilth = (c_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) - (c_defoltHilth * _level));
+        Cost = (c_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) - (c_defoltCost * _level));
+
+        if (Hilth == 0)
+            Hilth = c_defoltHilth;
+
+        if (Cost == 0)
+            Cost = c_defoltCost;
     }
 
     public void TakeDamage(float damage)
@@ -71,7 +77,6 @@ public class Cube : MonoBehaviour
 
     protected IEnumerator Destruction()
     {
-        Debug.Log("start");
         float _dalay = 0;
         Vector3 startScale = _transform.localScale;
         Vector3 endScale = new Vector3(0, 0, 0);

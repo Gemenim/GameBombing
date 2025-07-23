@@ -5,7 +5,7 @@ public class CollectorCubes : MonoBehaviour
 {
     [SerializeField] private Wallet _wallet;
 
-    public event Action<double> PutCoins;
+    public event Action<float> PutCoins;
     public event Action<bool> ColectCore;
 
     private void OnTriggerEnter(Collider other)

@@ -8,13 +8,13 @@ public class ViewButtonUpgrade : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _countCoins;
     [SerializeField] private TextMeshProUGUI _level;
-    [SerializeField] private double _startCoins = 25;
+    [SerializeField] private float _startCoins = 25;
     [SerializeField] private float _levelCoefficientExperience = 0.7f;
 
     private Button _button;
-    private double _cost;
+    private float _cost;
 
-    public event Action<double> OnButtonClicked;
+    public event Action<float> OnButtonClicked;
 
     private void OnValidate()
     {

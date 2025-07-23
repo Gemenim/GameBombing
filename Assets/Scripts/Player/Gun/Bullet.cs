@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(TrailRenderer))]
 public class Bullet : MonoBehaviour
 {
     private Transform _transform;
@@ -14,6 +13,7 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
+    private int _defoltRicochet = 2;
     private int _levelRicochet = 1;
     private int _countRicochet = 0;
 
@@ -32,14 +32,15 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
         List<Cube> cubes = GetCubes();
         _audioSource.PlayOneShot(_audioSource.clip);
 
-        if (cubes.Count > 0)
-        {
-            Explosion(cubes);
+        if (collision.gameObject.TryGetComponent<Chip>(out Chip bomb) || collision.gameObject.TryGetComponent<Cube>(out Cube cube))
             _countRicochet++;
-        }
+
+        if (cubes.Count > 0)
+            Explosion(cubes);
 
         if (collision.contacts.Length > 0)
         {
@@ -47,7 +48,7 @@ public class Bullet : MonoBehaviour
             _rb.velocity = direction * _velocity;
         }
 
-        if (_countRicochet == _levelRicochet + 1)
+        if (_countRicochet == _levelRicochet + _defoltRicochet)
         {
             ReturnInPool();
             return;
@@ -64,7 +65,6 @@ public class Bullet : MonoBehaviour
         _countRicochet = 0;
         _pool.Return(this);
     }
-
 
     public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient)
     {

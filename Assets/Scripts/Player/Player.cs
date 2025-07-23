@@ -18,8 +18,9 @@ public class Player : MonoBehaviour
     private PlayerInput _input;
     private int _countDasroyBombs = 0;
 
-    public double Coins => _wallet.Coins;
+    public float Coins => _wallet.Coins;
     public int CountDasroyBombs => _countDasroyBombs;
+    public int LevelUpgrade => _gun.LevelUpgrade;
     public int LevelUpgradeDamage => _gun.LevelDamage;
     public int LevelUpgradeRicochet => _gun.LevelRicochet;
     public int LevelUpgradeRadiusExplosion => _gun.LevelRadiusExplosion;
@@ -75,10 +76,10 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(double coins, int countDasroyBombs, int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade,int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
     {
         _wallet.LoadSave(coins);
-        _gun.LoadSave(levelDamage, levelRicochet, levelDamageExplosion, levelRadiusExplosion);
+        _gun.LoadSave(levelUpgrade, levelDamage, levelRicochet, levelDamageExplosion, levelRadiusExplosion);
         _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
         _radiusExplosionButton.ChangeText(_gun.LevelRadiusExplosion);
         _ricochetButton.ChangeText(_gun.LevelRicochet);
@@ -91,7 +92,7 @@ public class Player : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject() == false)
             {
-                if (_wallet.GetCoins(_gun.CalculateCost()))
+                if (_wallet.GetCoins(_gun.CostShot))
                 {
                     _gun.Shoot();
                     _cart.MoveCar();
@@ -104,25 +105,25 @@ public class Player : MonoBehaviour
     private void OnDisableButtonRadiusExplosion() => _radiusExplosionButton.enabled = false;
     private void OnDisableButtonDamageExplosion() => _damageExplosionButton.enabled = false;
 
-    private void UpDamageExplsoion(double cost)
+    private void UpDamageExplsoion(float cost)
     {
         if (_wallet.GetCoins(cost))
             _damageExplosionButton.ChangeText(_gun.UpLevelDamageExplosion());
     }
 
-    private void UpRadiusExplosion(double cost)
+    private void UpRadiusExplosion(float cost)
     {
         if (_wallet.GetCoins(cost))
             _radiusExplosionButton.ChangeText(_gun.UpLevelRadiusExplosion());
     }
 
-    private void UpRecochet(double cost)
+    private void UpRecochet(float cost)
     {
         if (_wallet.GetCoins(cost))
             _ricochetButton.ChangeText(_gun.UpLevelRicochet());
     }
 
-    private void UpDamage(double cost)
+    private void UpDamage(float cost)
     {
         if (_wallet.GetCoins(cost))
             _damgeButton.ChangeText(_gun.UpLevelDamage());
