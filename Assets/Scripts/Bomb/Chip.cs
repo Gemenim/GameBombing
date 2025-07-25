@@ -144,6 +144,18 @@ public class Chip : MonoBehaviour
 
         CollectCubes();
     }
+
+    [ContextMenu("Randomize Position Z")]
+    private void RandomizePositionZ()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            Vector3 localPosition = child.localPosition;
+            localPosition.z = Random.Range(-0.15f, 0.15f);
+            child.localPosition = localPosition;
+        }
+    }
 }
 
 public class CubeGroup

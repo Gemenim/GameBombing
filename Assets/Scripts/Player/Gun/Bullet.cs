@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
-    private int _defoltRicochet = 2;
+    private int _defoltRicochet = 1;
     private int _levelRicochet = 1;
     private int _countRicochet = 0;
 
