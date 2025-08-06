@@ -8,7 +8,7 @@ public class CoreCube : Cube
     [SerializeField] private Color _targetColor;
 
     private const float c_hilthCore = 2.0f;
-    private const float c_levelCoefficientCore = 1.7f;
+    private const float c_levelCoefficientCore = 2.05f;
 
     private Cube[] _allCubes;
     private TimerView _timer;
@@ -61,8 +61,6 @@ public class CoreCube : Cube
 
     private IEnumerator Countdown(float countdownTime)
     {
-        Debug.Log(_timer);
-
         while (countdownTime > 0)
         {
             countdownTime -= Time.deltaTime;

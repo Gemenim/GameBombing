@@ -14,7 +14,6 @@ public class RewardAd : MonoBehaviour
     {
         if (_countAddCoins <= 0)
             _countAddCoins = 500f;
-
     }
 
     private void OnEnable()

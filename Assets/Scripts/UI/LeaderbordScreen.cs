@@ -46,8 +46,9 @@ public class LeaderbordScreen : Window
         WindowGroup.blocksRaycasts = true;
     }
 
-    protected override void OnButtonClick()
+    protected override void OnButtonCloseClick()
     {
+        base.OnButtonCloseClick();
         OnReturButtonClicked?.Invoke();
         Close();
     }

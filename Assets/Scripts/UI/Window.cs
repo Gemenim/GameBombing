@@ -1,25 +1,31 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class Window : MonoBehaviour
 {
     [SerializeField] private CanvasGroup _windowGroup;
-    [SerializeField] private Button _actionButton;
+    [SerializeField] private Button _closeButton;
 
     protected CanvasGroup WindowGroup => _windowGroup;
-    protected Button ActionButtonOpen => _actionButton;
+    protected Button ActionButtonOpen => _closeButton;
+
+    public event Action OnClose;
 
     protected virtual void OnEnable()
     {
-        _actionButton.onClick.AddListener(OnButtonClick);
+        _closeButton.onClick.AddListener(OnButtonCloseClick);
     }
 
     protected virtual void OnDisable()
     {
-        _actionButton.onClick.RemoveListener(OnButtonClick);
+        _closeButton.onClick.RemoveListener(OnButtonCloseClick);
     }
 
-    protected abstract void OnButtonClick();
+    protected virtual void OnButtonCloseClick()
+    {
+        OnClose?.Invoke();
+    }
 
     public abstract void Open();
     public abstract void Close();

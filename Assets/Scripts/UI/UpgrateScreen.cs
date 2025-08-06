@@ -18,8 +18,9 @@ public class UpgrateScreen : Window
         WindowGroup.blocksRaycasts = true;
     }
 
-    protected override void OnButtonClick()
+    protected override void OnButtonCloseClick()
     {
+        base.OnButtonCloseClick();
         OnReturnButtonClicked?.Invoke();
         Close();
     }

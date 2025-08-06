@@ -68,7 +68,6 @@ public class ViewLevelBar : MonoBehaviour
     public void AddExperience(float value)
     {
         _experience += value;
-        Debug.Log(_experience);
 
         if (_experience >= _needExperience)
         {

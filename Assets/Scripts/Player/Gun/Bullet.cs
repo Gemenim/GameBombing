@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
-    private int _defoltRicochet = 1;
+    private int _defoltRicochet = 5;
     private int _levelRicochet = 1;
     private int _countRicochet = 0;
 
@@ -36,8 +36,7 @@ public class Bullet : MonoBehaviour
         List<Cube> cubes = GetCubes();
         _audioSource.PlayOneShot(_audioSource.clip);
 
-        if (collision.gameObject.TryGetComponent<Chip>(out Chip bomb) || collision.gameObject.TryGetComponent<Cube>(out Cube cube))
-            _countRicochet++;
+        _countRicochet++;
 
         if (cubes.Count > 0)
             Explosion(cubes);
@@ -49,10 +48,7 @@ public class Bullet : MonoBehaviour
         }
 
         if (_countRicochet == _levelRicochet + _defoltRicochet)
-        {
             ReturnInPool();
-            return;
-        }
     }
 
     public void SetDirection(Vector3 direction) => _rb.velocity = direction * _velocity;

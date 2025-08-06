@@ -1,15 +1,16 @@
 {
-  "idSave": 64,
+  "idSave": 68,
   "isFirstSession": false,
   "language": "ru",
   "promptDone": false,
-  "LevelGame": 4,
-  "Coins": 73598.51,
+  "LevelGame": 3,
+  "Coins": 5998.69,
   "Experience": 0.0,
-  "LevelUpgrade": 22,
+  "LevelUpgrade": 10,
   "LevelUpgradeDamage": 8,
-  "LevelUpgradeRicochet": 3,
-  "LevelUpgradeDamageExplosion": 7,
-  "LevelUpgradeRadiusExplosion": 7,
-  "CountDastroyBomb": 3
+  "LevelUpgradeRicochet": 2,
+  "LevelUpgradeSpeedAttack": 2,
+  "LevelUpgradeDamageExplosion": 1,
+  "LevelUpgradeRadiusExplosion": 2,
+  "CountDastroyBomb": 0
 }

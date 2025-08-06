@@ -87,6 +87,7 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\LocalStorage\LocalStorage_yg.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Initialization\InitYGAttribute.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\UI\MessageBox.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\ReviewYG.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\UtilsLang.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Payments\InternalScripts\UtilsPayments.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Scripts\UI\ViewLevelBar.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\AdNotificationYG.cs" />
+    <Compile Include="Assets\Scripts\UI\PopupHint.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Authorization\Auth_yg.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />

@@ -11,7 +11,7 @@ public class Bomb : Chip
 
     private Cube[] _allCubes;
 
-    public event Action<bool> Destroyed;
+    public event Action Dastroy;
 
     private void OnValidate()
     {
@@ -65,11 +65,7 @@ public class Bomb : Chip
         }
     }
 
-    private void Explode()
-    {
-        Destroyed?.Invoke(false);
-        Destroy(this.gameObject);
-    }
+    private void Explode() => Dastroy?.Invoke();
 
     private void SetStats()
     {

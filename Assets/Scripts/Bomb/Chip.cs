@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Chip : MonoBehaviour
 {
+    [SerializeField] private float _randomPositionZ = 0.25f;
+
     private Rigidbody _rb;
     private int[,] _cubesInfo;
 
@@ -28,6 +30,7 @@ public class Chip : MonoBehaviour
 
         cube.transform.parent = null;
         Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
+        cube.transform.parent = _transform.parent;
 
         RecalculateCubes();
     }
@@ -140,6 +143,7 @@ public class Chip : MonoBehaviour
             chip.AddComponent<Chip>();
             Rigidbody rigidbody = chip.GetComponent<Rigidbody>();
             rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
+            chip.transform.parent = _transform.parent;
         }
 
         CollectCubes();
@@ -152,7 +156,7 @@ public class Chip : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
             Vector3 localPosition = child.localPosition;
-            localPosition.z = Random.Range(-0.15f, 0.15f);
+            localPosition.z = Random.Range(-_randomPositionZ, _randomPositionZ);
             child.localPosition = localPosition;
         }
     }

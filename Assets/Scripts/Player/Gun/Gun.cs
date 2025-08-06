@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using YG;
 
@@ -14,20 +15,23 @@ public class Gun : MonoBehaviour
     [SerializeField] private float _velocity;
     [SerializeField] private float _defoltDamage = 1;
     [SerializeField] private float _startCostShot = 1;
+    [SerializeField] private float _timeRecharge = 2.5f;
 
 
     [Header("Limit Levels")]
     [SerializeField] private int _maxLevelDamage;
     [SerializeField] private int _maxLevelRicochet;
+    [SerializeField] private int _maxLevelSpeedAttack;
     [SerializeField] private int _maxLevelRadiusExplosion;
     [SerializeField] private int _maxLevelDamageExplosion;
 
     private const float c_distanceZ = 30f;
     private const float c_levelCoefficientDamage = 2f;
-    private const float c_levelCostCoefficient = 2.05f;
+    private const float c_levelCostCoefficient = 2.25f;
     private const float c_defoltRadiusExplosion = 0.5f;
-    private const float c_coefficientRadiusExplosion = 0.05f;
+    private const float c_coefficientRadiusExplosion = 0.01f;
     private const float c_coefficientDamageExplosion = 0.2f;
+    private const float c_coefficientRecharge = 0.04f;
 
     private const float c_maxRotationZ = 0.66f;
     private const float c_maxRotationW = 0.74f;
@@ -36,6 +40,7 @@ public class Gun : MonoBehaviour
     private Transform _transform;
     private AudioSource _audioSource;
 
+    private bool _isReadyShoot = true;
     private float _damage;
     private float _radiusExplosion;
     private float _damageExplosion;
@@ -44,11 +49,13 @@ public class Gun : MonoBehaviour
     public int LevelUpgrade { get; private set; } = 1;
     public int LevelDamage { get; private set; } = 1;
     public int LevelRicochet { get; private set; } = 1;
+    public int LevelSeedAttack { get; private set; } = 1;
     public int LevelRadiusExplosion { get; private set; } = 1;
     public int LevelDamageExplosion { get; private set; } = 1;
 
     public event Action LevelLimitReachedDamage;
     public event Action LevelLimitReachedRicochet;
+    public event Action LevelLimitReachedSeedAttack;
     public event Action LevelLimitReachedRadiusExplosion;
     public event Action LevelLimitReachedDamageExplosion;
 
@@ -74,6 +81,12 @@ public class Gun : MonoBehaviour
 
         if (_maxLevelRicochet <= 0)
             _maxLevelRicochet = 50;
+
+        if (_maxLevelSpeedAttack <= 0 || _maxLevelSpeedAttack > 50)
+            _maxLevelSpeedAttack = 50;
+
+        if (_timeRecharge <= 0)
+            _timeRecharge = 1;
     }
 
     private void Awake()
@@ -84,16 +97,18 @@ public class Gun : MonoBehaviour
         _pool = new Pool<Bullet>(Preload, GetAction, ReturnAction);
     }
 
-    public void LoadSave(int levelUpgrade, int levelDamage, int levelRicochet, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(int levelUpgrade, int levelDamage, int levelRicochet, int levelSpeedAttack, int levelDamageExplosion, int levelRadiusExplosion)
     {
         LevelUpgrade = levelUpgrade;
         LevelDamage = levelDamage;
         LevelRicochet = levelRicochet;
+        LevelSeedAttack = levelSpeedAttack;
         LevelDamageExplosion = levelDamageExplosion;
         LevelRadiusExplosion = levelRadiusExplosion;
-        
+
         _damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
         _damage = _damage > 0 ? _damage : _defoltDamage;
+        _timeRecharge -= LevelSeedAttack * c_coefficientRecharge;
         _radiusExplosion = c_defoltRadiusExplosion + (c_coefficientRadiusExplosion * LevelRadiusExplosion);
         _damageExplosion = _defoltDamage * LevelDamageExplosion * c_coefficientDamageExplosion;
         CalculateCost();
@@ -133,12 +148,20 @@ public class Gun : MonoBehaviour
     {
         if (YandexGame.isGamePlaying)
         {
-            Bullet bullet = _pool.Get();
-            bullet.SetStats(_damage, LevelRicochet, _radiusExplosion, _damageExplosion);
-            bullet.transform.position = _spawnPoint.position;
-            bullet.SetDirection(_transform.up);
-            _particleSystem.Play();
-            _audioSource.PlayOneShot(_audioSource.clip);
+            if (_isReadyShoot)
+            {
+                Bullet bullet = _pool.Get();
+                bullet.SetStats(_damage, LevelRicochet, _radiusExplosion, _damageExplosion);
+                bullet.transform.position = _spawnPoint.position;
+                bullet.SetDirection(_transform.up);
+                _particleSystem.Play();
+                _audioSource.PlayOneShot(_audioSource.clip);
+
+                if (_timeRecharge <= 0)
+                    return;
+
+                StartCoroutine(Recharge());
+            }
         }
     }
 
@@ -150,7 +173,7 @@ public class Gun : MonoBehaviour
         if (_damage <= 0)
             _damage = _defoltDamage;
 
-        UpLevelUpgrade();        
+        UpLevelUpgrade();
 
         if (LevelDamage == _maxLevelDamage)
             LevelLimitReachedDamage?.Invoke();
@@ -167,6 +190,18 @@ public class Gun : MonoBehaviour
             LevelLimitReachedRicochet?.Invoke();
 
         return LevelRicochet;
+    }
+
+    public int UpLevelSpeedAttack()
+    {
+        LevelSeedAttack++;
+        _timeRecharge -= c_coefficientRecharge;
+        UpLevelUpgrade();
+
+        if (LevelSeedAttack == _maxLevelSpeedAttack)
+            LevelLimitReachedSeedAttack?.Invoke();
+
+        return LevelSeedAttack;
     }
 
     public int UpLevelRadiusExplosion()
@@ -230,4 +265,11 @@ public class Gun : MonoBehaviour
     }
 
     private void GetAction(Bullet bullet) => bullet.gameObject.SetActive(true);
+
+    private IEnumerator Recharge()
+    {
+        _isReadyShoot = false;
+        yield return new WaitForSeconds(_timeRecharge);
+        _isReadyShoot = true;
+    }
 }

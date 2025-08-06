@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] protected float _levelCoefficientHilth = 2.03f;
+    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
     [SerializeField] protected float _levelCoefficientCost = 1.75f;
 
     protected const float c_defoltCost = 10f;
