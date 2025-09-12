@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(ColorCube))]
 public class Cube : MonoBehaviour
 {
     [SerializeField] protected float _levelCoefficientHilth = 2.1f;
-    [SerializeField] protected float _levelCoefficientCost = 1.75f;
+    [SerializeField] protected float _levelCoefficientCost = 1.7f;
 
     protected const float c_defoltCost = 10f;
     protected const float c_defoltHilth = 3f;
@@ -13,6 +14,10 @@ public class Cube : MonoBehaviour
     protected float _dalayToDestruction = 2.5f;
     protected int _level;
     protected bool _detouched;
+
+    private ColorCube _colorCube;
+    private Color _color;
+    private float _destroyedColor = 0.5f;
 
     public bool IsColect = false;
 
@@ -24,6 +29,8 @@ public class Cube : MonoBehaviour
     protected virtual void Awake()
     {
         _transform = transform;
+        _colorCube = GetComponent<ColorCube>();
+        _color = _colorCube.Color;
     }
 
     public virtual void SetSetings(int level, bool isTsar)
@@ -35,8 +42,10 @@ public class Cube : MonoBehaviour
 
     public virtual void CalculateStats()
     {
-        Hilth = (c_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) - (c_defoltHilth * _level));
-        Cost = (c_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) - (c_defoltCost * _level));
+        //Hilth = (c_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) - (c_defoltHilth * _level));
+        //Cost = (c_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) - (c_defoltCost * _level));
+        Hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level);
+        Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
 
         if (Hilth == 0)
             Hilth = c_defoltHilth;
@@ -63,16 +72,23 @@ public class Cube : MonoBehaviour
     }
 
     [ContextMenu("Detouched")]
-    private void Detouch()
+    protected virtual void Detouch()
     {
         if (_detouched)
             return;
 
         _detouched = true;
+        ChangeColor();
         Chip chip = GetComponentInParent<Chip>();
 
         if (chip != null)
             chip.DetouchCubeRecalculate(this);
+    }
+
+    private void ChangeColor()
+    {
+        Color color = _color * _destroyedColor;
+        _colorCube.ApplyColor(color);
     }
 
     protected IEnumerator Destruction()

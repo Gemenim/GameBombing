@@ -7,12 +7,12 @@ public class LeaderbordScreen : Window
     [Header("Button")]
     [SerializeField] private Button _levelButton;
     [SerializeField] private Button _coinsButton;
-    [SerializeField] private Button _destoyBombsButton;
+    [SerializeField] private Button _destroyBombsButton;
 
     [Header("Plane")]
     [SerializeField] private GameObject _levelPlanes;
     [SerializeField] private GameObject _coinsPlanes;
-    [SerializeField] private GameObject _destoyBombsPlanes;
+    [SerializeField] private GameObject _destroyBombsPlanes;
 
     public event Action OnReturButtonClicked;
 
@@ -20,7 +20,7 @@ public class LeaderbordScreen : Window
     {
         base.OnEnable();
         _levelButton.onClick.AddListener(OnLevelPlane);
-        _destoyBombsButton.onClick.AddListener(OnDestoyBombsPlane);
+        _destroyBombsButton.onClick.AddListener(OnDestroyBombsPlane);
         _coinsButton.onClick.AddListener(OnCoinsPlane);
     }
 
@@ -28,7 +28,7 @@ public class LeaderbordScreen : Window
     {
         base.OnDisable();
         _levelButton.onClick.RemoveListener(OnLevelPlane);
-        _destoyBombsButton.onClick.RemoveListener(OnDestoyBombsPlane);
+        _destroyBombsButton.onClick.RemoveListener(OnDestroyBombsPlane);
         _coinsButton.onClick.RemoveListener(OnCoinsPlane);
     }
 
@@ -56,21 +56,21 @@ public class LeaderbordScreen : Window
     private void OnLevelPlane()
     {
         _coinsPlanes.SetActive(false);
-        _destoyBombsPlanes.SetActive(false);
+        _destroyBombsPlanes.SetActive(false);
         _levelPlanes.SetActive(true);
     }
 
-    private void OnDestoyBombsPlane()
+    private void OnDestroyBombsPlane()
     {
         _coinsPlanes.SetActive(false);
         _levelPlanes.SetActive(false);
-        _destoyBombsPlanes.SetActive(true);
+        _destroyBombsPlanes.SetActive(true);
     }
 
     private void OnCoinsPlane()
     {
         _levelPlanes.SetActive(false);
-        _destoyBombsPlanes.SetActive(false);
+        _destroyBombsPlanes.SetActive(false);
         _coinsPlanes.SetActive(true);
     }
 }

@@ -4,13 +4,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Chip : MonoBehaviour
 {
-    [SerializeField] private float _randomPositionZ = 0.25f;
-
     private Rigidbody _rb;
+    private Cube[] _cubes;
     private int[,] _cubesInfo;
 
     protected Transform _transform;
-    protected Cube[] _cubes;
     protected Vector3 _cubesInfoStartPosition;
 
     private void Awake()
@@ -18,8 +16,6 @@ public class Chip : MonoBehaviour
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
         _rb.mass = transform.childCount;
-        CollectCubes();
-        RecalculateCubes();
     }
 
     public void DetouchCubeRecalculate(Cube cube)
@@ -32,6 +28,12 @@ public class Chip : MonoBehaviour
         Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
         cube.transform.parent = _transform.parent;
 
+        RecalculateCubes();
+    }
+
+    public void Collect()
+    {
+        CollectCubes();
         RecalculateCubes();
     }
 
@@ -140,25 +142,13 @@ public class Chip : MonoBehaviour
             foreach (int id in groups[i].Cubes)
                 _cubes[id - 1].transform.parent = chip.transform;
 
-            chip.AddComponent<Chip>();
+            chip.AddComponent<Chip>().Collect();
             Rigidbody rigidbody = chip.GetComponent<Rigidbody>();
             rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
             chip.transform.parent = _transform.parent;
         }
 
         CollectCubes();
-    }
-
-    [ContextMenu("Randomize Position Z")]
-    private void RandomizePositionZ()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform child = transform.GetChild(i);
-            Vector3 localPosition = child.localPosition;
-            localPosition.z = Random.Range(-_randomPositionZ, _randomPositionZ);
-            child.localPosition = localPosition;
-        }
     }
 }
 

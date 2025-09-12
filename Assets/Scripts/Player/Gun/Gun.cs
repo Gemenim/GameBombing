@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using YG;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class Gun : MonoBehaviour
@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioSource _reckoscetSorce;
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private UpdateLevelUpgrad _updateLevelUpgrad;
+    [SerializeField] private Slider _viewRecharge;
     [SerializeField] private float _velocity;
     [SerializeField] private float _defoltDamage = 1;
     [SerializeField] private float _startCostShot = 1;
@@ -27,9 +28,9 @@ public class Gun : MonoBehaviour
 
     private const float c_distanceZ = 30f;
     private const float c_levelCoefficientDamage = 2f;
-    private const float c_levelCostCoefficient = 2.25f;
-    private const float c_defoltRadiusExplosion = 0.5f;
-    private const float c_coefficientRadiusExplosion = 0.01f;
+    private const float c_levelCostCoefficient = 1.95f;
+    private const float c_defoltRadiusExplosion = 0.1f;
+    private const float c_coefficientRadiusExplosion = 0.05f;
     private const float c_coefficientDamageExplosion = 0.2f;
     private const float c_coefficientRecharge = 0.04f;
 
@@ -40,11 +41,11 @@ public class Gun : MonoBehaviour
     private Transform _transform;
     private AudioSource _audioSource;
 
-    private bool _isReadyShoot = true;
     private float _damage;
     private float _radiusExplosion;
     private float _damageExplosion;
 
+    public bool IsReadyShoot { get; private set; } = true;
     public float CostShot { get; private set; }
     public int LevelUpgrade { get; private set; } = 1;
     public int LevelDamage { get; private set; } = 1;
@@ -106,7 +107,8 @@ public class Gun : MonoBehaviour
         LevelDamageExplosion = levelDamageExplosion;
         LevelRadiusExplosion = levelRadiusExplosion;
 
-        _damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+        //_damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+        _damage = LevelCalculator.Calculat(_defoltDamage, c_levelCoefficientDamage, LevelDamage);
         _damage = _damage > 0 ? _damage : _defoltDamage;
         _timeRecharge -= LevelSeedAttack * c_coefficientRecharge;
         _radiusExplosion = c_defoltRadiusExplosion + (c_coefficientRadiusExplosion * LevelRadiusExplosion);
@@ -146,29 +148,24 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        if (YandexGame.isGamePlaying)
-        {
-            if (_isReadyShoot)
-            {
-                Bullet bullet = _pool.Get();
-                bullet.SetStats(_damage, LevelRicochet, _radiusExplosion, _damageExplosion);
-                bullet.transform.position = _spawnPoint.position;
-                bullet.SetDirection(_transform.up);
-                _particleSystem.Play();
-                _audioSource.PlayOneShot(_audioSource.clip);
+        Bullet bullet = _pool.Get();
+        bullet.SetStats(_damage, LevelRicochet, _radiusExplosion, _damageExplosion);
+        bullet.transform.position = _spawnPoint.position;
+        bullet.SetDirection(_transform.up);
+        _particleSystem.Play();
+        _audioSource.PlayOneShot(_audioSource.clip);
 
-                if (_timeRecharge <= 0)
-                    return;
+        if (_timeRecharge <= 0)
+            return;
 
-                StartCoroutine(Recharge());
-            }
-        }
+        StartCoroutine(Recharge());
     }
 
     public int UpLevelDamage()
     {
         LevelDamage++;
-        _damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+        //_damage = _defoltDamage * Mathf.Pow(LevelDamage, c_levelCoefficientDamage) - (_defoltDamage * LevelDamage);
+        _damage = LevelCalculator.Calculat(_defoltDamage, c_levelCoefficientDamage, LevelDamage);
 
         if (_damage <= 0)
             _damage = _defoltDamage;
@@ -230,7 +227,8 @@ public class Gun : MonoBehaviour
 
     private void CalculateCost()
     {
-        CostShot = _startCostShot * (Mathf.Pow(LevelUpgrade, c_levelCostCoefficient)) - (_startCostShot * LevelUpgrade);
+        //CostShot = _startCostShot * (Mathf.Pow(LevelUpgrade, c_levelCostCoefficient)) - (_startCostShot * LevelUpgrade);
+        CostShot = LevelCalculator.Calculat(_startCostShot, c_levelCostCoefficient, LevelUpgrade);
     }
 
     private void UpLevelUpgrade()
@@ -268,8 +266,18 @@ public class Gun : MonoBehaviour
 
     private IEnumerator Recharge()
     {
-        _isReadyShoot = false;
-        yield return new WaitForSeconds(_timeRecharge);
-        _isReadyShoot = true;
+        IsReadyShoot = false;
+
+        float time = 0;
+
+        while (time < _timeRecharge)
+        {
+            time += Time.deltaTime;
+            _viewRecharge.value = time / _timeRecharge;
+
+            yield return null;
+        }
+
+        IsReadyShoot = true;
     }
 }

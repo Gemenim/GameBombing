@@ -5,10 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(ColorCube))]
 public class CoreCube : Cube
 {
-    [SerializeField] private Color _targetColor;
+    [Range(0, 10)]
+    [SerializeField] private float _velocityDestoy = 1;
 
-    private const float c_hilthCore = 2.0f;
-    private const float c_levelCoefficientCore = 2.05f;
+    private const float c_hilthCore = 2.5f;
+    private const float c_levelCoefficientCore = 1.5f;
 
     private Cube[] _allCubes;
     private TimerView _timer;
@@ -28,11 +29,13 @@ public class CoreCube : Cube
     }
 
     public override void CalculateStats()
-    {       
+    {
         base.CalculateStats();
 
-        Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) - (c_hilthCore * _level));
-        Cost += (c_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) - (c_defoltCost * _level));
+        //Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) - (c_hilthCore * _level));
+        //Cost += (c_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) - (c_defoltCost * _level));
+        Hilth += LevelCalculator.Calculat(c_hilthCore, c_levelCoefficientCore, _level);
+        Cost += LevelCalculator.Calculat(c_defoltCost, c_levelCoefficientCore, _level);
     }
 
     public void SetTimerView(TimerView timerView) => _timer = timerView;
@@ -48,6 +51,14 @@ public class CoreCube : Cube
 
     public void StartCountdown(float countdownTime) => _coroutineCountdown = StartCoroutine(Countdown(countdownTime));
 
+    protected override void Detouch()
+    {
+        base.Detouch();
+
+        if (_coroutineCountdown != null)
+            StopCoroutine(_coroutineCountdown);
+    }
+
     private void BreakItUpBomb()
     {
         foreach (Cube cube in _allCubes)
@@ -55,6 +66,9 @@ public class CoreCube : Cube
             if (cube != null)
             {
                 cube.TakeDamage(cube.Hilth);
+
+                if (cube.TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+                    rigidbody.velocity = Vector3.up * _velocityDestoy;
             }
         }
     }

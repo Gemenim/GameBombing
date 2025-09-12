@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using YG;
 
@@ -19,15 +20,20 @@ public class Game : MonoBehaviour
 
     [SerializeField] private MuteSourceButton _muteSourceButton;
 
+    [SerializeField] private string[] _nameLeaderbords;
+
     private const float c_coefficientExperience = 0.45f;
-    private const float c_levelCoefficientNeedExperience = 2.4f;
-    private const float c_defoltNeedExperience = 1000f;
+    private const float c_ñoefficientNeedExperience = 0.01f;
+    private const int c_multiplierLevel = 10;
+    private const float c_defoltNeedExperience = 1500f;
 
     private Bomb _bomb;
-    private int _level = 1;
     private int _maxNumberAttempts = 5;
+    private Coroutine _updateTop = null;
+    private float _levelCoefficientNeedExperience = 2.435f;
+    private float _dalayUpdateTop = 1f;
 
-    public int Level => _level;
+    public int Level { get; private set; } = 1;
 
     private void Start()
     {
@@ -111,6 +117,7 @@ public class Game : MonoBehaviour
     private void OpenLeaderbord()
     {
         YandexGame.GameplayStop();
+        StartUpdateTop();
         _leaderbordScreen.Open();
     }
 
@@ -139,7 +146,7 @@ public class Game : MonoBehaviour
     private void RespawnBomb()
     {
         ClearOfBombs();
-        _levelBar.SetNeedExperience(GetNeedExperience() / _maxNumberAttempts, _level);
+        _levelBar.SetNeedExperience(GetNeedExperience() / _maxNumberAttempts, Level);
 
         if (_maxNumberAttempts > 0)
             _maxNumberAttempts--;
@@ -147,22 +154,31 @@ public class Game : MonoBehaviour
         Spawn(false);
     }
 
-    private void UpdateTop()
+    private void StartUpdateTop()
     {
-        YandexGame.NewLeaderboardScores("Level", Level);
-        YandexGame.NewLeaderboardScores("Coins", (long)_player.Coins);
-        YandexGame.NewLeaderboardScores("DestroyedBombs", Level);
+        long[] score = new long[3] { (long)Level, (long)_player.Coins, (long)_player.CountDasroyBombs };
+
+        if (_updateTop == null)
+        {
+            _updateTop = StartCoroutine(UpdateTop(score));
+        }
+        else
+        {
+            StopCoroutine(_updateTop);
+            _updateTop = StartCoroutine(UpdateTop(score));
+        }
     }
 
     private void LevelUp()
     {
         _hudScreen.OffTimer();
-        _level += 1;
+        Level += 1;
         _maxNumberAttempts = 5;
-        _levelBar.SetNeedExperience(GetNeedExperience(), _level);
+        GetCoefficientNeedExperience();
+        _levelBar.SetNeedExperience(GetNeedExperience(), Level);
         _barrierMover.Move();
         SaveData();
-        UpdateTop();
+        StartUpdateTop();
         YandexGame.FullscreenShow();
     }
 
@@ -178,14 +194,14 @@ public class Game : MonoBehaviour
 
         if (isTsarBomb)
         {
-            _bomb = _generator.Spawn(_level, isTsarBomb, _timerView);
+            _bomb = _generator.Spawn(Level, isTsarBomb, _timerView);
             _bomb.transform.SetParent(_bombs);
             _bomb.Dastroy += RespawnBomb;
             _hudScreen.OnTimer();
         }
         else
         {
-            _bomb = _generator.Spawn(_level, isTsarBomb);
+            _bomb = _generator.Spawn(Level, isTsarBomb);
             _bomb.transform.SetParent(_bombs);
             _hudScreen.OffTimer();
         }
@@ -193,13 +209,20 @@ public class Game : MonoBehaviour
 
     private float GetNeedExperience()
     {
-        float needExperience = c_defoltNeedExperience * Mathf.Pow(_level, c_levelCoefficientNeedExperience) - (c_defoltNeedExperience * _level);
+        //float needExperience = c_defoltNeedExperience * Mathf.Pow(Level, _levelCoefficientNeedExperience) - (c_defoltNeedExperience * Level);
+        float needExperience = LevelCalculator.Calculat(c_defoltNeedExperience, _levelCoefficientNeedExperience, Level, c_multiplierLevel, c_ñoefficientNeedExperience);
         return needExperience > 0 ? needExperience : c_defoltNeedExperience;
+    }
+
+    private void GetCoefficientNeedExperience()
+    {
+        int multiplier = Level / c_multiplierLevel;
+        _levelCoefficientNeedExperience += c_ñoefficientNeedExperience * multiplier;
     }
 
     private void SaveData()
     {
-        YandexGame.savesData.LevelGame = _level;
+        YandexGame.savesData.LevelGame = Level;
         YandexGame.savesData.LevelUpgrade = _player.LevelUpgrade;
         YandexGame.savesData.LevelUpgradeDamage = _player.LevelUpgradeDamage;
         YandexGame.savesData.LevelUpgradeRicochet = _player.LevelUpgradeRicochet;
@@ -209,7 +232,7 @@ public class Game : MonoBehaviour
         YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
         YandexGame.savesData.Coins = _player.Coins;
         YandexGame.savesData.Experience = _levelBar.Experience;
-        UpdateTop();
+        StartUpdateTop();
 
         YandexGame.SaveProgress();
     }
@@ -226,12 +249,14 @@ public class Game : MonoBehaviour
 
     private void LoadSave()
     {
-        _level = YandexGame.savesData.LevelGame;
-        _levelBar.SetNeedExperience(GetNeedExperience(), _level);
+        Level = YandexGame.savesData.LevelGame;
         _levelBar.AddExperience(YandexGame.savesData.Experience);
         _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgrade,
             YandexGame.savesData.LevelUpgradeDamage, YandexGame.savesData.LevelUpgradeRicochet, YandexGame.savesData.LevelUpgradeSpeedAttack,
             YandexGame.savesData.LevelUpgradeDamageExplosion, YandexGame.savesData.LevelUpgradeRadiusExplosion);
+        GetCoefficientNeedExperience();
+        _levelBar.SetNeedExperience(GetNeedExperience(), Level);
+        StartUpdateTop();
     }
 
     private void ClearOfBombs()
@@ -240,5 +265,17 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < countObjects; i++)
             Destroy(_bombs.GetChild(i).gameObject);
+    }
+
+    private IEnumerator UpdateTop(long[] score)
+    {
+        WaitForSeconds dalay = new WaitForSeconds(_dalayUpdateTop);
+
+        for (int i = 0; i < _nameLeaderbords.Length; i++)
+        {
+            YandexGame.NewLeaderboardScores(_nameLeaderbords[i], score[i]);
+
+            yield return dalay;
+        }
     }
 }

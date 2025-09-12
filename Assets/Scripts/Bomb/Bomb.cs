@@ -5,6 +5,8 @@ public class Bomb : Chip
 {
     [SerializeField] private CoreCube _core;
     [SerializeField] private float _countdownTime;
+    [SerializeField] private float _randomPositionZ = 0.25f;
+
 
     [Header("Settings 'TsarBomba'")]
     [SerializeField] private int _coefficientLevel;
@@ -24,8 +26,12 @@ public class Bomb : Chip
 
     private void Start()
     {
-        SetStats();
         RememberAllCubes();
+        RandomizePositionZ();
+        _core.SetCubes(_allCubes);
+        Collect();
+        SetStats();
+        _transform.parent.GetComponent<RanomazeBombs>().Randomaze();
     }
 
     private void OnEnable()
@@ -45,31 +51,24 @@ public class Bomb : Chip
         if (isTsarBomb)
         {
             _core.SetSetings(level * _coefficientLevel, isTsarBomb);
-            _core.SetCubes(_cubes);
             _core.StartCountdown(_countdownTime);
         }
         else
         {
             _core.SetSetings(level, isTsarBomb);
-            _core.SetCubes(_cubes);
         }
     }
 
     private void RememberAllCubes()
     {
-        _allCubes = new Cube[_cubes.Length];
-
-        for (int i = 0; i < _cubes.Length; i++)
-        {
-            _allCubes[i] = _cubes[i];
-        }
+        _allCubes = _transform.GetComponentsInChildren<Cube>();
     }
 
     private void Explode() => Dastroy?.Invoke();
 
     private void SetStats()
     {
-        foreach (Cube cube in _cubes)
+        foreach (Cube cube in _allCubes)
         {
             if (cube.name != _core.name)
             {
@@ -77,6 +76,18 @@ public class Bomb : Chip
             }
 
             cube.CalculateStats();
+        }
+    }
+
+    [ContextMenu("Randomize Position Z")]
+    private void RandomizePositionZ()
+    {
+        for (int i = 0; i < _allCubes.Length; i++)
+        {
+            Transform child = _allCubes[i].transform;
+            Vector3 localPosition = child.localPosition;
+            localPosition.z = UnityEngine.Random.Range(-_randomPositionZ, _randomPositionZ);
+            child.localPosition = localPosition;
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class BarrierMover : MonoBehaviour
 {
     [SerializeField] private Transform[] _positions;
+    [SerializeField] private float _intervalX, _intervalY;
     [SerializeField] private float _angleRotation;
     [SerializeField] private float _timeAnimation;
 
@@ -44,10 +45,10 @@ public class BarrierMover : MonoBehaviour
 
         for (int i = 0; i < _positions.Length; i++)
         {
-            _minPositionX[i] = _positions[i].position.x - _positions[i].localScale.x / 2;
-            _maxPositionX[i] = _positions[i].position.x + _positions[i].localScale.x / 2;
-            _minPositionY[i] = _positions[i].position.y - _positions[i].localScale.y / 2;
-            _maxPositionY[i] = _positions[i].position.y + _positions[i].localScale.y / 2;
+            _minPositionX[i] = _positions[i].position.x - _intervalX / 2;
+            _maxPositionX[i] = _positions[i].position.x + _intervalX / 2;
+            _minPositionY[i] = _positions[i].position.y - _intervalY / 2;
+            _maxPositionY[i] = _positions[i].position.y + _intervalY / 2;
         }
     }
 

@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
     private int _levelRicochet = 1;
     private int _countRicochet = 0;
 
-    public float Damage => _damage;
+    private const float c_radius = 0.5f;
 
     private void Awake()
     {
@@ -32,7 +32,6 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
         List<Cube> cubes = GetCubes();
         _audioSource.PlayOneShot(_audioSource.clip);
 
@@ -66,17 +65,24 @@ public class Bullet : MonoBehaviour
     {
         _damage = damage;
         _levelRicochet = levelRicochet;
-        _radiusExplosion = radiusExplosion;
+        _radiusExplosion = radiusExplosion + c_radius;
         _explosionDamageCoefficient = explosionDamageCoefficient;
     }
 
     private void Explosion(List<Cube> cubes)
     {
+        Vector3 position = _transform.position;
+
         foreach (Cube cube in cubes)
         {
-            float distans = Vector3.Distance(_transform.position, cube.transform.position);
-            float damage = _damage * _explosionDamageCoefficient * (distans / _radiusExplosion);
-            cube.TakeDamage(damage);
+            float radiusCube = cube.transform.localScale.x / 2;
+            float distans = Vector3.Distance(position, cube.transform.position) - radiusCube;
+
+            if (distans <= _radiusExplosion)
+            {
+                float damage = _damage * _explosionDamageCoefficient * (1 - (distans / _radiusExplosion));
+                cube.TakeDamage(damage);
+            }
         }
     }
 

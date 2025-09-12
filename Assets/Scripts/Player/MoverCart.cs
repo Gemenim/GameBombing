@@ -7,6 +7,7 @@ public class MoverCart : MonoBehaviour
     [SerializeField] PidRegulator _pidRegulator = new PidRegulator();
     [SerializeField] private Transform _rails;
     [SerializeField] private float _maxForce;
+    [SerializeField] private float _minRange;
     [SerializeField] private Animator[] _animators;
 
     private Transform _transform;
@@ -35,13 +36,24 @@ public class MoverCart : MonoBehaviour
 
             foreach (Animator animator in _animators)
             {
-                animator.SetFloat("speed", speed * direction);
+                animator.SetFloat("speed", speed);
+                animator.SetFloat("velocityVector", speed * direction);
             }
         }
     }
 
     public void MoveCar()
     {
-        _targetPositionX = Random.Range(_minBarrier, _maxBarrier);
+        float randomPosition = GetRandomPosition();
+
+        while (Mathf.Abs(_targetPositionX - randomPosition) < _minRange)
+            randomPosition = GetRandomPosition();
+
+        _targetPositionX = randomPosition;
+    }
+
+    private float GetRandomPosition()
+    {
+        return Random.Range(_minBarrier, _maxBarrier);
     }
 }

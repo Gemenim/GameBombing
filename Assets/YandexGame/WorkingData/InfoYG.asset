@@ -61,82 +61,52 @@ MonoBehaviour:
     players:
     - rank: 1
       name: anonymous
-      score: 10
+      score: 9
       photo: https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-small
       uniqueID: 123
     - rank: 2
       name: Ivan
-      score: 15
+      score: 10
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 3
       name: Tanya
-      score: 23
+      score: 8
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 456
-    - rank: 4
-      name: Player4
-      score: 30
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 5
-      name: Player this
-      score: 40
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 000
     - rank: 6
       name: Player6
-      score: 50
+      score: 7
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player6
-      score: 50
+      score: 6
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player6
-      score: 50
+      score: 5
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player6
-      score: 50
+      score: 4
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player6
-      score: 50
+      score: 3
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 6
-      name: Player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 6
-      name: Player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 6
-      name: Player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 6
-      name: Player6
-      score: 50
+      score: 1
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     thisPlayer:
       rank: 2
-      score: 10
+      score: 50
   - technoName: Coins
     entries: "Test LeaderBoard\nName: simple\n1. \u0441\u043A\u0440\u044B\u0442:
       10\n2. Max: 15\n3. Maria: 23"
@@ -147,77 +117,37 @@ MonoBehaviour:
     players:
     - rank: 6
       name: anonymous
-      score: 10
+      score: 10000
       photo: https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-small
       uniqueID: 123
     - rank: 5
       name: Ivan
-      score: 15
+      score: 15000
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 4
       name: Tanya
-      score: 23
+      score: 10100
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 456
     - rank: 3
       name: player4
-      score: 30
+      score: 13000
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 2
       name: playerThis
-      score: 40
+      score: 100
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 000
     - rank: 1
       name: player6
-      score: 50
+      score: 5000
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 1
       name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 1
-      name: player6
-      score: 50
+      score: 25000
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     thisPlayer:
@@ -241,79 +171,29 @@ MonoBehaviour:
     players:
     - rank: 6
       name: anonymous
-      score: 7123
+      score: 3
       photo: https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-small
       uniqueID: 789
     - rank: 5
       name: Max
-      score: 15321
+      score: 15
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 987
     - rank: 4
       name: Maria
-      score: 62000
+      score: 11
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 891
     - rank: 3
       name: Player4
-      score: 122000
+      score: 22
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
     - rank: 6
       name: Player this
-      score: 11000
+      score: 5
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 000
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 2
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
     thisPlayer:
       rank: 2
       score: 10

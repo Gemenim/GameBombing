@@ -84,8 +84,9 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade,int levelDamage, int levelRicochet, int levelSpeedAttack , int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade, int levelDamage, int levelRicochet, int levelSpeedAttack, int levelDamageExplosion, int levelRadiusExplosion)
     {
+        _countDasroyBombs = countDasroyBombs;
         _wallet.LoadSave(coins);
         _gun.LoadSave(levelUpgrade, levelDamage, levelRicochet, levelSpeedAttack, levelDamageExplosion, levelRadiusExplosion);
         _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
@@ -101,10 +102,13 @@ public class Player : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject() == false)
             {
-                if (_wallet.GetCoins(_gun.CostShot))
+                if (_gun.IsReadyShoot)
                 {
-                    _gun.Shoot();
-                    _cart.MoveCar();
+                    if (_wallet.GetCoins(_gun.CostShot))
+                    {
+                        _gun.Shoot();
+                        _cart.MoveCar();
+                    }
                 }
             }
         }
