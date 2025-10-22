@@ -107,7 +107,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-    <Compile Include="Assets\Scripts\UI\ViewLevelBar.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\AdNotificationYG.cs" />
     <Compile Include="Assets\Scripts\UI\PopupHint.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -140,6 +139,7 @@
     <Compile Include="Assets\YandexGame\WorkingData\SavesYG.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\ActivityOnAuthorizationYG.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Leaderboards\LBPlayerDataYG.cs" />
+    <Compile Include="Assets\Scripts\Sky.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\GameReadyAPI\GRA_yg.cs" />
     <Compile Include="Assets\Scripts\UI\TotalVolumeChanged.cs" />
@@ -163,6 +163,7 @@
     <Compile Include="Assets\Scripts\Bomb\Cube.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Bomb\CoreCube.cs" />
+    <Compile Include="Assets\Scripts\SystemChangeFonts.cs" />
     <Compile Include="Assets\Scripts\AddCoinButton.cs" />
     <Compile Include="Assets\Scripts\UI\Window.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\Lang_yg.cs" />
@@ -188,7 +189,9 @@
     <Compile Include="Assets\Scripts\UI\ViewWallet.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\LanguageYG.cs" />
     <Compile Include="Assets\Scripts\Bomb\ColorCube.cs" />
+    <Compile Include="Assets\Font\SistemFont.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\UI\LevelBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

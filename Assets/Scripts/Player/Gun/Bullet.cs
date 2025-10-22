@@ -1,9 +1,15 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
+    private const float c_radius = 0.5f;
+
+    [SerializeField] private Transform _shockWavePosition;
+    [SerializeField] private ParticleSystem _shockWave;
+
     private Transform _transform;
     private Rigidbody _rb;
     private AudioSource _audioSource;
@@ -16,8 +22,9 @@ public class Bullet : MonoBehaviour
     private int _defoltRicochet = 5;
     private int _levelRicochet = 1;
     private int _countRicochet = 0;
-
-    private const float c_radius = 0.5f;
+    private float _delayExlosion;
+    private Coroutine _rechargeExplosion;
+    private bool _isCharged = true;
 
     private void Awake()
     {
@@ -32,19 +39,44 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        List<Cube> cubes = GetCubes();
-        _audioSource.PlayOneShot(_audioSource.clip);
+        Collider collider = collision.GetContact(0).otherCollider;
 
-        _countRicochet++;
+        if (collider.TryGetComponent<Cube>(out Cube cube))
+        {
+            cube.TakeDamage(_damage);
 
-        if (cubes.Count > 0)
-            Explosion(cubes);
+            if (_delayExlosion <= 0)
+            {
+                Debug.Log("Folse");
+                List<Cube> cubes = GetCubes();
+
+                if (cubes.Count > 0)
+                    Explosion(cubes);
+            }
+            else
+            {
+                Debug.Log("GO");
+                if (_isCharged)
+                {
+                    Debug.Log("True");
+                    _rechargeExplosion = StartCoroutine(RechargeExlosion());
+                    List<Cube> cubes = GetCubes();
+
+                    if (cubes.Count > 0)
+                        Explosion(cubes);
+                }
+            }
+        }
 
         if (collision.contacts.Length > 0)
         {
             Vector3 direction = Vector3.Reflect(_lastVelocity.normalized, collision.contacts[0].normal);
             _rb.velocity = direction * _velocity;
         }
+
+        _audioSource.PlayOneShot(_audioSource.clip);
+
+        _countRicochet++;        
 
         if (_countRicochet == _levelRicochet + _defoltRicochet)
             ReturnInPool();
@@ -57,21 +89,38 @@ public class Bullet : MonoBehaviour
 
     public void ReturnInPool()
     {
+        if (!_isCharged)
+        {
+            StopCoroutine(_rechargeExplosion);
+            _isCharged = true;
+        }
+
+        _shockWave.transform.parent = null;
         _countRicochet = 0;
         _pool.Return(this);
     }
 
-    public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient)
+    public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
     {
+        SetShockWaveEffect();
         _damage = damage;
         _levelRicochet = levelRicochet;
         _radiusExplosion = radiusExplosion + c_radius;
         _explosionDamageCoefficient = explosionDamageCoefficient;
+        _delayExlosion = delayExplosion;
+        _shockWave.startSize = _radiusExplosion * 2;
+    }
+
+    private void SetShockWaveEffect()
+    {
+        _shockWave.transform.parent = _shockWavePosition;
+        _shockWave.transform.localPosition = Vector3.zero;
     }
 
     private void Explosion(List<Cube> cubes)
     {
         Vector3 position = _transform.position;
+        _shockWave.Play();
 
         foreach (Cube cube in cubes)
         {
@@ -96,5 +145,15 @@ public class Bullet : MonoBehaviour
                 cubes.Add(cube);
 
         return cubes;
+    }
+
+    private IEnumerator RechargeExlosion()
+    {
+        WaitForSeconds delay = new WaitForSeconds(_delayExlosion);
+        _isCharged = false;
+
+        yield return delay;
+
+        _isCharged = true;
     }
 }

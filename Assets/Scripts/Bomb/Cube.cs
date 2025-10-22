@@ -9,6 +9,8 @@ public class Cube : MonoBehaviour
 
     protected const float c_defoltCost = 10f;
     protected const float c_defoltHilth = 3f;
+    protected const float c_ñoefficientLevel = 0.05f;
+    protected const int c_multiplierLevel = 5;
 
     protected Transform _transform;
     protected float _dalayToDestruction = 2.5f;
@@ -44,7 +46,7 @@ public class Cube : MonoBehaviour
     {
         //Hilth = (c_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) - (c_defoltHilth * _level));
         //Cost = (c_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) - (c_defoltCost * _level));
-        Hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level);
+        Hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
         Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
 
         if (Hilth == 0)

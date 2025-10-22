@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private ViewButtonUpgrade _damgeButton;
     [SerializeField] private ViewButtonUpgrade _ricochetButton;
     [SerializeField] private ViewButtonUpgrade _speedAttackButton;
+    [SerializeField] private ViewButtonUpgrade _speedExplosionButton;
     [SerializeField] private ViewButtonUpgrade _radiusExplosionButton;
     [SerializeField] private ViewButtonUpgrade _damageExplosionButton;
 
@@ -24,7 +25,8 @@ public class Player : MonoBehaviour
     public int LevelUpgrade => _gun.LevelUpgrade;
     public int LevelUpgradeDamage => _gun.LevelDamage;
     public int LevelUpgradeRicochet => _gun.LevelRicochet;
-    public int LevelUpgradeSeedAttack => _gun.LevelRicochet;
+    public int LevelUpgradeSpeedAttack => _gun.LevelSeedAttack;
+    public int LevelUpgradeSpeedExplosion => _gun.LevelSpeedExplosion;
     public int LevelUpgradeRadiusExplosion => _gun.LevelRadiusExplosion;
     public int LevelUpgradeDamageExplosion => _gun.LevelDamageExplosion;
 
@@ -43,11 +45,13 @@ public class Player : MonoBehaviour
         _damgeButton.OnButtonClicked += UpDamage;
         _ricochetButton.OnButtonClicked += UpRecochet;
         _speedAttackButton.OnButtonClicked += UpSpeedAttack;
+        _speedExplosionButton.OnButtonClicked += UpSpeedExplosion;
         _radiusExplosionButton.OnButtonClicked += UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked += UpDamageExplsoion;
         _gun.LevelLimitReachedDamage += OnDisableButtonDamage;
         _gun.LevelLimitReachedRicochet += OnDisableButtonRecochet;
-        _gun.LevelLimitReachedSeedAttack += OnDisableButtonSpeedAttack;
+        _gun.LevelLimitReachedSpeedAttack += OnDisableButtonSpeedAttack;
+        _gun.LevelLimitReachedSpeedExplosion += OnDisableButtonSpeedExplosion;
         _gun.LevelLimitReachedRadiusExplosion += OnDisableButtonRadiusExplosion;
         _gun.LevelLimitReachedDamageExplosion += OnDisableButtonDamageExplosion;
     }
@@ -58,11 +62,13 @@ public class Player : MonoBehaviour
         _damgeButton.OnButtonClicked -= UpDamage;
         _ricochetButton.OnButtonClicked -= UpRecochet;
         _speedAttackButton.OnButtonClicked -= UpSpeedAttack;
+        _speedExplosionButton.OnButtonClicked -= UpSpeedExplosion;
         _radiusExplosionButton.OnButtonClicked -= UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked -= UpDamageExplsoion;
         _gun.LevelLimitReachedDamage -= OnDisableButtonDamage;
         _gun.LevelLimitReachedRicochet -= OnDisableButtonRecochet;
-        _gun.LevelLimitReachedSeedAttack -= OnDisableButtonSpeedAttack;
+        _gun.LevelLimitReachedSpeedAttack -= OnDisableButtonSpeedAttack;
+        _gun.LevelLimitReachedSpeedExplosion -= OnDisableButtonSpeedExplosion;
         _gun.LevelLimitReachedRadiusExplosion -= OnDisableButtonRadiusExplosion;
         _gun.LevelLimitReachedDamageExplosion -= OnDisableButtonDamageExplosion;
     }
@@ -84,11 +90,11 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade, int levelDamage, int levelRicochet, int levelSpeedAttack, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade, int levelDamage, int levelRicochet, int levelSpeedAttack, int levelSpeedExplosion, int levelDamageExplosion, int levelRadiusExplosion)
     {
         _countDasroyBombs = countDasroyBombs;
         _wallet.LoadSave(coins);
-        _gun.LoadSave(levelUpgrade, levelDamage, levelRicochet, levelSpeedAttack, levelDamageExplosion, levelRadiusExplosion);
+        _gun.LoadSave(levelUpgrade, levelDamage, levelRicochet, levelSpeedAttack, levelSpeedExplosion, levelDamageExplosion, levelRadiusExplosion);
         _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
         _radiusExplosionButton.ChangeText(_gun.LevelRadiusExplosion);
         _ricochetButton.ChangeText(_gun.LevelRicochet);
@@ -117,6 +123,7 @@ public class Player : MonoBehaviour
     private void OnDisableButtonDamage() => _damgeButton.enabled = false;
     private void OnDisableButtonRecochet() => _ricochetButton.enabled = false;
     private void OnDisableButtonSpeedAttack() => _speedAttackButton.enabled = false;
+    private void OnDisableButtonSpeedExplosion() => _speedExplosionButton.enabled = false;
     private void OnDisableButtonRadiusExplosion() => _radiusExplosionButton.enabled = false;
     private void OnDisableButtonDamageExplosion() => _damageExplosionButton.enabled = false;
 
@@ -148,5 +155,11 @@ public class Player : MonoBehaviour
     {
         if (_wallet.GetCoins(cost))
             _speedAttackButton.ChangeText(_gun.UpLevelSpeedAttack());
+    }
+
+    private void UpSpeedExplosion(float cost)
+    {
+        if (_wallet.GetCoins(cost))
+            _speedExplosionButton.ChangeText(_gun.UpLevelSpeedExplosion());
     }
 }

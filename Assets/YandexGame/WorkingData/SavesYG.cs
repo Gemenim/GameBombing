@@ -19,6 +19,7 @@ namespace YG
         public int LevelUpgradeDamage = 1;
         public int LevelUpgradeRicochet = 1;
         public int LevelUpgradeSpeedAttack = 1;
+        public int LevelUpgradeSpeedExplosion = 1;
         public int LevelUpgradeDamageExplosion = 1;
         public int LevelUpgradeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;

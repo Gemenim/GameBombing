@@ -4,12 +4,17 @@ using YG;
 
 public class Game : MonoBehaviour
 {
+    private const float c_coefficientExperience = 0.45f;
+    private const float c_ñoefficientNeedExperience = 0.01f;
+    private const int c_multiplierLevel = 10;
+    private const float c_defoltNeedExperience = 1500f;
+
     [SerializeField] Player _player;
     [SerializeField] private BombsGenerator _generator;
-    [SerializeField] private Transform _bombs;
     [SerializeField] private CollectorCubes _collector;
+    [SerializeField] private Sky _sky;
     [SerializeField] private BarrierMover _barrierMover;
-    [SerializeField] private ViewLevelBar _levelBar;
+    [SerializeField] private LevelBar _levelBar;
     [SerializeField] private TimerView _timerView;
 
     [Header("Windows")]
@@ -21,11 +26,6 @@ public class Game : MonoBehaviour
     [SerializeField] private MuteSourceButton _muteSourceButton;
 
     [SerializeField] private string[] _nameLeaderbords;
-
-    private const float c_coefficientExperience = 0.45f;
-    private const float c_ñoefficientNeedExperience = 0.01f;
-    private const int c_multiplierLevel = 10;
-    private const float c_defoltNeedExperience = 1500f;
 
     private Bomb _bomb;
     private int _maxNumberAttempts = 5;
@@ -130,7 +130,8 @@ public class Game : MonoBehaviour
     [ContextMenu("Tsar")]
     private void SpawnTsarBomb()
     {
-        ClearOfBombs();
+        _sky.ClearBombs();
+        _sky.ClearBullets();
         Spawn(true);
     }
 
@@ -145,7 +146,8 @@ public class Game : MonoBehaviour
 
     private void RespawnBomb()
     {
-        ClearOfBombs();
+        _sky.ClearBombs();
+        _sky.ClearBullets();
         _levelBar.SetNeedExperience(GetNeedExperience() / _maxNumberAttempts, Level);
 
         if (_maxNumberAttempts > 0)
@@ -195,21 +197,22 @@ public class Game : MonoBehaviour
         if (isTsarBomb)
         {
             _bomb = _generator.Spawn(Level, isTsarBomb, _timerView);
-            _bomb.transform.SetParent(_bombs);
+            _bomb.transform.SetParent(_sky.Bombs);
+            _bomb.SetParentCubes(_sky.Cubes);
             _bomb.Dastroy += RespawnBomb;
             _hudScreen.OnTimer();
         }
         else
         {
             _bomb = _generator.Spawn(Level, isTsarBomb);
-            _bomb.transform.SetParent(_bombs);
+            _bomb.transform.SetParent(_sky.Bombs);
+            _bomb.SetParentCubes(_sky.Cubes);
             _hudScreen.OffTimer();
         }
     }
 
     private float GetNeedExperience()
     {
-        //float needExperience = c_defoltNeedExperience * Mathf.Pow(Level, _levelCoefficientNeedExperience) - (c_defoltNeedExperience * Level);
         float needExperience = LevelCalculator.Calculat(c_defoltNeedExperience, _levelCoefficientNeedExperience, Level, c_multiplierLevel, c_ñoefficientNeedExperience);
         return needExperience > 0 ? needExperience : c_defoltNeedExperience;
     }
@@ -226,7 +229,8 @@ public class Game : MonoBehaviour
         YandexGame.savesData.LevelUpgrade = _player.LevelUpgrade;
         YandexGame.savesData.LevelUpgradeDamage = _player.LevelUpgradeDamage;
         YandexGame.savesData.LevelUpgradeRicochet = _player.LevelUpgradeRicochet;
-        YandexGame.savesData.LevelUpgradeSpeedAttack = _player.LevelUpgradeSeedAttack;
+        YandexGame.savesData.LevelUpgradeSpeedAttack = _player.LevelUpgradeSpeedAttack;
+        YandexGame.savesData.LevelUpgradeSpeedExplosion = _player.LevelUpgradeSpeedExplosion;
         YandexGame.savesData.LevelUpgradeDamageExplosion = _player.LevelUpgradeDamageExplosion;
         YandexGame.savesData.LevelUpgradeRadiusExplosion = _player.LevelUpgradeRadiusExplosion;
         YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
@@ -239,7 +243,7 @@ public class Game : MonoBehaviour
 
     private void ResetSeve()
     {
-        ClearOfBombs();
+        _sky.Clear();
 
         YandexGame.ResetSaveProgress();
         LoadSave();
@@ -250,21 +254,13 @@ public class Game : MonoBehaviour
     private void LoadSave()
     {
         Level = YandexGame.savesData.LevelGame;
-        _levelBar.AddExperience(YandexGame.savesData.Experience);
         _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgrade,
             YandexGame.savesData.LevelUpgradeDamage, YandexGame.savesData.LevelUpgradeRicochet, YandexGame.savesData.LevelUpgradeSpeedAttack,
-            YandexGame.savesData.LevelUpgradeDamageExplosion, YandexGame.savesData.LevelUpgradeRadiusExplosion);
+            YandexGame.savesData.LevelUpgradeSpeedExplosion, YandexGame.savesData.LevelUpgradeDamageExplosion, YandexGame.savesData.LevelUpgradeRadiusExplosion);
         GetCoefficientNeedExperience();
         _levelBar.SetNeedExperience(GetNeedExperience(), Level);
+        _levelBar.AddExperience(YandexGame.savesData.Experience);
         StartUpdateTop();
-    }
-
-    private void ClearOfBombs()
-    {
-        int countObjects = _bombs.childCount;
-
-        for (int i = 0; i < countObjects; i++)
-            Destroy(_bombs.GetChild(i).gameObject);
     }
 
     private IEnumerator UpdateTop(long[] score)

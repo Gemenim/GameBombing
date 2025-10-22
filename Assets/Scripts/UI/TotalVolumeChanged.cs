@@ -3,11 +3,11 @@ using UnityEngine.Audio;
 
 public class TotalVolumeChanged : MonoBehaviour
 {
-    [SerializeField] private AudioMixer _mixer;
-    [SerializeField] private MuteSourceButton _mute;
-
     private const string c_name = "Master";
     private const float c_startVolume = 0.7f;
+
+    [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private MuteSourceButton _mute;
 
     private void Start()
     {

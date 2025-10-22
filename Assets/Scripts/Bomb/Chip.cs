@@ -11,12 +11,16 @@ public class Chip : MonoBehaviour
     protected Transform _transform;
     protected Vector3 _cubesInfoStartPosition;
 
+    private Transform _parentCubes;
+
     private void Awake()
     {
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
         _rb.mass = transform.childCount;
     }
+
+    public void SetParentCubes(Transform parent) => _parentCubes = parent;
 
     public void DetouchCubeRecalculate(Cube cube)
     {
@@ -26,7 +30,7 @@ public class Chip : MonoBehaviour
 
         cube.transform.parent = null;
         Rigidbody rb = cube.gameObject.AddComponent<Rigidbody>();
-        cube.transform.parent = _transform.parent;
+        cube.transform.parent = _parentCubes;
 
         RecalculateCubes();
     }
@@ -135,17 +139,19 @@ public class Chip : MonoBehaviour
 
         for (int i = 1; i < groups.Count; i++)
         {
-            GameObject chip = new GameObject("Chip");
+            GameObject newChip = new GameObject("Chip");
             Transform firstCube = _cubes[groups[i].Cubes[0] - 1].transform;
-            chip.transform.SetPositionAndRotation(firstCube.position, firstCube.rotation);
+            newChip.transform.SetPositionAndRotation(firstCube.position, firstCube.rotation);
 
             foreach (int id in groups[i].Cubes)
-                _cubes[id - 1].transform.parent = chip.transform;
+                _cubes[id - 1].transform.parent = newChip.transform;
 
-            chip.AddComponent<Chip>().Collect();
-            Rigidbody rigidbody = chip.GetComponent<Rigidbody>();
+            Chip chip = newChip.AddComponent<Chip>();
+            chip.Collect();
+            chip.SetParentCubes(_parentCubes);
+            Rigidbody rigidbody = newChip.GetComponent<Rigidbody>();
             rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
-            chip.transform.parent = _transform.parent;
+            newChip.transform.parent = _transform.parent;
         }
 
         CollectCubes();

@@ -3,14 +3,14 @@ using YG;
 
 public class RewardAd : MonoBehaviour
 {
+    private const float c_levelCoefficient = 2f;
+    private const int c_countShot = 5;
+
     [SerializeField] private int AdID;
     [SerializeField] private Game _game;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private Gun _gun;
     [SerializeField] private float _countAddCoins = 300f;
-
-    private const float c_levelCoefficient = 2f;
-    private const int c_countShot = 5;
 
     private void OnValidate()
     {

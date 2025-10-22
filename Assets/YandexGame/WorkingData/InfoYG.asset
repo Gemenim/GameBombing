@@ -104,6 +104,36 @@ MonoBehaviour:
       score: 1
       photo: https://justplaygames.ru/public/icon_player.png
       uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
+    - rank: 6
+      name: Player6
+      score: 1
+      photo: https://justplaygames.ru/public/icon_player.png
+      uniqueID: 321
     thisPlayer:
       rank: 2
       score: 50

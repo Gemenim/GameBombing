@@ -41,6 +41,7 @@ public class LeaderbordScreen : Window
 
     public override void Open()
     {
+        OnLevelPlane();
         WindowGroup.alpha = 1f;
         WindowGroup.interactable = true;
         WindowGroup.blocksRaycasts = true;

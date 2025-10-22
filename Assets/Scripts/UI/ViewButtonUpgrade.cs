@@ -6,13 +6,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ViewButtonUpgrade : MonoBehaviour
 {
+    private const float c_coefficientExperience = 0.01f; 
+    private const int c_multiplierLevel = 10; 
+
     [SerializeField] private TextMeshProUGUI _countCoins;
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private float _startCoins = 25;
     [SerializeField] private float _levelCoefficientExperience = 0.7f;
-
-    private const float c_coefficientExperience = 0.01f; 
-    private const int c_multiplierLevel = 10; 
 
     private Button _button;
     private float _cost;

@@ -14,7 +14,7 @@ public static class LevelCalculator
         if (level % levelMultiplicity == 0)
         {
             int multiplier = level / levelMultiplicity;
-            coefficien += coefficien * multiplier;
+            coefficien += coefficienLevel * multiplier;
         }
 
         float value = defoltValue * Mathf.Pow(level, coefficien) - (defoltValue * level);
