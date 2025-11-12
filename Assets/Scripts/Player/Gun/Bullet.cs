@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private Transform _shockWavePosition;
     [SerializeField] private ParticleSystem _shockWave;
+    [SerializeField] private BulletTrail _trail;
 
     private Transform _transform;
     private Rigidbody _rb;
@@ -32,6 +33,16 @@ public class Bullet : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
+    private void OnEnable()
+    {
+        _trail.Return += ReturnPool;
+    }
+
+    private void OnDisable()
+    {
+        _trail.Return -= ReturnPool;
+    }
+
     private void Update()
     {
         _lastVelocity = _rb.velocity;
@@ -43,11 +54,11 @@ public class Bullet : MonoBehaviour
 
         if (collider.TryGetComponent<Cube>(out Cube cube))
         {
+            _countRicochet++;
             cube.TakeDamage(_damage);
 
             if (_delayExlosion <= 0)
             {
-                Debug.Log("Folse");
                 List<Cube> cubes = GetCubes();
 
                 if (cubes.Count > 0)
@@ -55,10 +66,8 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                Debug.Log("GO");
                 if (_isCharged)
                 {
-                    Debug.Log("True");
                     _rechargeExplosion = StartCoroutine(RechargeExlosion());
                     List<Cube> cubes = GetCubes();
 
@@ -76,10 +85,8 @@ public class Bullet : MonoBehaviour
 
         _audioSource.PlayOneShot(_audioSource.clip);
 
-        _countRicochet++;        
-
         if (_countRicochet == _levelRicochet + _defoltRicochet)
-            ReturnInPool();
+            Diseble();
     }
 
     public void SetDirection(Vector3 direction) => _rb.velocity = direction * _velocity;
@@ -87,7 +94,7 @@ public class Bullet : MonoBehaviour
     public void SetPool(Pool<Bullet> pool) => _pool = pool;
     public void SetAudioSource(AudioSource audioSource) => _audioSource = audioSource;
 
-    public void ReturnInPool()
+    public void Diseble()
     {
         if (!_isCharged)
         {
@@ -97,7 +104,8 @@ public class Bullet : MonoBehaviour
 
         _shockWave.transform.parent = null;
         _countRicochet = 0;
-        _pool.Return(this);
+        _trail.UnfastenIt();
+        gameObject.SetActive(false);
     }
 
     public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
@@ -110,6 +118,12 @@ public class Bullet : MonoBehaviour
         _delayExlosion = delayExplosion;
         _shockWave.startSize = _radiusExplosion * 2;
     }
+
+    private void ReturnPool()
+    {
+        _pool.Return(this);
+    }
+
 
     private void SetShockWaveEffect()
     {

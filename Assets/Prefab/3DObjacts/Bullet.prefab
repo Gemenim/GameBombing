@@ -5056,7 +5056,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 8
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &4707343617058674903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5071,6 +5071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shockWavePosition: {fileID: 6590530031543030280}
   _shockWave: {fileID: 9139003278904368116}
+  _trail: {fileID: 5654643809257799179}
 --- !u!1 &4654354853050423200
 GameObject:
   m_ObjectHideFlags: 0
@@ -5176,6 +5177,7 @@ GameObject:
   - component: {fileID: 7281913681708602674}
   - component: {fileID: 5529436540871517501}
   - component: {fileID: 5040205843304566911}
+  - component: {fileID: 5654643809257799179}
   m_Layer: 7
   m_Name: Trail
   m_TagString: Untagged
@@ -6088,7 +6090,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 25
+      scalar: 40
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9995,3 +9997,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5654643809257799179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9147862015608087226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b41cc9f947a63d943aa76534e6482078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trail: {fileID: 5529436540871517501}

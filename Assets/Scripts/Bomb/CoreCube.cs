@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(ColorCube))]
 public class CoreCube : Cube
 {
-    [Range(0, 10)]
-    [SerializeField] private float _velocityDestoy = 1;
-
     private const float c_hilthCore = 2.5f;
     private const float c_levelCoefficientCore = 1.5f;
 
@@ -32,8 +29,6 @@ public class CoreCube : Cube
     {
         base.CalculateStats();
 
-        //Hilth += (c_hilthCore * Mathf.Pow(_level, c_levelCoefficientCore) - (c_hilthCore * _level));
-        //Cost += (c_defoltCost * Mathf.Pow(_level, c_levelCoefficientCore) - (c_defoltCost * _level));
         Hilth += LevelCalculator.Calculat(c_hilthCore, c_levelCoefficientCore, _level);
         Cost += LevelCalculator.Calculat(c_defoltCost, c_levelCoefficientCore, _level);
     }
@@ -62,15 +57,8 @@ public class CoreCube : Cube
     private void BreakItUpBomb()
     {
         foreach (Cube cube in _allCubes)
-        {
             if (cube != null)
-            {
                 cube.TakeDamage(cube.Hilth);
-
-                if (cube.TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
-                    rigidbody.velocity = Vector3.up * _velocityDestoy;
-            }
-        }
     }
 
     private IEnumerator Countdown(float countdownTime)

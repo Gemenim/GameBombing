@@ -4,7 +4,8 @@ using UnityEngine;
 public class CollectorCubes : MonoBehaviour
 {
     [SerializeField] private Wallet _wallet;
-
+    [SerializeField] private SplashGold _splashGold;
+ 
     public event Action<float> PutCoins;
     public event Action<bool> ColectCore;
 
@@ -25,6 +26,8 @@ public class CollectorCubes : MonoBehaviour
             cube.IsColect = true;
             cube.TakeDamage(cube.Hilth);
             cube.StartDastroy();
+
+            _splashGold.Splash(cube.transform.position.x);
         }
     }
 }

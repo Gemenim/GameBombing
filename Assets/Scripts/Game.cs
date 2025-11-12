@@ -94,10 +94,12 @@ public class Game : MonoBehaviour
     {
         YandexGame.GameplayStop();
         _upgrateScreen.Open();
+        Time.timeScale = 0;
     }
 
     private void CloseUpgradeScreen()
     {
+        Time.timeScale = 1;
         YandexGame.GameplayStart();
         _upgrateScreen.Close();
     }

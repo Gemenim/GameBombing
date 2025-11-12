@@ -29,15 +29,18 @@ public class MoverCart : MonoBehaviour
     {
         if (YandexGame.isGamePlaying)
         {
-            Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
-            _rigidbody.AddForce(force, ForceMode.Force);
-            float speed = Vector3.Magnitude(_rigidbody.velocity);
-            float direction = _rigidbody.velocity.normalized.x;
-
-            foreach (Animator animator in _animators)
+            if (Time.deltaTime > 0)
             {
-                animator.SetFloat("speed", speed);
-                animator.SetFloat("velocityVector", speed * direction);
+                Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
+                _rigidbody.AddForce(force, ForceMode.Force);
+                float speed = Vector3.Magnitude(_rigidbody.velocity);
+                float direction = _rigidbody.velocity.normalized.x;
+
+                foreach (Animator animator in _animators)
+                {
+                    animator.SetFloat("speed", speed);
+                    animator.SetFloat("velocityVector", speed * direction);
+                }
             }
         }
     }

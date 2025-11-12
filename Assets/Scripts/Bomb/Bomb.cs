@@ -7,7 +7,6 @@ public class Bomb : Chip
     [SerializeField] private float _countdownTime;
     [SerializeField] private float _randomPositionZ = 0.25f;
 
-
     [Header("Settings 'TsarBomba'")]
     [SerializeField] private int _coefficientLevel;
 
@@ -27,9 +26,9 @@ public class Bomb : Chip
     private void Start()
     {
         RememberAllCubes();
+        Collect();
         RandomizePositionZ();
         _core.SetCubes(_allCubes);
-        Collect();
         SetStats();
         _transform.parent.GetComponent<RanomazeBombs>().Randomaze();
     }
@@ -61,7 +60,7 @@ public class Bomb : Chip
 
     private void RememberAllCubes()
     {
-        _allCubes = _transform.GetComponentsInChildren<Cube>();
+        _allCubes = transform.GetComponentsInChildren<Cube>();
     }
 
     private void Explode() => Dastroy?.Invoke();

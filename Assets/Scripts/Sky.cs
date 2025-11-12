@@ -32,6 +32,6 @@ public class Sky : MonoBehaviour
         int countObjects = Bullets.childCount;
 
         for (int i = 0; i < countObjects; i++)
-            Bullets.GetChild(i).GetComponent<Bullet>().ReturnInPool();
+            Bullets.GetChild(i).GetComponent<Bullet>().Diseble();
     }
 }

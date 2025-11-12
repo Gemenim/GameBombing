@@ -12,8 +12,6 @@ public class SistemFont : MonoBehaviour
         if (objects == null)
             objects = FindObjectsOfType<TextMeshProUGUI>();
 
-        Debug.Log(objects.Length);
-
         foreach (TextMeshProUGUI obj in objects)
         {
             obj.font = fontAsset;

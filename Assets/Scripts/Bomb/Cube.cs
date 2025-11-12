@@ -4,16 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(ColorCube))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
-    [SerializeField] protected float _levelCoefficientCost = 1.7f;
-
     protected const float c_defoltCost = 10f;
     protected const float c_defoltHilth = 3f;
     protected const float c_ñoefficientLevel = 0.05f;
     protected const int c_multiplierLevel = 5;
 
+    [SerializeField] private GameObject _trail;
+    [Range(0, 50)]
+    [SerializeField] private float _force = 0.1f;
+
+    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
+    [SerializeField] protected float _levelCoefficientCost = 1.7f;
+
     protected Transform _transform;
-    protected float _dalayToDestruction = 2.5f;
+    protected float _dalayToDestruction = 1f;
     protected int _level;
     protected bool _detouched;
 
@@ -35,6 +39,15 @@ public class Cube : MonoBehaviour
         _color = _colorCube.Color;
     }
 
+    public void Push()
+    {
+        Vector3 directionExplosion = _transform.localPosition.normalized;
+        Vector3 velocity = directionExplosion * _force;
+
+        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+            rigidbody.velocity = velocity;
+    }
+
     public virtual void SetSetings(int level, bool isTsar)
     {
         IsTsar = isTsar;
@@ -44,8 +57,6 @@ public class Cube : MonoBehaviour
 
     public virtual void CalculateStats()
     {
-        //Hilth = (c_defoltHilth * Mathf.Pow(_level, _levelCoefficientHilth) - (c_defoltHilth * _level));
-        //Cost = (c_defoltCost * Mathf.Pow(_level, _levelCoefficientCost) - (c_defoltCost * _level));
         Hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
         Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
 
@@ -85,6 +96,11 @@ public class Cube : MonoBehaviour
 
         if (chip != null)
             chip.DetouchCubeRecalculate(this);
+
+        _trail.SetActive(true);
+
+        if (!IsColect)
+            Push();
     }
 
     private void ChangeColor()
@@ -98,6 +114,7 @@ public class Cube : MonoBehaviour
         float _dalay = 0;
         Vector3 startScale = _transform.localScale;
         Vector3 endScale = new Vector3(0, 0, 0);
+        _trail.SetActive(false);
 
         while (true)
         {
