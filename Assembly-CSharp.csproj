@@ -111,6 +111,7 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\AdNotificationYG.cs" />
     <Compile Include="Assets\Scripts\UI\PopupHint.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\Scripts\Player\Gun\ShockWaveEffect.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Authorization\Auth_yg.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -122,7 +123,9 @@
     <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Payments\PurchaseYG.cs" />
+    <Compile Include="Assets\Scripts\Player\Gun\BulletEffect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Scripts\Bomb\LightAlarm.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\TimerBeforeAdsYG.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\LanguageExample.cs" />
@@ -131,7 +134,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Bomb\Bomb.cs" />
     <Compile Include="Assets\PlayerInput.cs" />
-    <Compile Include="Assets\Scripts\Player\Gun\BulletTrail.cs" />
     <Compile Include="Assets\Scripts\GameScaler.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Leaderboards\LeaderboardYG.cs" />
     <Compile Include="Assets\Scripts\UI\SettingsScreen.cs" />

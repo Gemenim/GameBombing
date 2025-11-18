@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &83889965960257930
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6590530031543030280}
-  m_Layer: 0
-  m_Name: ShockWavePosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6590530031543030280
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83889965960257930}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.85}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6291793649776557904}
-  m_Father: {fileID: 8519972332735145864}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &692404798378750710
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,6 +11,7 @@ GameObject:
   - component: {fileID: 6291793649776557904}
   - component: {fileID: 9139003278904368116}
   - component: {fileID: 471090097736694745}
+  - component: {fileID: 2614592586529842528}
   m_Layer: 0
   m_Name: ShockWave
   m_TagString: Untagged
@@ -59,11 +28,11 @@ Transform:
   m_GameObject: {fileID: 692404798378750710}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6590530031543030280}
+  m_Father: {fileID: 8519972332735145864}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &9139003278904368116
 ParticleSystem:
@@ -4920,6 +4889,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2614592586529842528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692404798378750710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d34acf32f093b4c91537c6f13a6ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleSystem: {fileID: 9139003278904368116}
 --- !u!1 &3609698210468178556
 GameObject:
   m_ObjectHideFlags: 0
@@ -4956,7 +4938,7 @@ Transform:
   m_Children:
   - {fileID: 531179856612991137}
   - {fileID: 7281913681708602674}
-  - {fileID: 6590530031543030280}
+  - {fileID: 6291793649776557904}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6302050346022151102
@@ -5069,8 +5051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832e6f52edc928d439f618b7964d5f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shockWavePosition: {fileID: 6590530031543030280}
-  _shockWave: {fileID: 9139003278904368116}
+  _shockWave: {fileID: 2614592586529842528}
   _trail: {fileID: 5654643809257799179}
 --- !u!1 &4654354853050423200
 GameObject:
@@ -6090,7 +6071,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 40
+      scalar: 60
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10009,4 +9990,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b41cc9f947a63d943aa76534e6482078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trail: {fileID: 5529436540871517501}
+  _particleSystem: {fileID: 5529436540871517501}

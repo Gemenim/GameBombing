@@ -4,7 +4,9 @@ using YG;
 [RequireComponent(typeof(Rigidbody))]
 public class MoverCart : MonoBehaviour
 {
-    [SerializeField] PidRegulator _pidRegulator = new PidRegulator();
+    [SerializeField] private PidRegulator _pidRegulator = new PidRegulator();
+    [Range(0, 100)]
+    [SerializeField] private float _maxSpeed;
     [SerializeField] private Transform _rails;
     [SerializeField] private float _maxForce;
     [SerializeField] private float _minRange;
@@ -32,7 +34,10 @@ public class MoverCart : MonoBehaviour
             if (Time.deltaTime > 0)
             {
                 Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
-                _rigidbody.AddForce(force, ForceMode.Force);
+
+                if (_rigidbody.velocity.x < 50f)
+                    _rigidbody.AddForce(force, ForceMode.Force);
+
                 float speed = Vector3.Magnitude(_rigidbody.velocity);
                 float direction = _rigidbody.velocity.normalized.x;
 

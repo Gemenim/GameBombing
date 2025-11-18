@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class BulletTrail : MonoBehaviour
+public class BulletEffect : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _trail;
+    [SerializeField] protected ParticleSystem _particleSystem;
 
     private Transform _transform;
     private Transform _parent;
@@ -26,7 +26,7 @@ public class BulletTrail : MonoBehaviour
 
     private IEnumerator Countdown()
     {
-        while (_trail.particleCount > 0)
+        while (_particleSystem.particleCount > 0)
             yield return null;
 
         _transform.parent = _parent;

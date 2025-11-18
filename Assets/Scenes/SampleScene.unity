@@ -231,8 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countCoins: {fileID: 461456244}
   _level: {fileID: 1560915031}
-  _startCoins: 75
-  _levelCoefficientExperience: 2.7
+  _startCoins: 80
+  _levelCoefficientExperience: 2.8
 --- !u!222 &10098799
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 21199407}
   - component: {fileID: 21199409}
   - component: {fileID: 21199408}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
   m_sharedMaterial: {fileID: -6821427509954829682, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
@@ -507,7 +507,7 @@ Transform:
   m_GameObject: {fileID: 48194339}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -79.9, y: 13.5, z: 0}
+  m_LocalPosition: {x: -80, y: 37, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1485,7 +1485,7 @@ MonoBehaviour:
   _countCoins: {fileID: 1069970382}
   _level: {fileID: 1113892623}
   _startCoins: 50
-  _levelCoefficientExperience: 2.5
+  _levelCoefficientExperience: 2.2
 --- !u!114 &147003993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1688,7 +1688,7 @@ GameObject:
   - component: {fileID: 158802544}
   - component: {fileID: 158802546}
   - component: {fileID: 158802545}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2456,7 +2456,7 @@ GameObject:
   - component: {fileID: 258484473}
   - component: {fileID: 258484475}
   - component: {fileID: 258484474}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3534,7 +3534,7 @@ GameObject:
   - component: {fileID: 378866327}
   - component: {fileID: 378866329}
   - component: {fileID: 378866328}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3906,7 +3906,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 150
+  m_text: 160
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
   m_sharedMaterial: {fileID: -6821427509954829682, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
@@ -6024,8 +6024,8 @@ Transform:
   m_GameObject: {fileID: 600401145}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -53, z: 0}
-  m_LocalScale: {x: 230, y: 1, z: 42.99}
+  m_LocalPosition: {x: 0, y: -52.5342, z: 0}
+  m_LocalScale: {x: 230, y: 1.9315, z: 42.99}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 712068856}
@@ -6400,8 +6400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countCoins: {fileID: 1587805773}
   _level: {fileID: 2108982138}
-  _startCoins: 150
-  _levelCoefficientExperience: 2.8
+  _startCoins: 100
+  _levelCoefficientExperience: 2.3
 --- !u!114 &642291622 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4573768245899524285, guid: d7eb4397aa3dc7e448ce48c87988b5c7, type: 3}
@@ -6424,7 +6424,7 @@ GameObject:
   - component: {fileID: 646146566}
   - component: {fileID: 646146568}
   - component: {fileID: 646146567}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13012,6 +13012,7 @@ MonoBehaviour:
     _kd: 0.15
     _minOut: -10
     _maxOut: 10
+  _maxSpeed: 0
   _rails: {fileID: 1387292872}
   _maxForce: 2
   _minRange: 5
@@ -19532,7 +19533,7 @@ GameObject:
   - component: {fileID: 1060897067}
   - component: {fileID: 1060897069}
   - component: {fileID: 1060897068}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21913,7 +21914,7 @@ Transform:
   m_GameObject: {fileID: 1339387235}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 34.5, z: 0}
+  m_LocalPosition: {x: 0, y: 35, z: 0}
   m_LocalScale: {x: 23, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22219,7 +22220,7 @@ GameObject:
   - component: {fileID: 1375165469}
   - component: {fileID: 1375165471}
   - component: {fileID: 1375165470}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22280,7 +22281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387292872}
   - component: {fileID: 1387292871}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Rails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23696,7 +23697,7 @@ GameObject:
   - component: {fileID: 1518318345}
   - component: {fileID: 1518318347}
   - component: {fileID: 1518318346}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24783,7 +24784,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 300
+  m_text: 200
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
   m_sharedMaterial: {fileID: -6821427509954829682, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
@@ -25926,7 +25927,7 @@ GameObject:
   - component: {fileID: 1724461639}
   - component: {fileID: 1724461641}
   - component: {fileID: 1724461640}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26386,7 +26387,7 @@ Transform:
   m_GameObject: {fileID: 1768150487}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 80.2, y: 13.5, z: 0}
+  m_LocalPosition: {x: 80, y: 37, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27101,8 +27102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countCoins: {fileID: 32654891}
   _level: {fileID: 308624907}
-  _startCoins: 100
-  _levelCoefficientExperience: 3.35
+  _startCoins: 50
+  _levelCoefficientExperience: 2.5
 --- !u!222 &1873198773
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28037,8 +28038,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countCoins: {fileID: 2100327783}
   _level: {fileID: 1312766994}
-  _startCoins: 10
-  _levelCoefficientExperience: 2.5
+  _startCoins: 20
+  _levelCoefficientExperience: 2
 --- !u!224 &1964533515 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6688408495505764062, guid: d7eb4397aa3dc7e448ce48c87988b5c7, type: 3}
@@ -28235,7 +28236,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 250
+  m_text: 160
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
   m_sharedMaterial: {fileID: -6821427509954829682, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
@@ -28704,8 +28705,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countCoins: {fileID: 1976805914}
   _level: {fileID: 1973432531}
-  _startCoins: 125
-  _levelCoefficientExperience: 2.65
+  _startCoins: 80
+  _levelCoefficientExperience: 2.2
 --- !u!114 &2012626278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29109,8 +29110,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3349284, y: 0.020000003, z: 0.04919993}
-  m_Center: {x: 0.15741688, y: 6.387584e-10, z: -0.011522549}
+  m_Size: {x: 0.078952074, y: 0.020000005, z: 0.049199935}
+  m_Center: {x: 0.029007802, y: -0.000070457616, z: -0.011522466}
 --- !u!1 &2044336998
 GameObject:
   m_ObjectHideFlags: 0
@@ -29606,7 +29607,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 40
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
   m_sharedMaterial: {fileID: -6821427509954829682, guid: 1845994c3c496984c9777e25f838e74b, type: 2}
@@ -30774,8 +30775,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3349282, y: 0.019999996, z: 0.0491999}
-  m_Center: {x: 0.15741679, y: 0, z: -0.0115225455}
+  m_Size: {x: 0.084209435, y: 0.019999996, z: 0.0491999}
+  m_Center: {x: 0.031645823, y: 0.00006901332, z: -0.011522619}
 --- !u!1 &4471813609362419842
 GameObject:
   m_ObjectHideFlags: 0
@@ -31008,7 +31009,7 @@ GameObject:
   - component: {fileID: 3584897004497542818}
   - component: {fileID: 8858888735458282304}
   - component: {fileID: 1174504162592078628}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31058,12 +31059,12 @@ MonoBehaviour:
   _defoltDamage: 3
   _startCostShot: 1
   _timeRecharge: 2.5
-  _maxLevelDamage: 300
-  _maxLevelRicochet: 40
+  _maxLevelDamage: 500
+  _maxLevelRicochet: 50
   _maxLevelSpeedAttack: 50
   _maxLevelSpeedExplosion: 100
   _maxLevelRadiusExplosion: 40
-  _maxLevelDamageExplosion: 50
+  _maxLevelDamageExplosion: 80
 --- !u!82 &8384721321603489784
 AudioSource:
   m_ObjectHideFlags: 0

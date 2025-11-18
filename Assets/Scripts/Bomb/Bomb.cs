@@ -30,7 +30,7 @@ public class Bomb : Chip
         RandomizePositionZ();
         _core.SetCubes(_allCubes);
         SetStats();
-        _transform.parent.GetComponent<RanomazeBombs>().Randomaze();
+        //_transform.parent.GetComponent<RanomazeBombs>().Randomaze();
     }
 
     private void OnEnable()

@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(ColorCube))]
 public class CoreCube : Cube
 {
+    [SerializeField] private LightAlarm _lightAlarm;
+
     private const float c_hilthCore = 2.5f;
     private const float c_levelCoefficientCore = 1.5f;
 
@@ -29,7 +31,7 @@ public class CoreCube : Cube
     {
         base.CalculateStats();
 
-        Hilth += LevelCalculator.Calculat(c_hilthCore, c_levelCoefficientCore, _level);
+        _hilth += LevelCalculator.Calculat(c_hilthCore, c_levelCoefficientCore, _level);
         Cost += LevelCalculator.Calculat(c_defoltCost, c_levelCoefficientCore, _level);
     }
 
@@ -46,8 +48,9 @@ public class CoreCube : Cube
 
     public void StartCountdown(float countdownTime) => _coroutineCountdown = StartCoroutine(Countdown(countdownTime));
 
-    protected override void Detouch()
+    public override void Detouch()
     {
+        _lightAlarm.Stop();
         base.Detouch();
 
         if (_coroutineCountdown != null)
@@ -58,7 +61,7 @@ public class CoreCube : Cube
     {
         foreach (Cube cube in _allCubes)
             if (cube != null)
-                cube.TakeDamage(cube.Hilth);
+                cube.Detouch();
     }
 
     private IEnumerator Countdown(float countdownTime)

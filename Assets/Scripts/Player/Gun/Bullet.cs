@@ -7,9 +7,8 @@ public class Bullet : MonoBehaviour
 {
     private const float c_radius = 0.5f;
 
-    [SerializeField] private Transform _shockWavePosition;
-    [SerializeField] private ParticleSystem _shockWave;
-    [SerializeField] private BulletTrail _trail;
+    [SerializeField] private ShockWaveEffect _shockWave;
+    [SerializeField] private BulletEffect _trail;
 
     private Transform _transform;
     private Rigidbody _rb;
@@ -52,7 +51,7 @@ public class Bullet : MonoBehaviour
     {
         Collider collider = collision.GetContact(0).otherCollider;
 
-        if (collider.TryGetComponent<Cube>(out Cube cube))
+        if (collider.TryGetComponent<Cube>(out Cube cube) && !cube.IsDetouch)
         {
             _countRicochet++;
             cube.TakeDamage(_damage);
@@ -66,7 +65,7 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                if (_isCharged)
+                if (_isCharged && gameObject.active)
                 {
                     _rechargeExplosion = StartCoroutine(RechargeExlosion());
                     List<Cube> cubes = GetCubes();
@@ -102,33 +101,25 @@ public class Bullet : MonoBehaviour
             _isCharged = true;
         }
 
-        _shockWave.transform.parent = null;
         _countRicochet = 0;
         _trail.UnfastenIt();
+        _shockWave.UnfastenIt();
         gameObject.SetActive(false);
     }
 
     public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
     {
-        SetShockWaveEffect();
         _damage = damage;
         _levelRicochet = levelRicochet;
         _radiusExplosion = radiusExplosion + c_radius;
         _explosionDamageCoefficient = explosionDamageCoefficient;
         _delayExlosion = delayExplosion;
-        _shockWave.startSize = _radiusExplosion * 2;
+        _shockWave.SetDiametr(radiusExplosion * 2);
     }
 
     private void ReturnPool()
     {
         _pool.Return(this);
-    }
-
-
-    private void SetShockWaveEffect()
-    {
-        _shockWave.transform.parent = _shockWavePosition;
-        _shockWave.transform.localPosition = Vector3.zero;
     }
 
     private void Explosion(List<Cube> cubes)

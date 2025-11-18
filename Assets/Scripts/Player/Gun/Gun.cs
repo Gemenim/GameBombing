@@ -8,11 +8,11 @@ public class Gun : MonoBehaviour
 {
     private const float c_distanceZ = 30f;
     private const float c_levelCoefficientDamage = 1.9f;
-    private const float c_levelCostCoefficient = 1.95f;
+    private const float c_levelCostCoefficient = 1.5f;
     private const float c_defoltRadiusExplosion = 0.1f;
     private const float c_defoltSpeedExplosion = 30f;
     private const float c_stepSpeedExplosion = 0.3f;
-    private const float c_coefficientRadiusExplosion = 0.15f;
+    private const float c_coefficientRadiusExplosion = 0.2f;
     private const float c_coefficientDamageExplosion = 0.02f;
     private const float c_coefficientRecharge = 0.04f;
 

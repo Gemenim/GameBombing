@@ -18,6 +18,7 @@ public class ColorCube : MonoBehaviour
 
     public void ApplyColor(Color color)
     {
+        Debug.Log(color);
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
         propertyBlock.SetColor("_Color", color);

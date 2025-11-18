@@ -17,9 +17,9 @@ public class Cube : MonoBehaviour
     [SerializeField] protected float _levelCoefficientCost = 1.7f;
 
     protected Transform _transform;
+    protected float _hilth;
     protected float _dalayToDestruction = 1f;
     protected int _level;
-    protected bool _detouched;
 
     private ColorCube _colorCube;
     private Color _color;
@@ -27,25 +27,16 @@ public class Cube : MonoBehaviour
 
     public bool IsColect = false;
 
-    public float Hilth { get; protected set; }
     public int Id { get; set; }
     public float Cost { get; protected set; }
     public bool IsTsar { get; protected set; }
+    public bool IsDetouch { get; private set; } = false;
 
     protected virtual void Awake()
     {
         _transform = transform;
         _colorCube = GetComponent<ColorCube>();
         _color = _colorCube.Color;
-    }
-
-    public void Push()
-    {
-        Vector3 directionExplosion = _transform.localPosition.normalized;
-        Vector3 velocity = directionExplosion * _force;
-
-        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
-            rigidbody.velocity = velocity;
     }
 
     public virtual void SetSetings(int level, bool isTsar)
@@ -57,11 +48,11 @@ public class Cube : MonoBehaviour
 
     public virtual void CalculateStats()
     {
-        Hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
+        _hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
         Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
 
-        if (Hilth == 0)
-            Hilth = c_defoltHilth;
+        if (_hilth == 0)
+            _hilth = c_defoltHilth;
 
         if (Cost == 0)
             Cost = c_defoltCost;
@@ -69,38 +60,41 @@ public class Cube : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Hilth -= damage;
+        _hilth -= damage;
 
-        if (Hilth <= 0)
+        if (_hilth <= 0)
         {
-            Hilth = 0;
-            gameObject.layer = 10;
+            _hilth = 0;
             Detouch();
         }
     }
 
     public virtual void StartDastroy()
     {
+        CheckParent();
         StartCoroutine(Destruction());
     }
 
     [ContextMenu("Detouched")]
-    protected virtual void Detouch()
+    public virtual void Detouch()
     {
-        if (_detouched)
+        if (IsDetouch)
             return;
 
-        _detouched = true;
+        IsDetouch = true;
         ChangeColor();
+        CheckParent();
+
+        if (!IsColect)
+            _trail.SetActive(true);
+    }
+
+    private void CheckParent()
+    {
         Chip chip = GetComponentInParent<Chip>();
 
         if (chip != null)
             chip.DetouchCubeRecalculate(this);
-
-        _trail.SetActive(true);
-
-        if (!IsColect)
-            Push();
     }
 
     private void ChangeColor()

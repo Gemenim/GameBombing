@@ -52,6 +52,7 @@ public class Chip : MonoBehaviour
 
         if (freeCubesIds.Count == 0)
         {
+            Debug.Log("Dastro Chip " + gameObject.name);
             Destroy(gameObject);
             return;
         }

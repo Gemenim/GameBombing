@@ -24,7 +24,6 @@ public class CollectorCubes : MonoBehaviour
 
             _wallet.PutCoins(cube.Cost);
             cube.IsColect = true;
-            cube.TakeDamage(cube.Hilth);
             cube.StartDastroy();
 
             _splashGold.Splash(cube.transform.position.x);
