@@ -10,9 +10,6 @@ public class Cube : MonoBehaviour
     protected const int c_multiplierLevel = 5;
 
     [SerializeField] private GameObject _trail;
-    [Range(0, 50)]
-    [SerializeField] private float _force = 0.1f;
-
     [SerializeField] protected float _levelCoefficientHilth = 2.1f;
     [SerializeField] protected float _levelCoefficientCost = 1.7f;
 

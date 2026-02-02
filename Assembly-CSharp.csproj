@@ -63,6 +63,7 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\LangYGAdditionalText.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\ForVisualScriptYG.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Payments\ConsumePurchasesYG.cs" />
+    <Compile Include="Assets\Scripts\Player\Radar.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\SaverTest.cs" />
     <Compile Include="Assets\Scripts\UI\ShowVidioButton.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\OpenAuthorizationDialog.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\YandexMetrica\JsonUtils.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets\Scripts\UI\UpdateLevelUpgrad.cs" />
     <Compile Include="Assets\YandexGame\DebuggingMode\Scripts\DebuggingModeYG.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\LevelCalculator.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\Payments\PaymentsCatalogYG.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\GetPlayerData.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Ability.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\ViewingAdsYG.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\YandexMetrica\YandexMetrica.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\LocalStorage\LocalStorage_yg.cs" />
@@ -100,10 +101,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\UI\Translator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\RadiusExposion.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\InfoYG\InfoYG.cs" />
     <Compile Include="Assets\Scripts\PidRegulator.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\UpdaterLevelSkills.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -112,11 +115,15 @@
     <Compile Include="Assets\Scripts\UI\PopupHint.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\Player\Gun\ShockWaveEffect.cs" />
+    <Compile Include="Assets\Scripts\Player\MoverPlatform.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Authorization\Auth_yg.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\SpeedAttack.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\UI\ViewButtonUpgrade.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\ReceivingPurchaseExample.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\Ricochet.cs" />
+    <Compile Include="Assets\Scripts\Player\Cloud\Cloud.cs" />
     <Compile Include="Assets\Scripts\UI\HudScreen.cs" />
     <Compile Include="Assets\Scripts\Pool.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
@@ -148,7 +155,9 @@
     <Compile Include="Assets\YandexGame\ScriptsYG\GameReadyAPI\GRA_yg.cs" />
     <Compile Include="Assets\Scripts\UI\TotalVolumeChanged.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\SpeedExplosion.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\ImageLoadYG.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\DamageExplosion.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\EnvironmentData\EnvirData_yg.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\YandexGame.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Inside\ConfigYG.cs" />
@@ -183,6 +192,7 @@
     <Compile Include="Assets\YandexGame\Example\Scripts\YandexMetricaExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\UI\ViewBar.cs" />
+    <Compile Include="Assets\Scripts\Player\Gun\MoverGun.cs" />
     <Compile Include="Assets\Scripts\Player\Gun\Laser.cs" />
     <Compile Include="Assets\Scripts\UI\MuteSourceButton.cs" />
     <Compile Include="Assets\Scripts\UI\NumberFormatter.cs" />
@@ -193,9 +203,11 @@
     <Compile Include="Assets\Scripts\UI\ViewWallet.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\LanguageYG.cs" />
     <Compile Include="Assets\Scripts\Bomb\ColorCube.cs" />
+    <Compile Include="Assets\Scripts\UI\UpdaterLevelUpgrad.cs" />
     <Compile Include="Assets\Font\SistemFont.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\UI\LevelBar.cs" />
+    <Compile Include="Assets\Scripts\Player\LevelSystem\Skills\Damage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

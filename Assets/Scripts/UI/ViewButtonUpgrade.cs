@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class ViewButtonUpgrade : MonoBehaviour
 {
     private const float c_coefficientExperience = 0.01f; 
-    private const int c_multiplierLevel = 10; 
+    private const int c_multiplierLevel = 10;
 
+    [SerializeField] private Ability _ability;
     [SerializeField] private TextMeshProUGUI _countCoins;
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private float _startCoins = 25;
@@ -19,11 +20,6 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     public event Action<float> OnButtonClicked;
 
-    private void OnValidate()
-    {
-        ChangeText(1);
-    }
-
     private void Awake()
     {
         _button = GetComponent<Button>();
@@ -31,11 +27,15 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     private void OnEnable()
     {
+        _ability.LevelRaised += ChangeText;
+        _ability.LevelLimit += OnDisableButton;
         _button.onClick.AddListener(OnClick);
     }
 
     private void OnDisable()
     {
+        _ability.LevelRaised -= ChangeText;
+        _ability.LevelLimit -= OnDisableButton;
         _button.onClick.RemoveListener(OnClick);        
     }    
 
@@ -53,4 +53,6 @@ public class ViewButtonUpgrade : MonoBehaviour
     {
         OnButtonClicked?.Invoke(_cost);
     }
+
+    private void OnDisableButton() => _button.enabled = false;
 }

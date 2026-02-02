@@ -5,9 +5,11 @@ using YG;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private MoverCart _cart;
+    [SerializeField] private MoverCart _moverCart;
+    [SerializeField] private MoverGun _moverGun;
     [SerializeField] private Gun _gun;
     [SerializeField] private Wallet _wallet;
+    [SerializeField] private UpdaterLevelSkills _updaterLevelSkills;
 
     [Header("ButtonUpgrade")]
     [SerializeField] private ViewButtonUpgrade _damgeButton;
@@ -18,23 +20,25 @@ public class Player : MonoBehaviour
     [SerializeField] private ViewButtonUpgrade _damageExplosionButton;
 
     private PlayerInput _input;
+    private Camera _camera;
     private int _countDasroyBombs = 0;
 
     public float Coins => _wallet.Coins;
     public int CountDasroyBombs => _countDasroyBombs;
-    public int LevelUpgrade => _gun.LevelUpgrade;
-    public int LevelUpgradeDamage => _gun.LevelDamage;
-    public int LevelUpgradeRicochet => _gun.LevelRicochet;
-    public int LevelUpgradeSpeedAttack => _gun.LevelSeedAttack;
-    public int LevelUpgradeSpeedExplosion => _gun.LevelSpeedExplosion;
-    public int LevelUpgradeRadiusExplosion => _gun.LevelRadiusExplosion;
-    public int LevelUpgradeDamageExplosion => _gun.LevelDamageExplosion;
+    public int LevelUpgrade => _updaterLevelSkills.Level;
+    public int LevelDamge => _gun.LevelDamge;
+    public int LevelRicochet => _gun.LevelRicochet;
+    public int LevelSpeedAttac => _gun.LevelSpeedAttac;
+    public int LevelDamgeExplosion => _gun.LevelDamgeExplosion;
+    public int LevelRadiusExplosion => _gun.LevelRadiusExplosion;
+    public int LevelSpeedExplosion => _gun.LevelSpeedExplosion;
 
     private Vector2 _positionMouse;
 
     private void Awake()
     {
         _input = new PlayerInput();
+        _camera = Camera.main;
 
         _input.Player.Shoot.performed += OnShoot;
     }
@@ -48,12 +52,6 @@ public class Player : MonoBehaviour
         _speedExplosionButton.OnButtonClicked += UpSpeedExplosion;
         _radiusExplosionButton.OnButtonClicked += UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked += UpDamageExplsoion;
-        _gun.LevelLimitReachedDamage += OnDisableButtonDamage;
-        _gun.LevelLimitReachedRicochet += OnDisableButtonRecochet;
-        _gun.LevelLimitReachedSpeedAttack += OnDisableButtonSpeedAttack;
-        _gun.LevelLimitReachedSpeedExplosion += OnDisableButtonSpeedExplosion;
-        _gun.LevelLimitReachedRadiusExplosion += OnDisableButtonRadiusExplosion;
-        _gun.LevelLimitReachedDamageExplosion += OnDisableButtonDamageExplosion;
     }
 
     private void OnDisable()
@@ -65,22 +63,16 @@ public class Player : MonoBehaviour
         _speedExplosionButton.OnButtonClicked -= UpSpeedExplosion;
         _radiusExplosionButton.OnButtonClicked -= UpRadiusExplosion;
         _damageExplosionButton.OnButtonClicked -= UpDamageExplsoion;
-        _gun.LevelLimitReachedDamage -= OnDisableButtonDamage;
-        _gun.LevelLimitReachedRicochet -= OnDisableButtonRecochet;
-        _gun.LevelLimitReachedSpeedAttack -= OnDisableButtonSpeedAttack;
-        _gun.LevelLimitReachedSpeedExplosion -= OnDisableButtonSpeedExplosion;
-        _gun.LevelLimitReachedRadiusExplosion -= OnDisableButtonRadiusExplosion;
-        _gun.LevelLimitReachedDamageExplosion -= OnDisableButtonDamageExplosion;
     }
 
     private void Update()
     {
         if (YandexGame.isGamePlaying)
         {
-            if (_input.Player.Guidance.ReadValue<Vector2>() != new Vector2(0, 0))
+            if (_input.Player.Move.ReadValue<Vector2>() != new Vector2(0, 0))
             {
-                _positionMouse = _input.Player.Guidance.ReadValue<Vector2>();
-                _gun.Guidance(_positionMouse);
+                _positionMouse = _input.Player.Move.ReadValue<Vector2>();
+                _moverGun.Move(_moverCart.Move(_camera.ScreenToWorldPoint(_positionMouse).x));
             }
         }
     }
@@ -90,16 +82,11 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(float coins, int countDasroyBombs, int levelUpgrade, int levelDamage, int levelRicochet, int levelSpeedAttack, int levelSpeedExplosion, int levelDamageExplosion, int levelRadiusExplosion)
+    public void LoadSave(float coins, int countDasroyBombs, int damge, int ricochet, int speedAttac, int damgeExplosion, int radiusExplosion, int speedExplosion)
     {
         _countDasroyBombs = countDasroyBombs;
-        _wallet.LoadSave(coins);
-        _gun.LoadSave(levelUpgrade, levelDamage, levelRicochet, levelSpeedAttack, levelSpeedExplosion, levelDamageExplosion, levelRadiusExplosion);
-        _damageExplosionButton.ChangeText(_gun.LevelDamageExplosion);
-        _radiusExplosionButton.ChangeText(_gun.LevelRadiusExplosion);
-        _ricochetButton.ChangeText(_gun.LevelRicochet);
-        _damgeButton.ChangeText(_gun.LevelDamage);
-        _speedAttackButton.ChangeText(_gun.LevelSeedAttack);
+        _wallet.LoadSave(coins);        
+        _gun.LoadSeve(damge, ricochet, speedAttac, damgeExplosion, radiusExplosion, speedExplosion);
     }
 
     private void OnShoot(InputAction.CallbackContext context)
@@ -110,56 +97,48 @@ public class Player : MonoBehaviour
             {
                 if (_gun.IsReadyShoot)
                 {
-                    if (_wallet.GetCoins(_gun.CostShot))
+                    if (_wallet.GetCoins(_updaterLevelSkills.Cost))
                     {
                         _gun.Shoot();
-                        _cart.MoveCar();
                     }
                 }
             }
         }
     }
 
-    private void OnDisableButtonDamage() => _damgeButton.enabled = false;
-    private void OnDisableButtonRecochet() => _ricochetButton.enabled = false;
-    private void OnDisableButtonSpeedAttack() => _speedAttackButton.enabled = false;
-    private void OnDisableButtonSpeedExplosion() => _speedExplosionButton.enabled = false;
-    private void OnDisableButtonRadiusExplosion() => _radiusExplosionButton.enabled = false;
-    private void OnDisableButtonDamageExplosion() => _damageExplosionButton.enabled = false;
-
     private void UpDamageExplsoion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _damageExplosionButton.ChangeText(_gun.UpLevelDamageExplosion());
+            _gun.UpLevelDamageExplosion();
     }
 
     private void UpRadiusExplosion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _radiusExplosionButton.ChangeText(_gun.UpLevelRadiusExplosion());
+            _gun.UpLevelRadiusExplosion();
     }
 
     private void UpRecochet(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _ricochetButton.ChangeText(_gun.UpLevelRicochet());
+            _gun.UpLevelRicochet();
     }
 
     private void UpDamage(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _damgeButton.ChangeText(_gun.UpLevelDamage());
+            _gun.UpLevelDamage();
     }
 
     private void UpSpeedAttack(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _speedAttackButton.ChangeText(_gun.UpLevelSpeedAttack());
+            _gun.UpLevelSpeedAttack();
     }
 
     private void UpSpeedExplosion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _speedExplosionButton.ChangeText(_gun.UpLevelSpeedExplosion());
+            _gun.UpLevelSpeedExplosion();
     }
 }

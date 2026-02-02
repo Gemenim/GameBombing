@@ -228,16 +228,17 @@ public class Game : MonoBehaviour
     private void SaveData()
     {
         YandexGame.savesData.LevelGame = Level;
-        YandexGame.savesData.LevelUpgrade = _player.LevelUpgrade;
-        YandexGame.savesData.LevelUpgradeDamage = _player.LevelUpgradeDamage;
-        YandexGame.savesData.LevelUpgradeRicochet = _player.LevelUpgradeRicochet;
-        YandexGame.savesData.LevelUpgradeSpeedAttack = _player.LevelUpgradeSpeedAttack;
-        YandexGame.savesData.LevelUpgradeSpeedExplosion = _player.LevelUpgradeSpeedExplosion;
-        YandexGame.savesData.LevelUpgradeDamageExplosion = _player.LevelUpgradeDamageExplosion;
-        YandexGame.savesData.LevelUpgradeRadiusExplosion = _player.LevelUpgradeRadiusExplosion;
         YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
         YandexGame.savesData.Coins = _player.Coins;
         YandexGame.savesData.Experience = _levelBar.Experience;
+
+        YandexGame.savesData.LevelUpgradeDamage = _player.LevelDamge;
+        YandexGame.savesData.LevelUpgradeRicochet = _player.LevelRicochet;
+        YandexGame.savesData.LevelUpgradeSpeedAttack = _player.LevelSpeedAttac;
+        YandexGame.savesData.LevelUpgradeSpeedExplosion = _player.LevelSpeedExplosion;
+        YandexGame.savesData.LevelUpgradeDamageExplosion = _player.LevelDamgeExplosion;
+        YandexGame.savesData.LevelUpgradeRadiusExplosion = _player.LevelRadiusExplosion;
+
         StartUpdateTop();
 
         YandexGame.SaveProgress();
@@ -256,9 +257,9 @@ public class Game : MonoBehaviour
     private void LoadSave()
     {
         Level = YandexGame.savesData.LevelGame;
-        _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgrade,
-            YandexGame.savesData.LevelUpgradeDamage, YandexGame.savesData.LevelUpgradeRicochet, YandexGame.savesData.LevelUpgradeSpeedAttack,
-            YandexGame.savesData.LevelUpgradeSpeedExplosion, YandexGame.savesData.LevelUpgradeDamageExplosion, YandexGame.savesData.LevelUpgradeRadiusExplosion);
+        _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgradeDamage,
+            YandexGame.savesData.LevelUpgradeRicochet, YandexGame.savesData.LevelUpgradeSpeedAttack, YandexGame.savesData.LevelUpgradeDamageExplosion,
+            YandexGame.savesData.LevelUpgradeRadiusExplosion, YandexGame.savesData.LevelUpgradeSpeedExplosion);
         GetCoefficientNeedExperience();
         _levelBar.SetNeedExperience(GetNeedExperience(), Level);
         _levelBar.AddExperience(YandexGame.savesData.Experience);

@@ -6,17 +6,16 @@ public class MoverCart : MonoBehaviour
 {
     [SerializeField] private PidRegulator _pidRegulator = new PidRegulator();
     [Range(0, 100)]
-    [SerializeField] private float _maxSpeed;
     [SerializeField] private Transform _rails;
     [SerializeField] private float _maxForce;
-    [SerializeField] private float _minRange;
     [SerializeField] private Animator[] _animators;
 
     private Transform _transform;
     private Rigidbody _rigidbody;
     private float _minBarrier;
     private float _maxBarrier;
-    private float _targetPositionX;
+    private Vector3 _targetPosition;
+    private float _speed;
 
     private void Awake()
     {
@@ -25,6 +24,10 @@ public class MoverCart : MonoBehaviour
 
         _minBarrier = _rails.position.x - _rails.localScale.x / 2;
         _maxBarrier = _rails.position.x + _rails.localScale.x / 2;
+
+
+        Debug.Log(_minBarrier);
+        Debug.Log(_maxBarrier);
     }
 
     private void Update()
@@ -33,35 +36,31 @@ public class MoverCart : MonoBehaviour
         {
             if (Time.deltaTime > 0)
             {
-                Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPositionX, Time.deltaTime);
+                Vector3 force = Vector3.right * _maxForce * _pidRegulator.Tick(_transform.position.x, _targetPosition.x, Time.deltaTime);
 
-                if (_rigidbody.velocity.x < 50f)
-                    _rigidbody.AddForce(force, ForceMode.Force);
+                _rigidbody.AddForce(force, ForceMode.Force);
 
-                float speed = Vector3.Magnitude(_rigidbody.velocity);
+                _speed = Vector3.Magnitude(_rigidbody.velocity);
                 float direction = _rigidbody.velocity.normalized.x;
 
                 foreach (Animator animator in _animators)
                 {
-                    animator.SetFloat("speed", speed);
-                    animator.SetFloat("velocityVector", speed * direction);
+                    animator.SetFloat("speed", _speed);
+                   animator.SetFloat("velocityVector", _speed * direction);
                 }
             }
         }
     }
 
-    public void MoveCar()
+    public float Move(float position)
     {
-        float randomPosition = GetRandomPosition();
+        if (position > _maxBarrier)
+            return 0;
+        else if (position < _minBarrier)
+            return 0;
 
-        while (Mathf.Abs(_targetPositionX - randomPosition) < _minRange)
-            randomPosition = GetRandomPosition();
+        _targetPosition = new Vector3(position, _transform.position.y, _transform.position.z);
 
-        _targetPositionX = randomPosition;
-    }
-
-    private float GetRandomPosition()
-    {
-        return Random.Range(_minBarrier, _maxBarrier);
+        return _speed;
     }
 }

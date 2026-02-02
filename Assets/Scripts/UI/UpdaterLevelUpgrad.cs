@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UpdateLevelUpgrad : MonoBehaviour
+public class UpdaterLevelUpgrad : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private TextMeshProUGUI _cost;

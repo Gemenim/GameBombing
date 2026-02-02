@@ -19,8 +19,7 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
-    private int _defoltRicochet = 5;
-    private int _levelRicochet = 1;
+    private int _maxCountRicochet;
     private int _countRicochet = 0;
     private float _delayExlosion;
     private Coroutine _rechargeExplosion;
@@ -65,7 +64,7 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                if (_isCharged && gameObject.active)
+                if (_isCharged && gameObject.activeSelf)
                 {
                     _rechargeExplosion = StartCoroutine(RechargeExlosion());
                     List<Cube> cubes = GetCubes();
@@ -84,7 +83,7 @@ public class Bullet : MonoBehaviour
 
         _audioSource.PlayOneShot(_audioSource.clip);
 
-        if (_countRicochet == _levelRicochet + _defoltRicochet)
+        if (_countRicochet == _maxCountRicochet)
             Diseble();
     }
 
@@ -107,14 +106,15 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetStats(float damage, int levelRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
+    public void SetStats(float damage, int countRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
     {
         _damage = damage;
-        _levelRicochet = levelRicochet;
+        _maxCountRicochet = countRicochet;
         _radiusExplosion = radiusExplosion + c_radius;
         _explosionDamageCoefficient = explosionDamageCoefficient;
         _delayExlosion = delayExplosion;
         _shockWave.SetDiametr(radiusExplosion * 2);
+        Debug.Log(_delayExlosion);
     }
 
     private void ReturnPool()

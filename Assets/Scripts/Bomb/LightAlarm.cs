@@ -22,8 +22,6 @@ public class LightAlarm : MonoBehaviour
 
     private IEnumerator Blink()
     {
-        Debug.Log("Go");
-
         while (true)
         {
             _colorCube.ApplyColor(Color.Lerp(_startColor, _endColor, Mathf.Abs(Mathf.Sin(Time.time * _dalay))));

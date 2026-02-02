@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 namespace YG
 {
     [System.Serializable]
@@ -15,7 +17,6 @@ namespace YG
         public int LevelGame = 1;
         public float Coins = 300;
         public float Experience = 0;
-        public int LevelUpgrade = 1;
         public int LevelUpgradeDamage = 1;
         public int LevelUpgradeRicochet = 1;
         public int LevelUpgradeSpeedAttack = 1;
@@ -23,7 +24,6 @@ namespace YG
         public int LevelUpgradeDamageExplosion = 1;
         public int LevelUpgradeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;
-
         // Ваши сохранения
 
         // ...
