@@ -24,10 +24,6 @@ public class MoverCart : MonoBehaviour
 
         _minBarrier = _rails.position.x - _rails.localScale.x / 2;
         _maxBarrier = _rails.position.x + _rails.localScale.x / 2;
-
-
-        Debug.Log(_minBarrier);
-        Debug.Log(_maxBarrier);
     }
 
     private void Update()

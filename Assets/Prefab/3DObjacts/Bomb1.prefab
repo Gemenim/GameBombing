@@ -703,7 +703,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 56
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1665622284617004127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,7 +716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef81872074b98142a16db75b49f10ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _core: {fileID: 122958924721845522}
+  _candidates:
+  - {fileID: 5617962404857892180}
   _countdownTime: 60
   _randomPositionZ: 0.5
   _coefficientLevel: 3
@@ -20024,23 +20025,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (597)
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -5924251477488802907, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1693850196487593425}
-    - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 122958924721845522}
   m_SourcePrefab: {fileID: 100100000, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
---- !u!1 &5571610174488643884 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8714775136029133670, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-  m_PrefabInstance: {fileID: 3865016739304915530}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5617962404857892180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
@@ -20062,23 +20054,6 @@ MonoBehaviour:
   _startColor: {r: 0.7725491, g: 0, b: 0, a: 0}
   _endColor: {r: 1, g: 1, b: 1, a: 0}
   _dalay: 1
---- !u!114 &122958924721845522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5617962404857892180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7338d66e08d342f48b4e804e21446b56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _trail: {fileID: 5571610174488643884}
-  _levelCoefficientHilth: 2.1
-  _levelCoefficientCost: 2.2
-  IsColect: 0
-  _lightAlarm: {fileID: 1693850196487593425}
 --- !u!4 &8577065466497739758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4802129842389346724, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}

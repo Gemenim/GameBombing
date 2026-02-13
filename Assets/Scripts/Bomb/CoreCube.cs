@@ -2,24 +2,44 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Cube))]
+[RequireComponent(typeof(LightAlarm))]
 [RequireComponent(typeof(ColorCube))]
-public class CoreCube : Cube
+public class CoreCube : MonoBehaviour
 {
-    [SerializeField] private LightAlarm _lightAlarm;
-
     private const float c_hilthCore = 2.5f;
     private const float c_levelCoefficientCore = 1.5f;
 
+    private Cube _cube;
+    private LightAlarm _lightAlarm;
     private Cube[] _allCubes;
     private TimerView _timer;
     private Coroutine _coroutineCountdown;
 
-    public int Level => _level;
+    public int Level { get; private set; }
+    public bool IsTsar { get; private set; }
+
     public event Action BlownUp;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
+        _cube = GetComponent<Cube>();
+        _lightAlarm = GetComponent<LightAlarm>();
+    }
+
+    private void Update()
+    {
+        if (_coroutineCountdown != null)
+        { 
+            if (_cube.IsDetouch)
+            {
+                _lightAlarm.Stop();
+                StopCoroutine(_coroutineCountdown);
+            }
+        }
+
+        if (_cube.IsColect)
+            BreakItUpBomb();
     }
 
     public void SetCubes(Cube[] cubes)
@@ -27,35 +47,15 @@ public class CoreCube : Cube
         _allCubes = cubes;
     }
 
-    public override void CalculateStats()
+    public void SetSetings(int level, bool isTsar)
     {
-        base.CalculateStats();
-
-        _hilth += LevelCalculator.Calculat(c_hilthCore, c_levelCoefficientCore, _level);
-        Cost += LevelCalculator.Calculat(c_defoltCost, c_levelCoefficientCore, _level);
+        Level = level;
+        IsTsar = isTsar;
     }
 
     public void SetTimerView(TimerView timerView) => _timer = timerView;
 
-    public override void StartDastroy()
-    {
-        base.StartDastroy();
-        BreakItUpBomb();
-
-        if (_coroutineCountdown != null)
-            StopCoroutine(_coroutineCountdown);
-    }
-
     public void StartCountdown(float countdownTime) => _coroutineCountdown = StartCoroutine(Countdown(countdownTime));
-
-    public override void Detouch()
-    {
-        _lightAlarm.Stop();
-        base.Detouch();
-
-        if (_coroutineCountdown != null)
-            StopCoroutine(_coroutineCountdown);
-    }
 
     private void BreakItUpBomb()
     {

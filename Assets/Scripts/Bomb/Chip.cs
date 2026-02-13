@@ -13,7 +13,7 @@ public class Chip : MonoBehaviour
     private Transform _parentCubes;
     private float _coeficientMass = 3.2f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
@@ -52,7 +52,6 @@ public class Chip : MonoBehaviour
 
         if (freeCubesIds.Count == 0)
         {
-            Debug.Log("Dastro Chip " + gameObject.name);
             Destroy(gameObject);
             return;
         }

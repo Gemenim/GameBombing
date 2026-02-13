@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class Bomb : Chip
 {
-    [SerializeField] private CoreCube _core;
+    [SerializeField] private GameObject[] _candidates;
     [SerializeField] private float _countdownTime;
     [SerializeField] private float _randomPositionZ = 0.25f;
 
     [Header("Settings 'TsarBomba'")]
     [SerializeField] private int _coefficientLevel;
 
+    private CoreCube _core;
     private Cube[] _allCubes;
 
     public event Action Dastroy;
@@ -23,14 +24,20 @@ public class Bomb : Chip
             _coefficientLevel = 1;
     }
 
+    protected override void Awake()
+    {
+        int randomId = UnityEngine.Random.Range(0, _candidates.Length);
+        _core = _candidates[randomId].AddComponent<CoreCube>();
+        base.Awake();
+    }
+
     private void Start()
     {
         RememberAllCubes();
-        Collect();
         RandomizePositionZ();
+        Collect();
         _core.SetCubes(_allCubes);
         SetStats();
-        //_transform.parent.GetComponent<RanomazeBombs>().Randomaze();
     }
 
     private void OnEnable()
@@ -69,10 +76,7 @@ public class Bomb : Chip
     {
         foreach (Cube cube in _allCubes)
         {
-            if (cube.name != _core.name)
-            {
-                cube.SetSetings(_core.Level, _core.IsTsar);
-            }
+            cube.SetSetings(_core.Level, _core.IsTsar);
 
             cube.CalculateStats();
         }

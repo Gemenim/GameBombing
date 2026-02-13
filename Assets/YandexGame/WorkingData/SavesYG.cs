@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 
 namespace YG
 {
@@ -24,6 +23,8 @@ namespace YG
         public int LevelUpgradeDamageExplosion = 1;
         public int LevelUpgradeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;
+        public int[] Levels = new int[6] { 1, 1, 1, 1, 1, 1 };
+        private Dictionary<string, int> _abilities = new Dictionary<string, int>();
         // Ваши сохранения
 
         // ...
@@ -31,6 +32,6 @@ namespace YG
         // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны
 
 
-        // Вы можете выполнить какие то действия при загрузке сохранений
+        // Вы можете выполнить какие то действия при загрузке сохранений        
     }
 }

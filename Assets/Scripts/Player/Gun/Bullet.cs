@@ -114,7 +114,6 @@ public class Bullet : MonoBehaviour
         _explosionDamageCoefficient = explosionDamageCoefficient;
         _delayExlosion = delayExplosion;
         _shockWave.SetDiametr(radiusExplosion * 2);
-        Debug.Log(_delayExlosion);
     }
 
     private void ReturnPool()

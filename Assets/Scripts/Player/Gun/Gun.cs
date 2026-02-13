@@ -35,12 +35,6 @@ public class Gun : MonoBehaviour
 
     public bool IsReadyShoot { get; private set; } = true;
     public float CostShot { get; private set; }
-    public int LevelDamge => _abilityDamage.Level;
-    public int LevelRicochet => _abilityRicochet.Level;
-    public int LevelSpeedAttac => _abilitySpeedAttack.Level;
-    public int LevelDamgeExplosion => _abilityDamageExplosion.Level;
-    public int LevelRadiusExplosion => _abilityRadiusExplosion.Level;
-    public int LevelSpeedExplosion => _abilitySpeedExplosion.Level;
 
     private void OnValidate()
     {
@@ -83,16 +77,6 @@ public class Gun : MonoBehaviour
     public void UpLevelDamageExplosion() => _abilityDamageExplosion.UpLevel();
 
     public void UpLevelSpeedExplosion() => _abilitySpeedExplosion.UpLevel();
-
-    public void LoadSeve(int damge, int ricochet, int speedAttac, int damgeExplosion, int radiusExplosion, int speedExplosion)
-    {
-        _abilityRicochet.Load(ricochet);
-        _abilityDamage.Load(damge);
-        _abilityDamageExplosion.Load(damgeExplosion);
-        _abilityRadiusExplosion.Load(radiusExplosion);
-        _abilitySpeedAttack.Load(speedAttac);
-        _abilitySpeedExplosion.Load(speedExplosion);
-    }
 
     private void CheckGuidanceBoundaries()
     {

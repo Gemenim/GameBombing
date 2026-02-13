@@ -1,15 +1,30 @@
 using System;
 using UnityEngine;
+using YG;
 
 public abstract class Ability : MonoBehaviour
 {
+    [SerializeField] private SavingHerald _savingHerald;
     [SerializeField] protected int _maxLevel;
     [SerializeField] public string Name;
+    [SerializeField] public int ID;
 
     public int Level { get; private set; } = 1;
 
     public event Action LevelLimit;
     public event Action<int> LevelRaised;
+
+    private void OnEnable()
+    {
+        _savingHerald.Saved += Save;
+        _savingHerald.Uploaded += Load;
+    }
+
+    private void OnDisable()
+    {
+        _savingHerald.Saved -= Save;
+        _savingHerald.Uploaded -= Load;
+    }
 
     public void UpLevel()
     {
@@ -26,9 +41,11 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    public void Load(int level)
+    private void Save() => YandexGame.savesData.Levels[ID] = Level;
+
+    public void Load()
     {
-        Level = level;
+        Level = YandexGame.savesData.Levels[ID];
         LevelRaised?.Invoke(Level);
 
         if (Level >= _maxLevel)
@@ -38,8 +55,6 @@ public abstract class Ability : MonoBehaviour
         }
 
         UpdateStatus();
-
-        Debug.Log(Name + Level);
     }
 
     protected abstract void UpdateStatus();

@@ -16,6 +16,7 @@ public class Game : MonoBehaviour
     [SerializeField] private BarrierMover _barrierMover;
     [SerializeField] private LevelBar _levelBar;
     [SerializeField] private TimerView _timerView;
+    [SerializeField] private SavingHerald _savingHerald;
 
     [Header("Windows")]
     [SerializeField] private HudScreen _hudScreen;
@@ -38,7 +39,7 @@ public class Game : MonoBehaviour
     private void Start()
     {
         if (YandexGame.SDKEnabled)
-            LoadSave();
+            _savingHerald.Load();
 
         YandexGame.GameplayStart();
         Spawn(false);
@@ -47,7 +48,8 @@ public class Game : MonoBehaviour
 
     private void OnEnable()
     {
-        _hudScreen.OnSaveButtonClicked += SaveData;
+        _savingHerald.Saved += SaveData;
+        _savingHerald.Uploaded += LoadSave;
         _hudScreen.OnUpgradeButtonClicked += OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked += OpenSettings;
         _hudScreen.OnLeaderbordButtonClicked += OpenLeaderbord;
@@ -68,7 +70,8 @@ public class Game : MonoBehaviour
 
     private void OnDisable()
     {
-        _hudScreen.OnSaveButtonClicked -= SaveData;
+        _savingHerald.Saved -= SaveData;
+        _savingHerald.Uploaded -= LoadSave;
         _hudScreen.OnUpgradeButtonClicked -= OpenUpgradeScreen;
         _hudScreen.OnSetingsButtonClicked -= OpenSettings;
         _hudScreen.OnLeaderbordButtonClicked -= OpenLeaderbord;
@@ -137,6 +140,14 @@ public class Game : MonoBehaviour
         Spawn(true);
     }
 
+    [ContextMenu("Bomb")]
+    private void SpawnNowBomb()
+    {
+        _sky.ClearBombs();
+        _sky.ClearBullets();
+        Spawn(false);
+    }
+
     private void SpawnNextBomb(bool isTsarBomb)
     {
         if (isTsarBomb)
@@ -181,7 +192,7 @@ public class Game : MonoBehaviour
         GetCoefficientNeedExperience();
         _levelBar.SetNeedExperience(GetNeedExperience(), Level);
         _barrierMover.Move();
-        SaveData();
+        _savingHerald.Save();
         StartUpdateTop();
         YandexGame.FullscreenShow();
     }
@@ -228,20 +239,9 @@ public class Game : MonoBehaviour
     private void SaveData()
     {
         YandexGame.savesData.LevelGame = Level;
-        YandexGame.savesData.CountDastroyBomb = _player.CountDasroyBombs;
-        YandexGame.savesData.Coins = _player.Coins;
         YandexGame.savesData.Experience = _levelBar.Experience;
 
-        YandexGame.savesData.LevelUpgradeDamage = _player.LevelDamge;
-        YandexGame.savesData.LevelUpgradeRicochet = _player.LevelRicochet;
-        YandexGame.savesData.LevelUpgradeSpeedAttack = _player.LevelSpeedAttac;
-        YandexGame.savesData.LevelUpgradeSpeedExplosion = _player.LevelSpeedExplosion;
-        YandexGame.savesData.LevelUpgradeDamageExplosion = _player.LevelDamgeExplosion;
-        YandexGame.savesData.LevelUpgradeRadiusExplosion = _player.LevelRadiusExplosion;
-
         StartUpdateTop();
-
-        YandexGame.SaveProgress();
     }
 
     private void ResetSeve()
@@ -249,17 +249,14 @@ public class Game : MonoBehaviour
         _sky.Clear();
 
         YandexGame.ResetSaveProgress();
-        LoadSave();
-        SaveData();
+        _savingHerald.Load();
+        _savingHerald.Save();
         Spawn(false);
     }
 
     private void LoadSave()
     {
         Level = YandexGame.savesData.LevelGame;
-        _player.LoadSave(YandexGame.savesData.Coins, YandexGame.savesData.CountDastroyBomb, YandexGame.savesData.LevelUpgradeDamage,
-            YandexGame.savesData.LevelUpgradeRicochet, YandexGame.savesData.LevelUpgradeSpeedAttack, YandexGame.savesData.LevelUpgradeDamageExplosion,
-            YandexGame.savesData.LevelUpgradeRadiusExplosion, YandexGame.savesData.LevelUpgradeSpeedExplosion);
         GetCoefficientNeedExperience();
         _levelBar.SetNeedExperience(GetNeedExperience(), Level);
         _levelBar.AddExperience(YandexGame.savesData.Experience);

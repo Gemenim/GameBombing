@@ -29,21 +29,21 @@ public class Cube : MonoBehaviour
     public bool IsTsar { get; protected set; }
     public bool IsDetouch { get; private set; } = false;
 
-    protected virtual void Awake()
+    protected void Awake()
     {
         _transform = transform;
         _colorCube = GetComponent<ColorCube>();
         _color = _colorCube.Color;
     }
 
-    public virtual void SetSetings(int level, bool isTsar)
+    public void SetSetings(int level, bool isTsar)
     {
         IsTsar = isTsar;
         int randomLevel = level + Random.Range(-2, 2);
         _level = randomLevel > 0 ? randomLevel : 1;
     }
 
-    public virtual void CalculateStats()
+    public void CalculateStats()
     {
         _hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
         Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);

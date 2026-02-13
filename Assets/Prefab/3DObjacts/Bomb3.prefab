@@ -1199,7 +1199,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 56
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1665622284617004127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,7 +1212,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef81872074b98142a16db75b49f10ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _core: {fileID: 1870664501527758710}
+  _candidates:
+  - {fileID: 4282577936995898622}
+  - {fileID: 9150938224831156663}
+  - {fileID: 37975580560563895}
+  - {fileID: 2948657926117553375}
+  - {fileID: 3229493202613232971}
   _countdownTime: 80
   _randomPositionZ: 0.3
   _coefficientLevel: 3
@@ -55748,9 +55753,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8326686595836260838}
-    - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1870664501527758710}
   m_SourcePrefab: {fileID: 100100000, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
 --- !u!4 &1304746817664291429 stripped
 Transform:
@@ -55768,11 +55770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdc4d792da90aa4f9fc817b6ae7e4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2904516264941891751 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8714775136029133670, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-  m_PrefabInstance: {fileID: 5818637486848015297}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2948657926117553375 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
@@ -55794,23 +55791,6 @@ MonoBehaviour:
   _startColor: {r: 0, g: 0, b: 0, a: 0}
   _endColor: {r: 1, g: 1, b: 1, a: 0}
   _dalay: 1
---- !u!114 &1870664501527758710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2948657926117553375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7338d66e08d342f48b4e804e21446b56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _trail: {fileID: 2904516264941891751}
-  _levelCoefficientHilth: 2.1
-  _levelCoefficientCost: 2.2
-  IsColect: 0
-  _lightAlarm: {fileID: 8326686595836260838}
 --- !u!1001 &5857529715936226389
 PrefabInstance:
   m_ObjectHideFlags: 0

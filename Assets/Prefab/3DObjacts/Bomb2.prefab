@@ -991,7 +991,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 56
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8565711501518986968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1004,7 +1004,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef81872074b98142a16db75b49f10ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _core: {fileID: 7594932017160825542}
+  _candidates:
+  - {fileID: 4124993075309490741}
   _countdownTime: 70
   _randomPositionZ: 0.5
   _coefficientLevel: 3
@@ -37347,9 +37348,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7594932017160825542}
-    - targetCorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5234309963989790518}
   m_SourcePrefab: {fileID: 100100000, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
 --- !u!4 &274213575564153999 stripped
@@ -37373,23 +37371,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8670642274234306334, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
   m_PrefabInstance: {fileID: 4713760749413743915}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7594932017160825542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4124993075309490741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7338d66e08d342f48b4e804e21446b56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _trail: {fileID: 4151120102752810573}
-  _levelCoefficientHilth: 2.1
-  _levelCoefficientCost: 2.2
-  IsColect: 0
-  _lightAlarm: {fileID: 5234309963989790518}
 --- !u!114 &5234309963989790518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37406,11 +37387,6 @@ MonoBehaviour:
   _startColor: {r: 1, g: 0.5411765, b: 0, a: 0}
   _endColor: {r: 1, g: 0, b: 0, a: 0}
   _dalay: 1
---- !u!1 &4151120102752810573 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8714775136029133670, guid: 97a35908fa470994c83a38eb0aad2892, type: 3}
-  m_PrefabInstance: {fileID: 4713760749413743915}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4718693429041577565
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using YG;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private SavingHerald _savingHerald;
     [SerializeField] private MoverCart _moverCart;
     [SerializeField] private MoverGun _moverGun;
     [SerializeField] private Gun _gun;
@@ -25,13 +26,6 @@ public class Player : MonoBehaviour
 
     public float Coins => _wallet.Coins;
     public int CountDasroyBombs => _countDasroyBombs;
-    public int LevelUpgrade => _updaterLevelSkills.Level;
-    public int LevelDamge => _gun.LevelDamge;
-    public int LevelRicochet => _gun.LevelRicochet;
-    public int LevelSpeedAttac => _gun.LevelSpeedAttac;
-    public int LevelDamgeExplosion => _gun.LevelDamgeExplosion;
-    public int LevelRadiusExplosion => _gun.LevelRadiusExplosion;
-    public int LevelSpeedExplosion => _gun.LevelSpeedExplosion;
 
     private Vector2 _positionMouse;
 
@@ -46,6 +40,8 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _input.Enable();
+        _savingHerald.Saved += Save;
+        _savingHerald.Uploaded += Load;
         _damgeButton.OnButtonClicked += UpDamage;
         _ricochetButton.OnButtonClicked += UpRecochet;
         _speedAttackButton.OnButtonClicked += UpSpeedAttack;
@@ -57,6 +53,8 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         _input.Disable();
+        _savingHerald.Saved -= Save;
+        _savingHerald.Uploaded -= Load;
         _damgeButton.OnButtonClicked -= UpDamage;
         _ricochetButton.OnButtonClicked -= UpRecochet;
         _speedAttackButton.OnButtonClicked -= UpSpeedAttack;
@@ -82,11 +80,16 @@ public class Player : MonoBehaviour
         _countDasroyBombs++;
     }
 
-    public void LoadSave(float coins, int countDasroyBombs, int damge, int ricochet, int speedAttac, int damgeExplosion, int radiusExplosion, int speedExplosion)
+    private void Save()
     {
-        _countDasroyBombs = countDasroyBombs;
-        _wallet.LoadSave(coins);        
-        _gun.LoadSeve(damge, ricochet, speedAttac, damgeExplosion, radiusExplosion, speedExplosion);
+        YandexGame.savesData.CountDastroyBomb = _countDasroyBombs;
+        YandexGame.savesData.Coins = _wallet.Coins;
+    }
+
+    private void Load()
+    {
+        _countDasroyBombs = YandexGame.savesData.CountDastroyBomb;
+        _wallet.LoadSave(YandexGame.savesData.Coins);
     }
 
     private void OnShoot(InputAction.CallbackContext context)

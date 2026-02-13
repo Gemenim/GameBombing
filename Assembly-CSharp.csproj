@@ -199,6 +199,7 @@
     <Compile Include="Assets\YandexGame\Example\Scripts\NewResultLBExample.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Leaderboards\InternalScripts\UtilsLB.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Player\SavingHerald.cs" />
     <Compile Include="Assets\YandexGame\Example\Scripts\DebugViewing.cs" />
     <Compile Include="Assets\Scripts\UI\ViewWallet.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Language\LanguageYG.cs" />
