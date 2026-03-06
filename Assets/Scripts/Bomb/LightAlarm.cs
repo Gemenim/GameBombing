@@ -1,13 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(ColorCube))]
 public class LightAlarm : MonoBehaviour
 {
-    [SerializeField] private ColorCube _colorCube;
     [SerializeField] private Color _startColor, _endColor;
-    [SerializeField] private float _dalay;
 
+    private ColorCube _colorCube;
+    private float _dalay = 1f;
     private Coroutine _blink;
+
+    private void Awake()
+    {
+        _colorCube = GetComponent<ColorCube>();
+    }
 
     public void Start()
     {

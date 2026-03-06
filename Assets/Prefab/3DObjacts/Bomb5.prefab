@@ -831,7 +831,7 @@ MonoBehaviour:
   _candidates:
   - {fileID: 3249470331509898658}
   _countdownTime: 60
-  _randomPositionZ: 0.3
+  _randomPositionZ: 0.5
   _coefficientLevel: 3
 --- !u!1001 &10789637076793684
 PrefabInstance:
@@ -37705,10 +37705,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1762ad756388c43a955a2e3b667df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colorCube: {fileID: 0}
   _startColor: {r: 0.6313726, g: 0.10588236, b: 0.10588236, a: 1}
   _endColor: {r: 1, g: 1, b: 1, a: 1}
-  _dalay: 1
 --- !u!1001 &6151446960255614261
 PrefabInstance:
   m_ObjectHideFlags: 0

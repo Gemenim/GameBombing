@@ -8,5 +8,6 @@ public class SpeedExplosion : Ability
     protected override void UpdateStatus()
     {
         DaleyExplosion = c_defoltSpeedExplosion - c_stepSpeedExplosion * Level;
+        _bulletObject.SetSpeedExplosion(DaleyExplosion);
     }
 }

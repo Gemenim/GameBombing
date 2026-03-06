@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
 {
     private const float c_radius = 0.5f;
 
+    [SerializeField] private BulletObject _bulletSO;
     [SerializeField] private ShockWaveEffect _shockWave;
     [SerializeField] private BulletEffect _trail;
 
@@ -54,6 +55,7 @@ public class Bullet : MonoBehaviour
         {
             _countRicochet++;
             cube.TakeDamage(_damage);
+            Debug.Log(_damage);
 
             if (_delayExlosion <= 0)
             {
@@ -88,7 +90,6 @@ public class Bullet : MonoBehaviour
     }
 
     public void SetDirection(Vector3 direction) => _rb.velocity = direction * _velocity;
-    public void SetVelocity(float velocity) => _velocity = velocity;
     public void SetPool(Pool<Bullet> pool) => _pool = pool;
     public void SetAudioSource(AudioSource audioSource) => _audioSource = audioSource;
 
@@ -106,6 +107,17 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void SetStatus()
+    {
+        _damage = _bulletSO.Damage;
+        _maxCountRicochet = _bulletSO.MaxCountRicochet;
+        _delayExlosion = _bulletSO.DelayExlosion;
+        _explosionDamageCoefficient = _bulletSO.ExplosionDamageCoefficient;
+        _radiusExplosion = _bulletSO.RadiusExplosion + c_radius;
+        _velocity = _bulletSO.Velocity;
+        _shockWave.SetRadius(_radiusExplosion);
+    }
+
     public void SetStats(float damage, int countRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
     {
         _damage = damage;
@@ -113,7 +125,7 @@ public class Bullet : MonoBehaviour
         _radiusExplosion = radiusExplosion + c_radius;
         _explosionDamageCoefficient = explosionDamageCoefficient;
         _delayExlosion = delayExplosion;
-        _shockWave.SetDiametr(radiusExplosion * 2);
+        _shockWave.SetRadius(radiusExplosion * 2);
     }
 
     private void ReturnPool()

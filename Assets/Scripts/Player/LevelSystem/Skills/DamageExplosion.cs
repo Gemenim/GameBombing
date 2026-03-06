@@ -7,5 +7,6 @@ public class DamageExplosion : Ability
     protected override void UpdateStatus()
     {
         CoefficientDamage = Level * c_coefficientDamage;
+        _bulletObject.SetDamageExplosion(CoefficientDamage);
     }
 }

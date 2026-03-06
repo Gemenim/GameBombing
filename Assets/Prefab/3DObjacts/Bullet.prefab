@@ -5051,6 +5051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832e6f52edc928d439f618b7964d5f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletSO: {fileID: 11400000, guid: e261b59962a4ae74e812965a71002e1c, type: 2}
   _shockWave: {fileID: 2614592586529842528}
   _trail: {fileID: 5654643809257799179}
 --- !u!1 &4654354853050423200

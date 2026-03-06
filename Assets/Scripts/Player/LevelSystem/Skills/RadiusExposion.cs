@@ -8,5 +8,6 @@ public class RadiusExposion : Ability
     protected override void UpdateStatus()
     {
         Radius = c_defoltRadiusExplosion + (c_coefficientRadiusExplosion * Level);
+        _bulletObject.SetRadius(Radius);
     }
 }

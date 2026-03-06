@@ -18,16 +18,8 @@ public class Gun : MonoBehaviour
     [SerializeField] private UpdaterLevelUpgrad _updateLevelUpgrad;
     [SerializeField] private Slider _viewRecharge;
 
-    [Header("Setings Gun")]
-    [SerializeField] private float _velocity;
-
     [Header("Skills")]
-    [SerializeField] private Damage _abilityDamage;
-    [SerializeField] private Ricochet _abilityRicochet;
     [SerializeField] private SpeedAttack _abilitySpeedAttack;
-    [SerializeField] private SpeedExplosion _abilitySpeedExplosion;
-    [SerializeField] private RadiusExposion _abilityRadiusExplosion;
-    [SerializeField] private DamageExplosion _abilityDamageExplosion;
 
     private Transform _transform;
     private MoverGun _moverGun;
@@ -35,12 +27,6 @@ public class Gun : MonoBehaviour
 
     public bool IsReadyShoot { get; private set; } = true;
     public float CostShot { get; private set; }
-
-    private void OnValidate()
-    {
-        if (_velocity <= 0)
-            _velocity = 20f;
-    }
 
     private void Awake()
     {
@@ -52,8 +38,9 @@ public class Gun : MonoBehaviour
     public void Shoot()
     {
         Bullet bullet = _bulletPool.Get();
-        bullet.SetStats(_abilityDamage.AmountDamage, _abilityRicochet.Count, _abilityRadiusExplosion.Radius,
-            _abilityDamageExplosion.CoefficientDamage, _abilitySpeedExplosion.DaleyExplosion);
+        bullet.SetStatus();
+        //bullet.SetStats(_abilityDamage.AmountDamage, _abilityRicochet.Count, _abilityRadiusExplosion.Radius,
+        //    _abilityDamageExplosion.CoefficientDamage, _abilitySpeedExplosion.DaleyExplosion);
         bullet.transform.SetParent(_sky.Bullets);
         bullet.transform.position = _spawnPoint.position;
         bullet.SetDirection(_transform.up);
@@ -66,17 +53,7 @@ public class Gun : MonoBehaviour
         StartCoroutine(Recharge());
     }
 
-    public void UpLevelDamage() => _abilityDamage.UpLevel();
-
-    public void UpLevelRicochet() => _abilityRicochet.UpLevel();
-
     public void UpLevelSpeedAttack() => _abilitySpeedAttack.UpLevel();
-
-    public void UpLevelRadiusExplosion() => _abilityRadiusExplosion.UpLevel();
-
-    public void UpLevelDamageExplosion() => _abilityDamageExplosion.UpLevel();
-
-    public void UpLevelSpeedExplosion() => _abilitySpeedExplosion.UpLevel();
 
     private void CheckGuidanceBoundaries()
     {
@@ -91,7 +68,6 @@ public class Gun : MonoBehaviour
         Bullet bullet = Instantiate(_bulletPrefab);
         bullet.SetAudioSource(_reckoscetSorce);
         bullet.SetPool(_bulletPool);
-        bullet.SetVelocity(_velocity);
 
         return bullet;
     }

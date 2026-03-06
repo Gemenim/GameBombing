@@ -24,9 +24,6 @@ namespace YG
         public int LevelUpgradeRadiusExplosion = 1;
         public int CountDastroyBomb = 0;
         public int[] Levels = new int[6] { 1, 1, 1, 1, 1, 1 };
-        private Dictionary<string, int> _abilities = new Dictionary<string, int>();
-        // Ваши сохранения
-
         // ...
 
         // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны

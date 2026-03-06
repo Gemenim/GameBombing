@@ -7,5 +7,6 @@ public class Ricochet : Ability
     protected override void UpdateStatus()
     {
         Count = c_defoltRicochet + Level;
+        _bulletObject.SetRicochet(Count);
     }
 }

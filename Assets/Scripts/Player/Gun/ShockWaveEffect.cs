@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShockWaveEffect : BulletEffect
 {
-    public void SetDiametr(float diametr)
+    public void SetRadius(float diametr)
     {
         _particleSystem.startSize = diametr;
     }

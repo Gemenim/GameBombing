@@ -27,19 +27,19 @@ public class ViewButtonUpgrade : MonoBehaviour
 
     private void OnEnable()
     {
-        _ability.LevelRaised += ChangeText;
+        _ability.LevelRaised += ChangeCost;
         _ability.LevelLimit += OnDisableButton;
         _button.onClick.AddListener(OnClick);
     }
 
     private void OnDisable()
     {
-        _ability.LevelRaised -= ChangeText;
+        _ability.LevelRaised -= ChangeCost;
         _ability.LevelLimit -= OnDisableButton;
         _button.onClick.RemoveListener(OnClick);        
     }    
 
-    public void ChangeText(int level)
+    public void ChangeCost(int level)
     {
         int multiplier = level / c_multiplierLevel;
         float levelCoefficient = c_coefficientExperience * multiplier; 

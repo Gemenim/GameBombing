@@ -5,6 +5,7 @@ using YG;
 public abstract class Ability : MonoBehaviour
 {
     [SerializeField] private SavingHerald _savingHerald;
+    [SerializeField] protected BulletObject _bulletObject;
     [SerializeField] protected int _maxLevel;
     [SerializeField] public string Name;
     [SerializeField] public int ID;

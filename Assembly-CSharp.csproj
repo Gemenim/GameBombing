@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\UI\Language.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Payments\InternalScripts\Payments_yg.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\Scripts\Player\Gun\BulletObject.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\Leaderboards\InternalScripts\Leaderboards_yg.cs" />
     <Compile Include="Assets\YandexGame\ScriptsYG\YandexMetrica\JsonUtils.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />

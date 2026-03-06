@@ -12,5 +12,6 @@ public class Damage : Ability
     {
         AmountDamage = LevelCalculator.Calculat(_defoltDamage, c_levelCoefficientDamage, Level);
         AmountDamage = AmountDamage > 0 ? AmountDamage : _defoltDamage;
+        _bulletObject.SetDamage(AmountDamage);
     }
 }

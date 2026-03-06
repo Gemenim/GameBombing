@@ -20,6 +20,13 @@ public class Player : MonoBehaviour
     [SerializeField] private ViewButtonUpgrade _radiusExplosionButton;
     [SerializeField] private ViewButtonUpgrade _damageExplosionButton;
 
+    [Header("Skills")]
+    [SerializeField] private Damage _abilityDamage;
+    [SerializeField] private Ricochet _abilityRicochet;
+    [SerializeField] private SpeedExplosion _abilitySpeedExplosion;
+    [SerializeField] private RadiusExposion _abilityRadiusExplosion;
+    [SerializeField] private DamageExplosion _abilityDamageExplosion;
+
     private PlayerInput _input;
     private Camera _camera;
     private int _countDasroyBombs = 0;
@@ -112,25 +119,25 @@ public class Player : MonoBehaviour
     private void UpDamageExplsoion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _gun.UpLevelDamageExplosion();
+            _abilityDamageExplosion.UpLevel();
     }
 
     private void UpRadiusExplosion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _gun.UpLevelRadiusExplosion();
+            _abilityRadiusExplosion.UpLevel();
     }
 
     private void UpRecochet(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _gun.UpLevelRicochet();
+            _abilityRicochet.UpLevel();
     }
 
     private void UpDamage(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _gun.UpLevelDamage();
+            _abilityDamage.UpLevel();
     }
 
     private void UpSpeedAttack(float cost)
@@ -142,6 +149,6 @@ public class Player : MonoBehaviour
     private void UpSpeedExplosion(float cost)
     {
         if (_wallet.GetCoins(cost))
-            _gun.UpLevelSpeedExplosion();
+            _abilitySpeedExplosion.UpLevel();
     }
 }
