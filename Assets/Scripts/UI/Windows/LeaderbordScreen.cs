@@ -32,19 +32,10 @@ public class LeaderbordScreen : Window
         _coinsButton.onClick.RemoveListener(OnCoinsPlane);
     }
 
-    public override void Close()
-    {
-        WindowGroup.alpha = 0;
-        WindowGroup.interactable = false;
-        WindowGroup.blocksRaycasts = false;
-    }
-
     public override void Open()
     {
         OnLevelPlane();
-        WindowGroup.alpha = 1f;
-        WindowGroup.interactable = true;
-        WindowGroup.blocksRaycasts = true;
+        base.Open();
     }
 
     protected override void OnButtonCloseClick()

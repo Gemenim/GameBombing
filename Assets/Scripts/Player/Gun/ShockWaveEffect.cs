@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ShockWaveEffect : BulletEffect
 {
     public void SetRadius(float diametr)

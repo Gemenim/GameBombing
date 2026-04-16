@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Damage : Ability
 {
-    private const float c_levelCoefficientDamage = 1.9f;
+    [SerializeField] private float _levelCoefficientDamage = 1.9f;
 
     [SerializeField] private float _defoltDamage = 1;
 
@@ -10,7 +10,7 @@ public class Damage : Ability
 
     protected override void UpdateStatus()
     {
-        AmountDamage = LevelCalculator.Calculat(_defoltDamage, c_levelCoefficientDamage, Level);
+        AmountDamage = LevelCalculator.Calculat(_defoltDamage, _levelCoefficientDamage, Level);
         AmountDamage = AmountDamage > 0 ? AmountDamage : _defoltDamage;
         _bulletObject.SetDamage(AmountDamage);
     }

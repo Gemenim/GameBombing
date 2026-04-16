@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "Hold(duration=-1,pressPoint=0.1)",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "TutorialClick",
+                    "type": "Button",
+                    "id": "23975651-1443-45d3-9d64-2a5e05bf2a3e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -123,6 +132,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1c86104c-8444-4e5b-aeb5-0207a6c468ba",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "TutorialClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41906711-f284-4bf9-bf70-6abbfa5c7d0c",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "TutorialClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

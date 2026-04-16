@@ -22,7 +22,7 @@ public class Wallet : MonoBehaviour
 
     public bool GetCoins(float requiredCoins)
     {
-        if (Coins > requiredCoins)
+        if (Coins >= requiredCoins)
         {
             Coins -= requiredCoins;
             ChangeCount?.Invoke(Coins);

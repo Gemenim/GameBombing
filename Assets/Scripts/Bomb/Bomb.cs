@@ -13,6 +13,8 @@ public class Bomb : Chip
     private CoreCube _core;
     private Cube[] _allCubes;
 
+    public CoreCube Core => _core;
+
     public event Action Dastroy;
 
     private void OnValidate()
@@ -29,15 +31,13 @@ public class Bomb : Chip
         int randomId = UnityEngine.Random.Range(0, _candidates.Length);
         _core = _candidates[randomId].AddComponent<CoreCube>();
         base.Awake();
+        RememberAllCubes();
     }
 
     private void Start()
     {
-        RememberAllCubes();
         RandomizePositionZ();
         Collect();
-        _core.SetCubes(_allCubes);
-        SetStats();
     }
 
     private void OnEnable()
@@ -54,14 +54,24 @@ public class Bomb : Chip
 
     public void InitializeBomb(int level, bool isTsarBomb)
     {
-        if (isTsarBomb)
+        if (level > 1)
         {
-            _core.SetSetings(level * _coefficientLevel, isTsarBomb);
-            _core.StartCountdown(_countdownTime);
+            if (isTsarBomb)
+            {
+                _core.SetSetings(_allCubes, level, isTsarBomb);
+                _core.StartCountdown(_countdownTime);
+            }
+            else
+            {
+                _core.SetSetings(_allCubes, level, isTsarBomb);
+            }
         }
         else
         {
-            _core.SetSetings(level, isTsarBomb);
+            _core.SetSetings(_allCubes, 1, isTsarBomb);
+
+            if (isTsarBomb)
+                _core.StartCountdown(_countdownTime);
         }
     }
 
@@ -71,16 +81,6 @@ public class Bomb : Chip
     }
 
     private void Explode() => Dastroy?.Invoke();
-
-    private void SetStats()
-    {
-        foreach (Cube cube in _allCubes)
-        {
-            cube.SetSetings(_core.Level, _core.IsTsar);
-
-            cube.CalculateStats();
-        }
-    }
 
     [ContextMenu("Randomize Position Z")]
     private void RandomizePositionZ()

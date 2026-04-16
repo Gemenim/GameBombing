@@ -6,7 +6,6 @@ using YG;
 public class SavingHerald : MonoBehaviour
 {
     [SerializeField] private MessageBox _messageBox;
-    [SerializeField] private int _id = 3;
 
     private Coroutine _corutine = null;
 

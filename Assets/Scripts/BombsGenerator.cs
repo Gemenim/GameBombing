@@ -23,7 +23,11 @@ public class BombsGenerator : MonoBehaviour
     public Bomb Spawn(int level, bool isTsarBomb)
     {
         Mix();
-        int index = Random.Range(0, _bombsPrefabs.Length);
+        int index = 0;
+
+        if (level > 1)
+            index = Random.Range(0, _bombsPrefabs.Length);
+
         Bomb bomb = _bombsPrefabs[index];
         Bomb newBomb = Instantiate(bomb, _transform.position, Quaternion.identity);
 
@@ -37,7 +41,11 @@ public class BombsGenerator : MonoBehaviour
     public Bomb Spawn(int level, bool isTsarBomb, TimerView timer)
     {
         Mix();
-        int index = Random.Range(0, _bombsPrefabs.Length);
+        int index = 0;
+
+        if (level > 1)
+            index = Random.Range(0, _bombsPrefabs.Length);
+
         Bomb bomb = _bombsPrefabs[index];
         Bomb newBomb = Instantiate(bomb, _transform.position, GetRandomQuternion());
 

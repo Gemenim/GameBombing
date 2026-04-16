@@ -5,18 +5,19 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     protected const float c_defoltCost = 10f;
-    protected const float c_defoltHilth = 3f;
+    protected const float c_defoltHilth = 2f;
     protected const float c_ñoefficientLevel = 0.05f;
+    protected const float c_ñoefficientTsar = 1.25f;
     protected const int c_multiplierLevel = 5;
 
     [SerializeField] private GameObject _trail;
-    [SerializeField] protected float _levelCoefficientHilth = 2.1f;
-    [SerializeField] protected float _levelCoefficientCost = 1.7f;
 
     protected Transform _transform;
     protected float _hilth;
     protected float _dalayToDestruction = 1f;
     protected int _level;
+    protected float _levelCoefficientHilth = 2f;
+    protected float _levelCoefficientCost = 1.5f;
 
     private ColorCube _colorCube;
     private Color _color;
@@ -38,21 +39,19 @@ public class Cube : MonoBehaviour
 
     public void SetSetings(int level, bool isTsar)
     {
-        IsTsar = isTsar;
-        int randomLevel = level + Random.Range(-2, 2);
-        _level = randomLevel > 0 ? randomLevel : 1;
-    }
+        if (level > 1)
+        {
+            IsTsar = isTsar;
+            int randomLevel = level + Random.Range(-1, 1);
+            _level = randomLevel > 0 ? randomLevel : 1;
+        }
+        else
+        {
+            IsTsar = isTsar;
+            _level = 1;
+        }
 
-    public void CalculateStats()
-    {
-        _hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
-        Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
-
-        if (_hilth == 0)
-            _hilth = c_defoltHilth;
-
-        if (Cost == 0)
-            Cost = c_defoltCost;
+        CalculateStats();
     }
 
     public void TakeDamage(float damage)
@@ -84,6 +83,26 @@ public class Cube : MonoBehaviour
 
         if (!IsColect)
             _trail.SetActive(true);
+    }
+
+    private void CalculateStats()
+    {
+        if (IsTsar)
+        {
+            _hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth * c_ñoefficientTsar, _level, c_multiplierLevel, c_ñoefficientLevel);
+            Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost * c_ñoefficientTsar, _level);
+        }
+        else
+        {
+            _hilth = LevelCalculator.Calculat(c_defoltHilth, _levelCoefficientHilth, _level, c_multiplierLevel, c_ñoefficientLevel);
+            Cost = LevelCalculator.Calculat(c_defoltCost, _levelCoefficientCost, _level);
+        }
+
+        if (_hilth <= 0)
+            _hilth = c_defoltHilth;
+
+        if (Cost <= 0)
+            Cost = c_defoltCost;
     }
 
     private void CheckParent()

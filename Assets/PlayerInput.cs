@@ -44,6 +44,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=-1,pressPoint=0.1)"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TutorialClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""23975651-1443-45d3-9d64-2a5e05bf2a3e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -145,6 +154,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c86104c-8444-4e5b-aeb5-0207a6c468ba"",
+                    ""path"": ""<Mouse>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse"",
+                    ""action"": ""TutorialClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41906711-f284-4bf9-bf70-6abbfa5c7d0c"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""TutorialClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -178,6 +209,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_TutorialClick = m_Player.FindAction("TutorialClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -241,12 +273,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_TutorialClick;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @TutorialClick => m_Wrapper.m_Player_TutorialClick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -262,6 +296,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @TutorialClick.started += instance.OnTutorialClick;
+            @TutorialClick.performed += instance.OnTutorialClick;
+            @TutorialClick.canceled += instance.OnTutorialClick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -272,6 +309,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @TutorialClick.started -= instance.OnTutorialClick;
+            @TutorialClick.performed -= instance.OnTutorialClick;
+            @TutorialClick.canceled -= instance.OnTutorialClick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -311,5 +351,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnShoot(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnTutorialClick(InputAction.CallbackContext context);
     }
 }

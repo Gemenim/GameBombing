@@ -30,11 +30,12 @@ public class Player : MonoBehaviour
     private PlayerInput _input;
     private Camera _camera;
     private int _countDasroyBombs = 0;
+    private Vector2 _positionMouse;
 
     public float Coins => _wallet.Coins;
     public int CountDasroyBombs => _countDasroyBombs;
 
-    private Vector2 _positionMouse;
+    public bool IsBeginner { get; private set; } = true;
 
     private void Awake()
     {
@@ -81,6 +82,8 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public PlayerInput GetInput() => _input;
 
     public void AddDastroyBomb()
     {

@@ -368,6 +368,8 @@ namespace YG
         public static bool isGamePlaying { get { return gamePlaying; } }
         private static bool saveGameplayState;
 
+        public static Action<bool> onGamePlaying;
+
         [DllImport("__Internal")]
         private static extern void GameplayStart_js();
 
@@ -379,6 +381,7 @@ namespace YG
             if (!gamePlaying)
             {
                 gamePlaying = true;
+                onGamePlaying?.Invoke(gamePlaying);
                 Message("Gameplay Start");
 #if !UNITY_EDITOR
                 GameplayStart_js();
@@ -398,6 +401,7 @@ namespace YG
             if (gamePlaying)
             {
                 gamePlaying = false;
+                onGamePlaying?.Invoke(gamePlaying);
                 Message("Gameplay Stop");
 #if !UNITY_EDITOR
                 GameplayStop_js();

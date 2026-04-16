@@ -4,29 +4,30 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewBar : MonoBehaviour
+public class LevelBar : MonoBehaviour
 {
     [SerializeField] private Image _bar;
     [SerializeField] private float _speedChange;
     [SerializeField] private Color _endColor;
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private Animator _animator;
 
-    private Color _startColor;
-    private Color _targetColor;
-    private bool _isOnButton = false;
+    private string _nameParametr = "Fullness";
 
-    private double _needExperience = 100;
-    private double _experience;
+    private float _needExperience = 100;
+    private float _experience;
+    private bool _isActive = false;
 
-    public double Experience => _experience;
+    public float Experience => _experience;
 
     public event Action OnButtonClicked;
+    public event Action GainedExperience;
+    public event Action FilledUp;
 
     private void Awake()
     {
         _button.enabled = false;
-        _startColor = _bar.color;
     }
 
     private void OnEnable()
@@ -39,13 +40,7 @@ public class ViewBar : MonoBehaviour
         _button.onClick.RemoveListener(OnButtonClick);
     }
 
-    [ContextMenu("Set")]
-    public void Set()
-    {
-        SetValue(50);
-    }
-
-    public void SetNeedExperience(double value, int level)
+    public void SetNeedExperience(float value, int level)
     {
         _needExperience = value;
         _button.enabled = false;
@@ -56,30 +51,33 @@ public class ViewBar : MonoBehaviour
 
     public void OnButtonClick()
     {
-        _isOnButton = false;
         OnButtonClicked?.Invoke();
-        _bar.color = _startColor;
+        _isActive = true;
         _button.enabled = false;
+        _animator.SetFloat(_nameParametr, 0);
     }
 
-    public void SetValue(double value)
+    public void OnDisableButton()
+    {
+        _isActive = false;
+    }
+
+    public void AddExperience(float value)
     {
         _experience += value;
+        GainedExperience?.Invoke();
+        StartCoroutine(ChangeValue());
 
         if (_experience >= _needExperience)
         {
             _experience = _needExperience;
+            FilledUp?.Invoke();
 
-            if (_button.enabled == false)
+            if (_isActive == false)
             {
                 _button.enabled = true;
-                _isOnButton = true;
-                StartCoroutine(Animate());
+                _animator.SetFloat(_nameParametr, _experience / _needExperience);
             }
-        }
-        else
-        {
-            StartCoroutine(ChangeValue());
         }
     }
 
@@ -93,16 +91,6 @@ public class ViewBar : MonoBehaviour
         while (_experience / _needExperience != _bar.fillAmount)
         {
             _bar.fillAmount = Mathf.MoveTowards(_bar.fillAmount, (float)(_experience / _needExperience), Time.deltaTime * _speedChange);
-
-            yield return null;
-        }
-    }
-
-    private IEnumerator Animate()
-    {
-        while (_isOnButton)
-        {
-            _bar.color = Color.Lerp(_startColor, _targetColor, Mathf.PingPong(Time.time, 1));
 
             yield return null;
         }

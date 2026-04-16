@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -17,7 +18,6 @@ public class Bullet : MonoBehaviour
     private float _damage = 4;
     private Pool<Bullet> _pool;
     private float _velocity;
-    private Vector3 _lastVelocity;
     private float _radiusExplosion;
     private float _explosionDamageCoefficient;
     private int _maxCountRicochet;
@@ -42,9 +42,10 @@ public class Bullet : MonoBehaviour
         _trail.Return -= ReturnPool;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        _lastVelocity = _rb.velocity;
+        if (Vector3.Magnitude(_rb.velocity) < _velocity)
+            _rb.AddForce(_velocity * _rb.velocity.normalized);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -55,8 +56,7 @@ public class Bullet : MonoBehaviour
         {
             _countRicochet++;
             cube.TakeDamage(_damage);
-            Debug.Log(_damage);
-
+        
             if (_delayExlosion <= 0)
             {
                 List<Cube> cubes = GetCubes();
@@ -75,12 +75,6 @@ public class Bullet : MonoBehaviour
                         Explosion(cubes);
                 }
             }
-        }
-
-        if (collision.contacts.Length > 0)
-        {
-            Vector3 direction = Vector3.Reflect(_lastVelocity.normalized, collision.contacts[0].normal);
-            _rb.velocity = direction * _velocity;
         }
 
         _audioSource.PlayOneShot(_audioSource.clip);
@@ -111,21 +105,12 @@ public class Bullet : MonoBehaviour
     {
         _damage = _bulletSO.Damage;
         _maxCountRicochet = _bulletSO.MaxCountRicochet;
-        _delayExlosion = _bulletSO.DelayExlosion;
         _explosionDamageCoefficient = _bulletSO.ExplosionDamageCoefficient;
         _radiusExplosion = _bulletSO.RadiusExplosion + c_radius;
         _velocity = _bulletSO.Velocity;
+        _delayExlosion = _bulletSO.DelayExlosion;
         _shockWave.SetRadius(_radiusExplosion);
-    }
-
-    public void SetStats(float damage, int countRicochet, float radiusExplosion, float explosionDamageCoefficient, float delayExplosion)
-    {
-        _damage = damage;
-        _maxCountRicochet = countRicochet;
-        _radiusExplosion = radiusExplosion + c_radius;
-        _explosionDamageCoefficient = explosionDamageCoefficient;
-        _delayExlosion = delayExplosion;
-        _shockWave.SetRadius(radiusExplosion * 2);
+        _rb.maxLinearVelocity = _velocity;
     }
 
     private void ReturnPool()

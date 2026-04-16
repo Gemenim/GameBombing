@@ -23,7 +23,7 @@ public class BulletObject : ScriptableObject
 
     public void SetDamage(float value) => _damage = value;
     public void SetRicochet(int value) => _maxCountRicochet = value;
-    public void SetRadius(float value) => _damage = value;
-    public void SetDamageExplosion(float value) => _damage = value;
-    public void SetSpeedExplosion(float value) => _damage = value;
+    public void SetRadius(float value) => _radiusExplosion = value;
+    public void SetDamageExplosion(float value) => _explosionDamageCoefficient = value;
+    public void SetSpeedExplosion(float value) => _delayExplosion += value;
 }

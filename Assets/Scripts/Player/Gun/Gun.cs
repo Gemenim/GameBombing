@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,9 +5,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class Gun : MonoBehaviour
 {
-    private const float c_maxRotationZ = 0.66f;
-    private const float c_maxRotationW = 0.74f;
-
     [SerializeField] private Pool<Bullet> _bulletPool;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Bullet _bulletPrefab;
@@ -22,7 +18,6 @@ public class Gun : MonoBehaviour
     [SerializeField] private SpeedAttack _abilitySpeedAttack;
 
     private Transform _transform;
-    private MoverGun _moverGun;
     private AudioSource _audioSource;
 
     public bool IsReadyShoot { get; private set; } = true;
@@ -39,8 +34,6 @@ public class Gun : MonoBehaviour
     {
         Bullet bullet = _bulletPool.Get();
         bullet.SetStatus();
-        //bullet.SetStats(_abilityDamage.AmountDamage, _abilityRicochet.Count, _abilityRadiusExplosion.Radius,
-        //    _abilityDamageExplosion.CoefficientDamage, _abilitySpeedExplosion.DaleyExplosion);
         bullet.transform.SetParent(_sky.Bullets);
         bullet.transform.position = _spawnPoint.position;
         bullet.SetDirection(_transform.up);
@@ -54,14 +47,6 @@ public class Gun : MonoBehaviour
     }
 
     public void UpLevelSpeedAttack() => _abilitySpeedAttack.UpLevel();
-
-    private void CheckGuidanceBoundaries()
-    {
-        if (_transform.rotation.z > c_maxRotationZ && _transform.rotation.w < c_maxRotationW)
-            _transform.rotation = new Quaternion(0, 0, c_maxRotationZ, c_maxRotationW);
-        else if (_transform.rotation.z < -c_maxRotationZ && _transform.rotation.w < c_maxRotationW)
-            _transform.rotation = new Quaternion(0, 0, -c_maxRotationZ, c_maxRotationW);
-    }
 
     private Bullet PreloadBullet()
     {

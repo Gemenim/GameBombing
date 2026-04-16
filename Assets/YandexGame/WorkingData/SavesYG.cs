@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace YG
+﻿namespace YG
 {
     [System.Serializable]
     public class SavesYG
@@ -13,8 +11,9 @@ namespace YG
 
         // Тестовые сохранения для демо сцены
         // Можно удалить этот код, но тогда удалите и демо (папка Example)
+        public bool IsBeginner = true;
         public int LevelGame = 1;
-        public float Coins = 300;
+        public float Coins = 0;
         public float Experience = 0;
         public int LevelUpgradeDamage = 1;
         public int LevelUpgradeRicochet = 1;

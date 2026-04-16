@@ -18,6 +18,8 @@ public class ViewButtonUpgrade : MonoBehaviour
     private Button _button;
     private float _cost;
 
+    public float Cost => _cost;
+
     public event Action<float> OnButtonClicked;
 
     private void Awake()

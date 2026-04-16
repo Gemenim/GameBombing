@@ -28,6 +28,8 @@ public class Game : MonoBehaviour
 
     [SerializeField] private string[] _nameLeaderbords;
 
+    [SerializeField] private Training _tutorial;
+
     private Bomb _bomb;
     private int _maxNumberAttempts = 5;
     private Coroutine _updateTop = null;
@@ -42,8 +44,17 @@ public class Game : MonoBehaviour
             _savingHerald.Load();
 
         YandexGame.GameplayStart();
-        Spawn(false);
         _barrierMover.Move();
+
+        if (_player.IsBeginner && Level == 1)
+        {
+            Spawn(false);
+            _tutorial.StartScript(_bomb.Core);
+        }
+        else
+        {
+            Spawn(false);
+        }
     }
 
     private void OnEnable()
@@ -66,6 +77,7 @@ public class Game : MonoBehaviour
         _collector.ColectCore += SpawnNextBomb;
 
         YandexGame.onVisibilityWindowGame += _muteSourceButton.MuteWindow;
+        YandexGame.onGamePlaying += GameProcessSwitch;
     }
 
     private void OnDisable()
@@ -91,18 +103,17 @@ public class Game : MonoBehaviour
             _bomb.Dastroy -= RespawnBomb;
 
         YandexGame.onVisibilityWindowGame -= _muteSourceButton.MuteWindow;
+        YandexGame.onGamePlaying -= GameProcessSwitch;
     }
 
     private void OpenUpgradeScreen()
     {
         YandexGame.GameplayStop();
         _upgrateScreen.Open();
-        Time.timeScale = 0;
     }
 
     private void CloseUpgradeScreen()
     {
-        Time.timeScale = 1;
         YandexGame.GameplayStart();
         _upgrateScreen.Close();
     }
@@ -272,6 +283,18 @@ public class Game : MonoBehaviour
             YandexGame.NewLeaderboardScores(_nameLeaderbords[i], score[i]);
 
             yield return dalay;
+        }
+    }
+
+    private void GameProcessSwitch(bool isGamePlaying)
+    {
+        if (isGamePlaying)
+        {
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            Time.timeScale = 0;
         }
     }
 }

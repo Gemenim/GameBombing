@@ -8,7 +8,6 @@ public abstract class Window : MonoBehaviour
     [SerializeField] private Button _closeButton;
 
     protected CanvasGroup WindowGroup => _windowGroup;
-    protected Button ActionButtonOpen => _closeButton;
 
     public event Action OnClose;
 
@@ -27,6 +26,17 @@ public abstract class Window : MonoBehaviour
         OnClose?.Invoke();
     }
 
-    public abstract void Open();
-    public abstract void Close();
+    public virtual void Open()
+    {
+        WindowGroup.alpha = 1f;
+        WindowGroup.interactable = true;
+        WindowGroup.blocksRaycasts = true;
+    }
+
+    public virtual void Close()
+    {
+        WindowGroup.alpha = 0;
+        WindowGroup.interactable = false;
+        WindowGroup.blocksRaycasts = false;
+    }
 }
