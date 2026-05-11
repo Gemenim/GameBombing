@@ -1,2 +1,0 @@
-Build path: W:/Bombing/BuildGame
-Build number: 177
